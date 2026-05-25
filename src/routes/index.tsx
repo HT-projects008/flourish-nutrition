@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Sparkles,
-  GlassWater,
-  HeartPulse,
   Leaf,
   Citrus,
   Flame,
@@ -73,12 +71,6 @@ function Nav() {
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         <a href="#top" className="font-serif text-2xl font-semibold text-primary tracking-tight">
           Flourish
-        </a>
-        <a
-          href="#waitlist"
-          className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
-        >
-          Get Early Access
         </a>
       </div>
     </header>
@@ -157,81 +149,60 @@ function SocialProof() {
   );
 }
 
-function HowItWorks() {
-  const steps = [
-    { icon: GlassWater, title: "Mix", copy: "Add one scoop or sachet to 250ml of cold water" },
-    { icon: Sparkles, title: "Drink", copy: "Take it before your meal, every day" },
-    { icon: HeartPulse, title: "Feel it", copy: "Less bloating, better digestion, lighter every day" },
-  ];
-  return (
-    <section id="how" className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal className="text-center max-w-2xl mx-auto">
-          <h2 className="font-serif text-4xl lg:text-5xl font-semibold text-foreground">
-            One ritual. Real results.
-          </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            A simple daily practice that fits into the life you already live.
-          </p>
-        </Reveal>
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          {steps.map((s, i) => (
-            <Reveal key={s.title} delay={i * 120}>
-              <div className="relative bg-white rounded-2xl p-8 border border-border/60 h-full">
-                <div className="absolute -top-4 left-8 text-xs font-semibold tracking-widest text-primary bg-white px-2">
-                  STEP 0{i + 1}
-                </div>
-                <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5">
-                  <s.icon className="size-6" />
-                </div>
-                <h3 className="font-serif text-2xl font-semibold text-foreground">{s.title}</h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed">{s.copy}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+
 
 function Ingredients() {
   return (
     <section id="ingredients" className="py-24 lg:py-32 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal className="text-center max-w-2xl mx-auto">
-          <h2 className="font-serif text-4xl lg:text-5xl font-semibold text-foreground">
-            Simple ingredients. Real science.
-          </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Every ingredient chosen for a reason. Nothing unnecessary.
-          </p>
-        </Reveal>
-        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {ingredients.map((ing, i) => (
-            <Reveal key={ing.name} delay={i * 60}>
-              <div className="group rounded-2xl bg-white border border-border p-6 h-full hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="size-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                  <ing.icon className="size-5" />
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-foreground">{ing.name}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">{ing.benefit}</p>
-              </div>
-            </Reveal>
-          ))}
-          <Reveal delay={ingredients.length * 60}>
-            <div className="rounded-2xl bg-primary/5 border border-primary/20 p-6 h-full flex items-center gap-3">
-              <Leaf className="size-5 text-primary shrink-0" />
-              <p className="text-sm text-foreground/80">
-                No added sugar. No fillers. No nonsense.
-              </p>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <Reveal className="lg:col-span-4 lg:sticky lg:top-28">
+            <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-5">
+              The Formula
+            </p>
+            <h2 className="font-serif text-4xl lg:text-5xl font-semibold text-foreground leading-[1.1]">
+              Simple ingredients.<br />Real science.
+            </h2>
+            <p className="mt-5 text-muted-foreground text-lg leading-relaxed">
+              Seven plant-based actives, chosen for what they do — not how they sound on a label.
+            </p>
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-4 py-2 text-sm text-foreground/80">
+              <Leaf className="size-4 text-primary" />
+              No sugar. No fillers. No nonsense.
             </div>
+          </Reveal>
+
+          <Reveal delay={120} className="lg:col-span-8">
+            <ol className="divide-y divide-border/70 border-y border-border/70">
+              {ingredients.map((ing, i) => (
+                <li
+                  key={ing.name}
+                  className="group grid grid-cols-[auto_auto_1fr] items-center gap-5 sm:gap-7 py-6 sm:py-7 transition-colors hover:bg-white/60 -mx-4 px-4 sm:-mx-6 sm:px-6 rounded-xl"
+                >
+                  <span className="font-serif text-2xl sm:text-3xl text-primary/70 tabular-nums w-10">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="size-12 sm:size-14 rounded-full bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/15 group-hover:bg-primary/15 transition">
+                    <ing.icon className="size-5 sm:size-6" />
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-foreground leading-tight">
+                      {ing.name}
+                    </h3>
+                    <p className="mt-1 text-sm sm:text-base text-muted-foreground leading-relaxed">
+                      {ing.benefit}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </Reveal>
         </div>
       </div>
     </section>
   );
 }
+
 
 function Benefits() {
   const benefits = [
@@ -268,42 +239,7 @@ function Benefits() {
   );
 }
 
-function Reviews() {
-  return (
-    <section id="reviews" className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal className="text-center max-w-2xl mx-auto">
-          <h2 className="font-serif text-4xl lg:text-5xl font-semibold text-foreground">
-            What people are saying
-          </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Real words from our earliest community members.
-          </p>
-        </Reveal>
-        <div className="mt-16 grid md:grid-cols-3 gap-6">
-          {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={i * 120}>
-              <div className="rounded-2xl bg-white border border-border p-8 h-full shadow-sm hover:shadow-md transition-shadow flex flex-col">
-                <div className="flex text-primary mb-4">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star key={j} className="size-4 fill-current" />
-                  ))}
-                </div>
-                <p className="font-serif text-lg text-foreground leading-relaxed flex-1">
-                  "{r.quote}"
-                </p>
-                <div className="mt-6 pt-6 border-t border-border/70">
-                  <p className="text-sm font-semibold text-foreground">{r.name}</p>
-                  <p className="text-sm text-muted-foreground">{r.city}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+
 
 function Pricing() {
   return (
@@ -421,10 +357,8 @@ function Index() {
       <main>
         <Hero />
         <SocialProof />
-        <HowItWorks />
         <Ingredients />
         <Benefits />
-        <Reviews />
         <Pricing />
         <Waitlist />
       </main>
@@ -432,3 +366,4 @@ function Index() {
     </div>
   );
 }
+
