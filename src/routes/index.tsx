@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Sparkles,
-  GlassWater,
-  HeartPulse,
   Leaf,
   Citrus,
   Flame,
@@ -365,10 +363,8 @@ function Index() {
       <main>
         <Hero />
         <SocialProof />
-        <HowItWorks />
         <Ingredients />
         <Benefits />
-        <Reviews />
         <Pricing />
         <Waitlist />
       </main>
@@ -376,3 +372,4 @@ function Index() {
     </div>
   );
 }
+
