@@ -149,9 +149,6 @@ function SocialProof() {
   );
 }
 
-function HowItWorks() {
-  return null;
-}
 
 
 function Ingredients() {
@@ -242,9 +239,6 @@ function Benefits() {
   );
 }
 
-function Reviews() {
-  return null;
-}
 
 
 function Pricing() {
