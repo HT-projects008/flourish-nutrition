@@ -103,7 +103,12 @@ function Hero() {
               Flourish is a premium gut health drink designed to reduce bloating, support digestion, and help you feel your best — one simple ritual before every meal.
             </p>
             <div className="mt-8">
-              <WaitlistForm id="hero-email" />
+              <a
+                href="#waitlist"
+                className="inline-flex rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
+              >
+                Get Early Access
+              </a>
               <p className="mt-3 text-sm text-muted-foreground">
                 Join 500+ people waiting for Flourish — early access gets 20% off your first order.
               </p>
