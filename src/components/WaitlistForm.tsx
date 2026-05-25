@@ -13,7 +13,7 @@ export function WaitlistForm({ id }: { id?: string }) {
   if (submitted) {
     return (
       <div className="rounded-xl bg-primary/10 border border-primary/30 px-5 py-4 text-primary">
-        You're on the list! We'll be in touch soon.
+        You're on the list! We'll be in touch soon. 🌿
       </div>
     );
   }
