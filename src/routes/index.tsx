@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, Star, Menu, X } from "lucide-react";
+import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
 import stepMix from "../assets/step-mix.jpg";
 import stepDrink from "../assets/step-drink.jpg";
