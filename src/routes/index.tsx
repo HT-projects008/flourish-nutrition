@@ -393,83 +393,6 @@ function Ingredients() {
 
 
 
-function Pricing() {
-  return (
-    <section id="pricing" className="py-28 lg:py-40 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            Pricing
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
-            Start your ritual.
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
-            Try it once, or save 20% every month. Cancel anytime.
-          </p>
-        </Reveal>
-        <div className="mt-20 grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <Reveal>
-            <div className="rounded-3xl bg-white border border-border p-10 h-full flex flex-col">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground">
-                One-off purchase
-              </p>
-              <h3 className="mt-3 font-serif text-2xl font-semibold">30-day supply</h3>
-              <div className="mt-8 flex items-baseline gap-2">
-                <span className="font-serif text-6xl font-semibold text-foreground">£34.99</span>
-              </div>
-              <p className="mt-2 text-muted-foreground">£1.17 per serve</p>
-              <ul className="mt-8 space-y-3 text-sm text-foreground/80 flex-1">
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> 30 sachets · 8g per serve</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Free UK delivery</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> One-time delivery, no commitment</li>
-              </ul>
-              <a
-                href="#waitlist"
-                className="mt-10 inline-flex justify-center rounded-full border border-foreground/20 px-6 py-3.5 text-sm font-semibold text-foreground hover:bg-foreground/5 transition"
-              >
-                Join Waitlist
-              </a>
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            <div className="relative rounded-3xl bg-white border-2 border-primary p-10 h-full flex flex-col shadow-xl shadow-primary/10">
-              <div className="absolute -top-3 left-10 rounded-full bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 tracking-wide uppercase">
-                Most Popular
-              </div>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary">
-                Subscribe & save
-              </p>
-              <h3 className="mt-3 font-serif text-2xl font-semibold">Monthly subscription</h3>
-              <div className="mt-8 flex items-baseline gap-1">
-                <span className="font-serif text-6xl font-semibold text-foreground">£27.99</span>
-                <span className="text-muted-foreground">/month</span>
-              </div>
-              <p className="mt-2 text-muted-foreground">£0.93 per serve · Save 20%</p>
-              <ul className="mt-8 space-y-3 text-sm text-foreground/80 flex-1">
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> 30 sachets · 8g per serve</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Free UK delivery, every month</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Cancel or pause anytime</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Early access to new products</li>
-              </ul>
-              <a
-                href="#waitlist"
-                className="mt-10 inline-flex justify-center rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
-              >
-                Join Waitlist
-              </a>
-            </div>
-          </Reveal>
-        </div>
-        <Reveal>
-          <p className="mt-10 text-center text-sm text-muted-foreground">
-            No commitment. No hidden fees. Cancel or pause anytime.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 function FinalCTA() {
   return (
@@ -549,9 +472,6 @@ function Index() {
         <ProductFeatures />
         <HowItWorks />
         <Ingredients />
-        <BrandStory />
-        <Reviews />
-        <Pricing />
         <FinalCTA />
       </main>
       <Footer />
