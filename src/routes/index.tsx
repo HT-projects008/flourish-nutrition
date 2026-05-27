@@ -39,26 +39,6 @@ const ingredients = [
   { name: "Monk fruit", benefit: "Naturally sweet with zero sugar and zero artificial additives" },
 ];
 
-const reviews = [
-  {
-    quote:
-      "I've tried every gut health product going and nothing has worked like this formula promises to. I'm on the waitlist and cannot wait.",
-    name: "Sarah M.",
-    city: "London",
-  },
-  {
-    quote:
-      "The ingredient list is exactly what I've been looking for. ACV, ginger, inulin — all in one drink before meals. Finally.",
-    name: "James T.",
-    city: "Manchester",
-  },
-  {
-    quote:
-      "Finally a supplement with ingredients I actually recognise. No weird chemicals, just things that actually work.",
-    name: "Emma R.",
-    city: "Bristol",
-  },
-];
 
 const marqueeItems = [
   "Natural ingredients",
@@ -74,10 +54,9 @@ const marqueeItems = [
 ];
 
 const navLinks = [
-  { label: "Our Formula", href: "#formula" },
+  { label: "Shop", href: "#" },
   { label: "Science", href: "#science" },
-  { label: "How It Works", href: "#how" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "About", href: "#" },
 ];
 
 function Nav() {
