@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, Star, Menu, X } from "lucide-react";
+import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
 import stepMix from "../assets/step-mix.jpg";
 import stepDrink from "../assets/step-drink.jpg";
@@ -39,26 +39,6 @@ const ingredients = [
   { name: "Monk fruit", benefit: "Naturally sweet with zero sugar and zero artificial additives" },
 ];
 
-const reviews = [
-  {
-    quote:
-      "I've tried every gut health product going and nothing has worked like this formula promises to. I'm on the waitlist and cannot wait.",
-    name: "Sarah M.",
-    city: "London",
-  },
-  {
-    quote:
-      "The ingredient list is exactly what I've been looking for. ACV, ginger, inulin — all in one drink before meals. Finally.",
-    name: "James T.",
-    city: "Manchester",
-  },
-  {
-    quote:
-      "Finally a supplement with ingredients I actually recognise. No weird chemicals, just things that actually work.",
-    name: "Emma R.",
-    city: "Bristol",
-  },
-];
 
 const marqueeItems = [
   "Natural ingredients",
@@ -74,10 +54,9 @@ const marqueeItems = [
 ];
 
 const navLinks = [
-  { label: "Our Formula", href: "#formula" },
+  { label: "Shop", href: "#" },
   { label: "Science", href: "#science" },
-  { label: "How It Works", href: "#how" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "About", href: "#" },
 ];
 
 function Nav() {
@@ -412,168 +391,8 @@ function Ingredients() {
   );
 }
 
-function BrandStory() {
-  return (
-    <section className="py-28 lg:py-40 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
-        <Reveal>
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-8">
-            Our Story
-          </p>
-          <blockquote className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.1] tracking-[-0.02em]">
-            "We built Flourish because feeling bloated and uncomfortable after meals shouldn't be the norm."
-          </blockquote>
-          <p className="mt-10 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Most gut health products are complicated, expensive, or full of ingredients you don't recognise. Flourish is different. Seven simple, science-backed ingredients. One daily ritual. Real results.
-          </p>
-          <a
-            href="#waitlist"
-            className="mt-10 inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
-          >
-            Read our story <span aria-hidden>→</span>
-          </a>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
-function Reviews() {
-  const ugcGradients = [
-    "from-orange-200 to-amber-300",
-    "from-amber-100 to-orange-200",
-    "from-stone-200 to-amber-200",
-    "from-orange-300 to-amber-200",
-    "from-amber-200 to-stone-200",
-    "from-orange-200 to-stone-300",
-  ];
-  return (
-    <section className="py-28 lg:py-40 bg-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            Early Reviews
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
-            Over 500 people can't wait to try it.
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
-            Here's what early supporters are saying.
-          </p>
-        </Reveal>
-        <div className="mt-16 grid md:grid-cols-3 gap-6">
-          {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={i * 120}>
-              <div className="rounded-3xl bg-[var(--color-cream)] border border-border/60 p-10 h-full flex flex-col">
-                <div className="flex text-primary mb-6">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star key={j} className="size-5 fill-current" />
-                  ))}
-                </div>
-                <p className="font-serif text-xl text-foreground leading-snug flex-1">
-                  "{r.quote}"
-                </p>
-                <div className="mt-8 pt-6 border-t border-border/60">
-                  <p className="font-semibold text-foreground">{r.name}</p>
-                  <p className="text-sm text-muted-foreground">{r.city}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-      <div className="mt-20 overflow-hidden">
-        <div className="flex gap-5 animate-marquee-slow whitespace-nowrap">
-          {[...ugcGradients, ...ugcGradients, ...ugcGradients].map((g, i) => (
-            <div
-              key={i}
-              className={`shrink-0 size-56 lg:size-64 rounded-3xl bg-gradient-to-br ${g} ring-1 ring-black/5`}
-              aria-hidden
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function Pricing() {
-  return (
-    <section id="pricing" className="py-28 lg:py-40 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            Pricing
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
-            Start your ritual.
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
-            Try it once, or save 20% every month. Cancel anytime.
-          </p>
-        </Reveal>
-        <div className="mt-20 grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <Reveal>
-            <div className="rounded-3xl bg-white border border-border p-10 h-full flex flex-col">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground">
-                One-off purchase
-              </p>
-              <h3 className="mt-3 font-serif text-2xl font-semibold">30-day supply</h3>
-              <div className="mt-8 flex items-baseline gap-2">
-                <span className="font-serif text-6xl font-semibold text-foreground">£34.99</span>
-              </div>
-              <p className="mt-2 text-muted-foreground">£1.17 per serve</p>
-              <ul className="mt-8 space-y-3 text-sm text-foreground/80 flex-1">
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> 30 sachets · 8g per serve</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Free UK delivery</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> One-time delivery, no commitment</li>
-              </ul>
-              <a
-                href="#waitlist"
-                className="mt-10 inline-flex justify-center rounded-full border border-foreground/20 px-6 py-3.5 text-sm font-semibold text-foreground hover:bg-foreground/5 transition"
-              >
-                Join Waitlist
-              </a>
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            <div className="relative rounded-3xl bg-white border-2 border-primary p-10 h-full flex flex-col shadow-xl shadow-primary/10">
-              <div className="absolute -top-3 left-10 rounded-full bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 tracking-wide uppercase">
-                Most Popular
-              </div>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary">
-                Subscribe & save
-              </p>
-              <h3 className="mt-3 font-serif text-2xl font-semibold">Monthly subscription</h3>
-              <div className="mt-8 flex items-baseline gap-1">
-                <span className="font-serif text-6xl font-semibold text-foreground">£27.99</span>
-                <span className="text-muted-foreground">/month</span>
-              </div>
-              <p className="mt-2 text-muted-foreground">£0.93 per serve · Save 20%</p>
-              <ul className="mt-8 space-y-3 text-sm text-foreground/80 flex-1">
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> 30 sachets · 8g per serve</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Free UK delivery, every month</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Cancel or pause anytime</li>
-                <li className="flex gap-3"><Check className="size-4 text-primary mt-0.5 shrink-0" /> Early access to new products</li>
-              </ul>
-              <a
-                href="#waitlist"
-                className="mt-10 inline-flex justify-center rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
-              >
-                Join Waitlist
-              </a>
-            </div>
-          </Reveal>
-        </div>
-        <Reveal>
-          <p className="mt-10 text-center text-sm text-muted-foreground">
-            No commitment. No hidden fees. Cancel or pause anytime.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 function FinalCTA() {
   return (
@@ -653,9 +472,6 @@ function Index() {
         <ProductFeatures />
         <HowItWorks />
         <Ingredients />
-        <BrandStory />
-        <Reviews />
-        <Pricing />
         <FinalCTA />
       </main>
       <Footer />
