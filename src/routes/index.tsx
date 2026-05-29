@@ -2,9 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
-import stepMix from "../assets/step-mix.jpg";
-import stepDrink from "../assets/step-drink.jpg";
-import stepFeel from "../assets/step-feel.jpg";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 
@@ -259,87 +256,6 @@ function ProductFeatures() {
   );
 }
 
-function HowItWorks() {
-  const steps = [
-    {
-      n: "01",
-      kicker: "Mix",
-      title: "Add one scoop to 250ml of cold water.",
-      body: "Each 8g serve contains your full daily dose of ACV, ginger, turmeric, inulin and more — all in one clean, citrus-forward drink.",
-      img: stepMix,
-      alt: "Turmeric powder being scooped into a glass of water",
-    },
-    {
-      n: "02",
-      kicker: "Drink before your meal",
-      title: "Take it before breakfast, lunch, or dinner.",
-      body: "Timing matters. Taking Flourish before eating primes your digestive system, helps regulate blood sugar, and sets you up to feel lighter after every meal.",
-      img: stepDrink,
-      alt: "A hand holding a glass of Flourish at a breakfast table",
-    },
-    {
-      n: "03",
-      kicker: "Feel the difference",
-      title: "Less bloating. Better digestion. Every day.",
-      body: "Most people notice a difference within the first week. Over 30 days, the prebiotic inulin builds a measurably healthier gut microbiome.",
-      img: stepFeel,
-      alt: "Lifestyle wellness moment in a sunlit room",
-    },
-  ];
-  return (
-    <section id="how" className="py-28 lg:py-40 bg-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-3xl">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            The Ritual
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
-            One ritual. Real results.
-          </h2>
-        </Reveal>
-        <div className="mt-20 space-y-24 lg:space-y-32">
-          {steps.map((s, i) => (
-            <Reveal key={s.n}>
-              <div
-                className={`grid lg:grid-cols-12 gap-10 lg:gap-16 items-center ${
-                  i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
-                }`}
-              >
-                <div className="lg:col-span-6">
-                  <div className="relative">
-                    <div className="absolute -inset-6 bg-gradient-to-tr from-primary/10 to-transparent rounded-[2.5rem] blur-2xl" />
-                    <img
-                      src={s.img}
-                      alt={s.alt}
-                      loading="lazy"
-                      width={1024}
-                      height={1024}
-                      className="relative w-full aspect-[4/5] object-cover rounded-3xl shadow-xl ring-1 ring-black/5"
-                    />
-                  </div>
-                </div>
-                <div className="lg:col-span-6">
-                  <div className="flex items-baseline gap-4 mb-6">
-                    <span className="font-serif text-3xl text-primary tabular-nums">{s.n}</span>
-                    <span className="text-xs font-semibold tracking-[0.25em] uppercase text-foreground/60">
-                      {s.kicker}
-                    </span>
-                  </div>
-                  <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground leading-[1.1]">
-                    {s.title}
-                  </h3>
-                  <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-xl">
-                    {s.body}
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Ingredients() {
   return (
@@ -440,12 +356,6 @@ function Footer() {
               </a>
             ))}
           </nav>
-          <div className="lg:col-span-4">
-            <p className="text-sm font-medium text-background mb-3">
-              Science with Flourish — wellness insights for your inbox.
-            </p>
-            <WaitlistForm id="footer-email" variant="dark" />
-          </div>
         </div>
         <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
           <p>© 2025 Flourish. All rights reserved.</p>
@@ -470,7 +380,6 @@ function Index() {
         <Hero />
         <Marquee />
         <ProductFeatures />
-        <HowItWorks />
         <Ingredients />
         <FinalCTA />
       </main>
