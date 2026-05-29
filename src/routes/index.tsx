@@ -356,12 +356,6 @@ function Footer() {
               </a>
             ))}
           </nav>
-          <div className="lg:col-span-4">
-            <p className="text-sm font-medium text-background mb-3">
-              Science with Flourish — wellness insights for your inbox.
-            </p>
-            <WaitlistForm id="footer-email" variant="dark" />
-          </div>
         </div>
         <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
           <p>© 2025 Flourish. All rights reserved.</p>
@@ -386,7 +380,6 @@ function Index() {
         <Hero />
         <Marquee />
         <ProductFeatures />
-        <HowItWorks />
         <Ingredients />
         <FinalCTA />
       </main>
