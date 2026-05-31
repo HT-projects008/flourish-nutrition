@@ -4,7 +4,6 @@ import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
-import { ContactForm } from "../components/ContactForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,8 +52,6 @@ const marqueeItems = [
 const navLinks = [
   { label: "Shop", href: "#" },
   { label: "Science", href: "#science" },
-  { label: "Sachet", href: "#sachet" },
-  { label: "Your Story", href: "#gut" },
   { label: "About", href: "#" },
 ];
 
@@ -393,12 +390,6 @@ function GutStory() {
         </div>
         <Reveal delay={200}>
           <p className="mt-16 font-serif text-2xl italic text-foreground">This is what it means to Flourish.</p>
-          <a
-            href="#waitlist"
-            className="mt-8 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition hover:brightness-95 active:scale-[0.98]"
-          >
-            Join the Waitlist
-          </a>
         </Reveal>
       </div>
     </section>
@@ -435,29 +426,6 @@ function FinalCTA() {
   );
 }
 
-function Contact() {
-  return (
-    <section id="contact" className="py-28 lg:py-40 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-start">
-        <Reveal className="lg:col-span-5">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            Get in Touch
-          </p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-foreground leading-[1.05]">
-            We'd love to hear from you.
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Questions about the formula, the waitlist, or anything else? Drop us a message and we'll get back to you shortly.
-          </p>
-        </Reveal>
-        <Reveal delay={120} className="lg:col-span-7">
-          <ContactForm />
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 function Footer() {
   return (
     <footer className="bg-[oklch(0.18_0.015_60)] text-background/85">
@@ -473,6 +441,7 @@ function Footer() {
                 {l.label}
               </a>
             ))}
+            <a href="/contact" className="hover:text-primary transition">Contact</a>
           </nav>
         </div>
         <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
@@ -480,7 +449,7 @@ function Footer() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <a href="#" className="hover:text-primary transition">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition">Terms</a>
-            <a href="#contact" className="hover:text-primary transition">Contact</a>
+            <a href="/contact" className="hover:text-primary transition">Contact</a>
             <a href="#" className="hover:text-primary transition">Instagram</a>
             <a href="#" className="hover:text-primary transition">TikTok</a>
           </div>
@@ -502,7 +471,6 @@ function Index() {
         <SachetShowcase />
         <GutStory />
         <FinalCTA />
-        <Contact />
       </main>
       <Footer />
     </div>
