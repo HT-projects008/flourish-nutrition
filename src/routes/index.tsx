@@ -37,7 +37,6 @@ const ingredients = [
   { name: "Monk fruit", benefit: "Naturally sweet with zero sugar and zero artificial additives" },
 ];
 
-
 const marqueeItems = [
   "Natural ingredients",
   "Made in the UK",
@@ -54,6 +53,8 @@ const marqueeItems = [
 const navLinks = [
   { label: "Shop", href: "#" },
   { label: "Science", href: "#science" },
+  { label: "Sachet", href: "#sachet" },
+  { label: "Your Story", href: "#gut" },
   { label: "About", href: "#" },
 ];
 
@@ -81,7 +82,7 @@ function Nav() {
         <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((l) => (
             <a
-              key={l.href}
+              key={l.label}
               href={l.href}
               className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors"
             >
@@ -109,7 +110,7 @@ function Nav() {
         <div className="lg:hidden bg-white border-t border-border px-6 py-6 flex flex-col gap-5">
           {navLinks.map((l) => (
             <a
-              key={l.href}
+              key={l.label}
               href={l.href}
               onClick={() => setOpen(false)}
               className="text-base font-medium text-foreground"
@@ -134,17 +135,17 @@ function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen pt-28 lg:pt-32 pb-16 lg:pb-24 overflow-hidden bg-[var(--color-cream)]"
+      className="relative min-h-screen pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[calc(100vh-7rem)]">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[calc(100vh-9rem)]">
         <div className="lg:col-span-7 order-2 lg:order-1">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
               <span className="size-1.5 rounded-full bg-primary" />
               Premium gut health, daily
             </span>
-            <h1 className="font-serif text-[clamp(3rem,8vw,7.5rem)] font-semibold text-foreground leading-[0.95] tracking-[-0.03em]">
+            <h1 className="font-serif text-[clamp(3.5rem,10vw,9rem)] font-bold text-foreground leading-[1.1] tracking-[-0.03em]">
               Feel lighter.
               <br />
               <span className="text-primary">Every day.</span>
@@ -184,7 +185,7 @@ function Hero() {
               alt="A glass of Flourish gut health drink with lemon and fresh ginger"
               width={1024}
               height={1280}
-              className="relative w-full max-w-lg mx-auto rounded-3xl object-cover shadow-2xl ring-1 ring-black/5"
+              className="relative w-full rounded-3xl object-cover shadow-2xl ring-1 ring-black/5"
             />
           </div>
         </Reveal>
@@ -234,10 +235,10 @@ function ProductFeatures() {
           <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
             The Formula
           </p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
+          <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
             Whole body health starts in the gut.
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
             Flourish is formulated with 7 clinically-studied ingredients to support your gut, reduce bloating, and help your body feel its best — every single day.
           </p>
         </Reveal>
@@ -257,7 +258,6 @@ function ProductFeatures() {
   );
 }
 
-
 function Ingredients() {
   return (
     <section id="science" className="bg-[var(--color-cream)]">
@@ -267,10 +267,10 @@ function Ingredients() {
             <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
               The Science
             </p>
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.05]">
+            <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
               Simple ingredients. Real science.
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
               Every ingredient in Flourish is chosen for a specific, evidence-based reason. Nothing unnecessary. Nothing you can't pronounce.
             </p>
           </Reveal>
@@ -308,8 +308,102 @@ function Ingredients() {
   );
 }
 
+function SachetShowcase() {
+  return (
+    <section id="sachet" className="py-28 lg:py-40 bg-[#1a1a1a]">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="min-h-[500px] rounded-2xl border border-orange-500/30 bg-orange-500/5 flex items-center justify-center">
+          <span className="text-orange-500/50 text-sm font-medium tracking-widest uppercase">SACHET GIF</span>
+        </div>
+        <div className="flex flex-col gap-8">
+          <Reveal>
+            <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest">● FLOURISH SACHET FORMAT</p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-[1.1]">
+              Every serve.<br />Perfectly measured.
+            </h2>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="text-zinc-400 text-lg leading-relaxed">
+              Each Flourish sachet contains a precise 8g dose of all seven clinically-studied ingredients — pre-measured, portable, and ready whenever you are. No scoops, no mess, no guesswork.
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="flex gap-12">
+              <div>
+                <p className="text-5xl font-bold text-orange-500">8g</p>
+                <p className="mt-1 text-sm text-zinc-400">Precise dose, every time</p>
+              </div>
+              <div>
+                <p className="text-5xl font-bold text-orange-500">7</p>
+                <p className="mt-1 text-sm text-zinc-400">Active ingredients per sachet</p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={320}>
+            <p className="text-zinc-500 text-sm italic">Available in single-serve sachets and 30-serve tubs</p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-
+function GutStory() {
+  const columns = [
+    {
+      title: "In your gut",
+      body: "Inulin prebiotics feed your beneficial bacteria. ACV and ginger calm inflammation and support healthy digestion after every meal.",
+    },
+    {
+      title: "In your bloodstream",
+      body: "Ceylon cinnamon and ACV work together to steady blood sugar levels, reducing energy crashes and cravings throughout the day.",
+    },
+    {
+      title: "In your whole body",
+      body: "Turmeric and black pepper deliver bioavailable anti-inflammatory support — so you don't just feel lighter, you feel better everywhere.",
+    },
+  ];
+  return (
+    <section id="gut" className="py-28 lg:py-40 bg-[var(--color-cream)]">
+      <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
+        <Reveal>
+          <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest mb-6">● YOUR GUT. YOUR HEALTH.</p>
+          <h2 className="font-serif text-4xl lg:text-6xl font-bold text-foreground leading-[1.1]">
+            Your body is waiting to Flourish.
+          </h2>
+          <p className="mt-6 text-xl text-zinc-500 leading-relaxed max-w-2xl mx-auto">
+            Inside every serve of Flourish, seven ingredients work together to transform how your gut feels — and how your whole body thrives.
+          </p>
+        </Reveal>
+        <Reveal delay={120}>
+          <div className="mt-16 min-h-[500px] max-w-2xl mx-auto rounded-3xl border border-orange-200 bg-orange-50 flex items-center justify-center">
+            <span className="text-orange-300 text-sm font-medium tracking-widest uppercase">GUT ILLUSTRATION GIF</span>
+          </div>
+        </Reveal>
+        <div className="mt-20 grid lg:grid-cols-3 gap-10 text-left">
+          {columns.map((col, i) => (
+            <Reveal key={col.title} delay={i * 100}>
+              <div className="w-10 h-10 rounded-full bg-orange-100 mb-4" />
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">{col.title}</h3>
+              <p className="text-zinc-500 leading-relaxed">{col.body}</p>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={200}>
+          <p className="mt-16 font-serif text-2xl italic text-foreground">This is what it means to Flourish.</p>
+          <a
+            href="#waitlist"
+            className="mt-8 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition hover:brightness-95 active:scale-[0.98]"
+          >
+            Join the Waitlist
+          </a>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
 function FinalCTA() {
   return (
@@ -375,7 +469,7 @@ function Footer() {
           </div>
           <nav className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
             {navLinks.map((l) => (
-              <a key={l.href} href={l.href} className="hover:text-primary transition">
+              <a key={l.label} href={l.href} className="hover:text-primary transition">
                 {l.label}
               </a>
             ))}
@@ -405,6 +499,8 @@ function Index() {
         <Marquee />
         <ProductFeatures />
         <Ingredients />
+        <SachetShowcase />
+        <GutStory />
         <FinalCTA />
         <Contact />
       </main>
