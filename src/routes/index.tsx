@@ -4,6 +4,7 @@ import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
+import { ContactForm } from "../components/ContactForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -340,6 +341,29 @@ function FinalCTA() {
   );
 }
 
+function Contact() {
+  return (
+    <section id="contact" className="py-28 lg:py-40 bg-[var(--color-cream)]">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-start">
+        <Reveal className="lg:col-span-5">
+          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
+            Get in Touch
+          </p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-foreground leading-[1.05]">
+            We'd love to hear from you.
+          </h2>
+          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+            Questions about the formula, the waitlist, or anything else? Drop us a message and we'll get back to you shortly.
+          </p>
+        </Reveal>
+        <Reveal delay={120} className="lg:col-span-7">
+          <ContactForm />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="bg-[oklch(0.18_0.015_60)] text-background/85">
@@ -362,7 +386,7 @@ function Footer() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <a href="#" className="hover:text-primary transition">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition">Terms</a>
-            <a href="#" className="hover:text-primary transition">Contact</a>
+            <a href="#contact" className="hover:text-primary transition">Contact</a>
             <a href="#" className="hover:text-primary transition">Instagram</a>
             <a href="#" className="hover:text-primary transition">TikTok</a>
           </div>
@@ -382,6 +406,7 @@ function Index() {
         <ProductFeatures />
         <Ingredients />
         <FinalCTA />
+        <Contact />
       </main>
       <Footer />
     </div>
