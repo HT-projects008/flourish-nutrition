@@ -168,43 +168,45 @@ function Hero() {
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
-      <div className="relative z-10 mx-auto max-w-3xl px-6 lg:px-10 text-center flex flex-col items-center justify-center min-h-[calc(100vh-9rem)]">
-        <Reveal>
-          <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
-            <span className="size-1.5 rounded-full bg-primary" />
-            Premium gut health, daily
-          </span>
-          <h1 className="font-serif text-[clamp(3.5rem,10vw,9rem)] font-bold text-foreground leading-[1.1] tracking-[-0.03em]">
-            Feel lighter.
-            <br />
-            <span className="text-primary">Every day.</span>
-          </h1>
-          <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-3">
-            <a
-              href="#waitlist"
-              className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
-            >
-              Join the Waitlist
-            </a>
-            <a
-              href="#science"
-              className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
-            >
-              See the Science
-            </a>
-          </div>
-          <div className="mt-8 flex items-center justify-center gap-3 text-sm text-muted-foreground">
-            <div className="flex text-primary">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-4 fill-current" />
-              ))}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-screen">
+        <div className="lg:col-span-7 pt-32 lg:pt-48 pl-0 lg:pl-10">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
+              <span className="size-1.5 rounded-full bg-primary" />
+              Premium gut health, daily
+            </span>
+            <h1 className="font-serif text-7xl lg:text-8xl font-bold text-foreground leading-tight tracking-[-0.03em] text-left">
+              Feel lighter.
+              <br />
+              <span className="text-primary">Every day.</span>
+            </h1>
+            <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
+              The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row justify-start gap-3">
+              <a
+                href="#waitlist"
+                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
+              >
+                Join the Waitlist
+              </a>
+              <a
+                href="#science"
+                className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
+              >
+                See the Science
+              </a>
             </div>
-            <span>500+ people already waiting · Early access gets 20% off</span>
-          </div>
-        </Reveal>
+            <div className="mt-8 flex items-center justify-start gap-3 text-sm text-muted-foreground">
+              <div className="flex text-primary">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="size-4 fill-current" />
+                ))}
+              </div>
+              <span>500+ people already waiting · Early access gets 20% off</span>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
