@@ -28,6 +28,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-cream: var(--cream);
+  /* Custom easing (Emil Kowalski — use these, never ease-in for UI) */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 :root {
@@ -52,32 +56,70 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-serif); letter-spacing: -0.02em; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
 }
 
+/* Scroll behaviour only when the user hasn't asked for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ─── Reveal animation ─────────────────────────────────────────────────────
+   Content is visible by default (opacity: 1) so SSR, hidden tabs, and
+   headless renderers always show content. The animation enhances the
+   first-seen entry; it does not gate visibility.                          */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.reveal { opacity: 0; }
-.reveal.in-view { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
+.reveal {
+  will-change: transform, opacity;
+}
+
+.reveal.in-view {
+  animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Marquee ──────────────────────────────────────────────────────────── */
 @keyframes marquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }
 }
-.animate-marquee { animation: marquee 40s linear infinite; }
+.animate-marquee      { animation: marquee 40s linear infinite; }
 .animate-marquee-slow { animation: marquee 80s linear infinite; }
 
+/* ─── Bounce (journal hero chevron) ───────────────────────────────────── */
 @keyframes bounce-slow {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
+  50%       { transform: translateY(8px); }
 }
 .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+
+/* ─── Reduced motion: all animations off ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.in-view {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  .animate-marquee,
+  .animate-marquee-slow {
+    animation: none;
+  }
+  .animate-bounce-slow {
+    animation: none;
+  }
+}

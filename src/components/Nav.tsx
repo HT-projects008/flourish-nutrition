@@ -106,6 +106,8 @@ export default function Nav() {
             <div ref={journalRef} className="relative">
               <button
                 onClick={() => setJournalOpen((v) => !v)}
+                aria-expanded={journalOpen}
+                aria-controls="journal-dropdown"
                 className={`${navLinkClass} flex items-center gap-1`}
               >
                 Journal
@@ -121,8 +123,10 @@ export default function Nav() {
           {/* LEFT — mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 -ml-2 text-zinc-800 justify-self-start"
             aria-label="Open menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            className="lg:hidden p-2 -ml-2 text-zinc-800 justify-self-start"
           >
             <Menu className="size-5" />
           </button>
@@ -180,7 +184,8 @@ export default function Nav() {
 
       {/* Journal dropdown — full width below nav */}
       <div
-        className={`fixed top-16 inset-x-0 z-40 bg-white border-b border-zinc-100 shadow-sm transition-all duration-[180ms] ease-out origin-top ${
+        id="journal-dropdown"
+        className={`fixed top-16 inset-x-0 z-40 bg-white border-b border-zinc-100 shadow-sm transition-[opacity,transform] duration-[180ms] ease-out ${
           journalOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 -translate-y-1.5 pointer-events-none"
@@ -188,28 +193,31 @@ export default function Nav() {
       >
         <div className="mx-auto max-w-7xl px-8 py-8 grid grid-cols-3 gap-12">
           {/* Column 1 — Featured */}
-          <div>
-            <p className="text-zinc-400 text-xs uppercase tracking-widest mb-4">Journal</p>
-            <button
-              onClick={goJournal}
-              className="font-serif font-bold text-2xl text-zinc-900 hover:text-orange-500 transition-colors text-left"
-            >
-              All Articles →
-            </button>
-            <p className="text-zinc-400 text-sm mt-2">
-              Science-backed reading on gut health and nutrition.
-            </p>
+          <div className="flex flex-col justify-between">
+            <div>
+              <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Journal</p>
+              <button
+                onClick={goJournal}
+                className="font-serif font-bold text-2xl text-zinc-900 hover:text-orange-500 transition-colors duration-150 text-left leading-snug"
+              >
+                All Articles →
+              </button>
+              <p className="text-zinc-400 text-sm mt-2 leading-relaxed">
+                Science-backed reading on gut health and nutrition.
+              </p>
+            </div>
+            <p className="text-zinc-300 text-xs mt-6">{articles.length} articles</p>
           </div>
 
           {/* Column 2 — Topics */}
           <div>
-            <p className="text-zinc-400 text-xs uppercase tracking-widest mb-4">Browse by Topic</p>
-            <div className="space-y-0.5">
+            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Browse by Topic</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
               {TOPICS.map((topic) => (
                 <button
                   key={topic}
                   onClick={goJournal}
-                  className="block py-1 text-sm text-zinc-700 hover:text-orange-500 transition-colors w-full text-left"
+                  className="py-1 text-sm text-zinc-700 hover:text-orange-500 transition-colors duration-150 text-left"
                 >
                   {topic}
                 </button>
@@ -219,15 +227,18 @@ export default function Nav() {
 
           {/* Column 3 — Latest */}
           <div>
-            <p className="text-zinc-400 text-xs uppercase tracking-widest mb-4">Latest</p>
-            <div className="space-y-0.5">
+            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Latest</p>
+            <div className="space-y-1">
               {LATEST_ARTICLES.map((article) => (
                 <button
                   key={article.slug}
                   onClick={goJournal}
-                  className="block py-1.5 text-sm text-zinc-700 hover:text-orange-500 transition-colors w-full text-left"
+                  className="group block py-1.5 text-left w-full"
                 >
-                  {article.title}
+                  <span className="text-sm text-zinc-700 group-hover:text-orange-500 transition-colors duration-150 leading-snug">
+                    {article.title}
+                  </span>
+                  <span className="block text-[11px] text-zinc-400 mt-0.5">{article.category}</span>
                 </button>
               ))}
             </div>
@@ -237,7 +248,7 @@ export default function Nav() {
 
       {/* Mobile menu — backdrop */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-[350ms] lg:hidden ${
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-200 lg:hidden ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMobileMenuOpen(false)}
@@ -245,9 +256,11 @@ export default function Nav() {
 
       {/* Mobile menu — left-slide panel */}
       <div
-        className={`fixed top-0 left-0 h-full z-[70] w-72 max-w-[80vw] bg-white shadow-2xl flex flex-col transition-transform duration-[350ms] ease-in-out lg:hidden ${
+        id="mobile-menu"
+        className={`fixed top-0 left-0 h-full z-[70] w-72 max-w-[80vw] bg-white shadow-2xl flex flex-col will-change-transform transition-transform duration-[300ms] lg:hidden ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)" }}
       >
         <button
           onClick={() => setMobileMenuOpen(false)}
@@ -285,7 +298,7 @@ export default function Nav() {
                 />
               </button>
               <div
-                className={`overflow-hidden transition-all duration-200 ${mobileJournalOpen ? "max-h-96" : "max-h-0"}`}
+                className={`overflow-hidden transition-[max-height] duration-200 ease-out ${mobileJournalOpen ? "max-h-96" : "max-h-0"}`}
               >
                 <div className="pl-4 space-y-3 pt-2 pb-3">
                   <button
@@ -332,7 +345,7 @@ export default function Nav() {
               </span>
             </button>
             <div
-              className={`overflow-hidden transition-all duration-200 ${mobileCurrencyOpen ? "max-h-60" : "max-h-0"}`}
+              className={`overflow-hidden transition-[max-height] duration-200 ease-out ${mobileCurrencyOpen ? "max-h-60" : "max-h-0"}`}
             >
               <div className="pl-4 space-y-1 pt-1 pb-3">
                 {currencies.map((c) => (

@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Star } from "lucide-react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { BotanicalCanvas } from "../components/BotanicalCanvas";
@@ -70,24 +69,24 @@ function Hero() {
             <div className="mt-6 flex flex-col sm:flex-row justify-start gap-3">
               <a
                 href="#waitlist"
-                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
+                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 active:scale-[0.97] transition-[filter,transform] duration-150"
               >
                 Join the Waitlist
               </a>
               <a
                 href="#flavours"
-                className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
+                className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 active:scale-[0.97] transition-[background-color,transform] duration-150"
               >
                 See the Flavours
               </a>
             </div>
-            <div className="mt-5 flex items-center justify-start gap-3 text-sm text-muted-foreground">
-              <div className="flex text-primary">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
-              </div>
-              <span>500+ people already waiting · Early access gets 20% off</span>
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+              {["7 clinically-studied ingredients", "Made in the UK", "500+ on the waitlist"].map((item) => (
+                <span key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="size-1 rounded-full bg-primary/60 flex-shrink-0" aria-hidden="true" />
+                  {item}
+                </span>
+              ))}
             </div>
           </Reveal>
         </div>
@@ -99,7 +98,7 @@ function Hero() {
 function Marquee() {
   const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
   return (
-    <section className="bg-[#1a1a1a] text-white overflow-hidden py-5">
+    <section aria-hidden="true" className="bg-[#1a1a1a] text-white overflow-hidden py-5">
       <div className="flex animate-marquee whitespace-nowrap">
         {track.map((item, i) => (
           <span key={i} className="flex items-center gap-8 px-8 text-sm tracking-wide uppercase font-medium">
@@ -117,17 +116,20 @@ function ProductFeatures() {
     {
       n: "01",
       title: "Beat the bloat",
-      copy: "Feel noticeably lighter after every meal. ACV and ginger work together to support digestion and reduce uncomfortable fullness.",
+      copy: "ACV and ginger work together to support digestion and reduce uncomfortable fullness after every meal.",
+      ingredients: ["Apple cider vinegar", "Ginger extract"],
     },
     {
       n: "02",
       title: "Support fat loss",
-      copy: "Clinically-studied ingredients that help regulate blood sugar, manage cravings, and support your metabolism before you eat.",
+      copy: "Ceylon cinnamon and ACV help regulate blood sugar, curb cravings, and support your metabolism before you eat.",
+      ingredients: ["Ceylon cinnamon", "ACV"],
     },
     {
       n: "03",
-      title: "Gut health, every day",
-      copy: "Inulin prebiotic fibre feeds the beneficial bacteria your gut needs to function at its best — every day, not just when you remember.",
+      title: "Gut health, daily",
+      copy: "Inulin prebiotic fibre feeds the beneficial bacteria your gut needs — every day, not just when you remember.",
+      ingredients: ["Inulin prebiotic", "Turmeric", "Black pepper"],
     },
   ];
   return (
@@ -141,16 +143,23 @@ function ProductFeatures() {
             Whole body health starts in the gut.
           </h2>
           <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-            Flourish is formulated with 7 clinically-studied ingredients to support your gut, reduce bloating, and help your body feel its best — every single day.
+            Seven clinically-studied ingredients. One precise ratio. Taken before every meal.
           </p>
         </Reveal>
         <div className="mt-20 grid md:grid-cols-3 gap-6 lg:gap-8">
           {features.map((f, i) => (
             <Reveal key={f.n} delay={i * 120}>
-              <div className="rounded-3xl bg-white border border-border/80 p-10 h-full hover:border-primary/30 transition-colors">
-                <p className="font-serif text-5xl text-primary tabular-nums">{f.n}</p>
-                <h3 className="mt-8 font-serif text-2xl font-semibold text-foreground">{f.title}</h3>
-                <p className="mt-4 text-muted-foreground leading-relaxed">{f.copy}</p>
+              <div className="rounded-3xl bg-white border border-border/80 p-10 h-full hover:border-primary/30 transition-colors duration-200 flex flex-col">
+                <span className="text-[11px] font-medium tracking-[0.18em] uppercase text-primary/60 tabular-nums">{f.n}</span>
+                <h3 className="mt-5 font-serif text-2xl font-semibold text-foreground">{f.title}</h3>
+                <p className="mt-3 text-muted-foreground leading-relaxed flex-1">{f.copy}</p>
+                <div className="mt-6 flex flex-wrap gap-1.5">
+                  {f.ingredients.map((ing) => (
+                    <span key={ing} className="text-[11px] text-primary/70 bg-primary/8 rounded-full px-2.5 py-1">
+                      {ing}
+                    </span>
+                  ))}
+                </div>
               </div>
             </Reveal>
           ))}
@@ -233,10 +242,9 @@ function Flavours() {
                   ))}
                 </div>
                 <div className="flex-1 flex items-center justify-center my-4">
-                  <div className={`rounded-xl w-full aspect-square max-w-[200px] flex items-center justify-center ${f.dark ? "bg-[#1a1a1a]/10" : "bg-white/10"}`}>
-                    <span className={`text-xs font-medium tracking-widest uppercase ${f.dark ? "text-[#1a1a1a]/40" : "text-white/40"}`}>
-                      PACKAGING
-                    </span>
+                  <div className={`rounded-2xl w-full aspect-[3/4] max-w-[180px] flex flex-col items-center justify-center gap-2 border ${f.dark ? "bg-[#1a1a1a]/8 border-[#1a1a1a]/10" : "bg-white/8 border-white/10"}`}>
+                    <span className={`font-serif text-4xl font-bold leading-none ${f.dark ? "text-[#1a1a1a]/20" : "text-white/20"}`}>{f.id}</span>
+                    <span className={`text-[9px] font-medium tracking-[0.2em] uppercase ${f.dark ? "text-[#1a1a1a]/30" : "text-white/30"}`}>Coming soon</span>
                   </div>
                 </div>
                 <p className={`text-sm leading-relaxed mt-2 ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
@@ -253,7 +261,7 @@ function Flavours() {
             </p>
             <a
               href="#waitlist"
-              className="inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition hover:brightness-95 active:scale-[0.98]"
+              className="inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
             >
               Join the Waitlist
             </a>

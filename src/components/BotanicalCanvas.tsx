@@ -3,7 +3,6 @@ import { useRef, useEffect } from "react";
 type ShapeType = "lemon" | "turmeric" | "cinnamon" | "leaf" | "spice";
 type Layer = 1 | 2 | 3;
 
-// [r, g, b, a] — all very low opacity for subtlety
 const COLORS: [number, number, number, number][] = [
   [251, 191, 36, 0.12],
   [234, 88, 12, 0.10],
@@ -25,20 +24,15 @@ interface Particle {
   color: [number, number, number, number];
   rotation: number;
   rotationSpeed: number;
-  // lemon
   lemonR: number;
-  // turmeric blob
   blobPts: [number, number][];
   blobR: number;
-  // cinnamon
   cinR: number;
   cinSweep: number;
   cinLW: number;
   cinStart: number;
-  // leaf
   leafH: number;
   leafW: number;
-  // spice dots
   dots: { dx: number; dy: number; r: number }[];
 }
 
@@ -78,7 +72,7 @@ function makeParticle(w: number, h: number): Particle {
     baseVy,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     rotation: Math.random() * Math.PI * 2,
-    rotationSpeed: (Math.random() * 0.006 - 0.003),
+    rotationSpeed: Math.random() * 0.006 - 0.003,
     lemonR: 6 + Math.random() * 8,
     blobPts,
     blobR: 10 + Math.random() * 12,
@@ -167,8 +161,12 @@ export function BotanicalCanvas() {
   const rafRef = useRef(0);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const runningRef = useRef(false);
 
   useEffect(() => {
+    // Respect reduced motion preference — skip animation entirely
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -186,6 +184,7 @@ export function BotanicalCanvas() {
     };
 
     const loop = () => {
+      if (!runningRef.current) return;
       const w = canvas.width;
       const h = canvas.height;
       const mouse = mouseRef.current;
@@ -210,16 +209,29 @@ export function BotanicalCanvas() {
         p.y += p.vy;
         p.rotation += p.rotationSpeed;
 
-        // wrap left/right
         if (p.x < -m) p.x = w + m;
         else if (p.x > w + m) p.x = -m;
-        // respawn at bottom when off top
         if (p.y < -m) { p.y = h + m; p.x = Math.random() * w; }
 
         drawParticle(ctx, p);
       }
 
       rafRef.current = requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (runningRef.current) return;
+      runningRef.current = true;
+      loop();
+    };
+
+    const stop = () => {
+      runningRef.current = false;
+      cancelAnimationFrame(rafRef.current);
+    };
+
+    const onVisibilityChange = () => {
+      document.hidden ? stop() : start();
     };
 
     const onMove = (e: MouseEvent) => {
@@ -229,16 +241,18 @@ export function BotanicalCanvas() {
     const onLeave = () => { mouseRef.current = { x: -9999, y: -9999 }; };
 
     resize();
-    loop();
+    start();
     section.addEventListener("mousemove", onMove);
     section.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      stop();
       section.removeEventListener("mousemove", onMove);
       section.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
