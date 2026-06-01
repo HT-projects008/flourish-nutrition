@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Premium gut health and debloat drink. Simple ingredients. Real science. Join the waitlist for early access.",
+          "Premium gut health and debloat drink. Precisely chosen ingredients. Real science. Join the waitlist for early access.",
       },
     ],
   }),
@@ -26,14 +26,46 @@ export const Route = createFileRoute("/")({
 });
 
 const ingredients = [
-  { name: "Apple cider vinegar", benefit: "Supports digestion and appetite control before meals" },
-  { name: "Lemon juice", benefit: "Stimulates digestive enzymes and brightens the formula naturally" },
-  { name: "Turmeric", benefit: "Powerful anti-inflammatory, paired with black pepper for bioavailability" },
-  { name: "Black pepper", benefit: "Increases curcumin absorption from turmeric by up to 2,000%" },
-  { name: "Ceylon cinnamon", benefit: "Helps maintain steady blood sugar levels after eating" },
-  { name: "Inulin", benefit: "Prebiotic fibre that feeds your beneficial gut bacteria daily" },
-  { name: "Ginger extract", benefit: "Clinically shown to reduce bloating and digestive discomfort" },
-  { name: "Monk fruit", benefit: "Naturally sweet with zero sugar and zero artificial additives" },
+  {
+    name: "Apple cider vinegar",
+    benefit: "Supports digestion and appetite control before meals",
+    synergy: "Primes your digestive system before the other actives go to work",
+  },
+  {
+    name: "Lemon juice",
+    benefit: "Stimulates digestive enzymes and brightens the formula naturally",
+    synergy: "Stimulates digestive enzymes that help every other ingredient absorb more effectively",
+  },
+  {
+    name: "Turmeric",
+    benefit: "Powerful anti-inflammatory, paired with black pepper for bioavailability",
+    synergy: "Paired specifically with black pepper — inactive without it",
+  },
+  {
+    name: "Black pepper",
+    benefit: "Increases curcumin absorption from turmeric by up to 2,000%",
+    synergy: "Unlocks turmeric's bioavailability — this pairing is the reason both are in the formula",
+  },
+  {
+    name: "Ceylon cinnamon",
+    benefit: "Helps maintain steady blood sugar levels after eating",
+    synergy: "Specifically Ceylon — not Cassia — for daily use at therapeutic doses",
+  },
+  {
+    name: "Inulin",
+    benefit: "Prebiotic fibre that feeds your beneficial gut bacteria daily",
+    synergy: "The prebiotic foundation that makes the whole formula work over time",
+  },
+  {
+    name: "Ginger extract",
+    benefit: "Clinically shown to reduce bloating and digestive discomfort",
+    synergy: "Standardised to 5% gingerols — the minimum dose shown to reduce bloating in clinical studies",
+  },
+  {
+    name: "Monk fruit",
+    benefit: "Naturally sweet with zero sugar and zero artificial additives",
+    synergy: "Zero sugar, zero compromise — chosen so nothing in this formula works against you",
+  },
 ];
 
 const marqueeItems = [
@@ -250,6 +282,13 @@ function ProductFeatures() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={360}>
+          <div className="mt-6 rounded-3xl bg-white border border-primary/20 p-10">
+            <p className="font-serif text-lg text-muted-foreground leading-relaxed italic">
+              The Flourish Formula works as a system. Remove one ingredient and the others are less effective. That's not marketing — that's the science behind why each one is here.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -265,15 +304,15 @@ function Ingredients() {
               The Science
             </p>
             <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
-              Simple ingredients. Real science.
+              The Flourish Formula
             </h2>
             <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-              Every ingredient in Flourish is chosen for a specific, evidence-based reason. Nothing unnecessary. Nothing you can't pronounce.
+              Seven clinically-studied actives. One precise daily blend. Every ingredient chosen for a specific role — and for how it works with every other.
             </p>
           </Reveal>
           <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {ingredients.map((ing, i) => (
-              <Reveal key={ing.name} delay={i * 60}>
+              <Reveal key={ing.name} delay={i * 120}>
                 <div className="rounded-2xl bg-white border border-border/60 p-7 h-full hover:border-primary/30 transition-colors">
                   <p className="font-serif text-sm text-primary/70 tabular-nums">
                     {String(i + 1).padStart(2, "0")}
@@ -283,6 +322,9 @@ function Ingredients() {
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                     {ing.benefit}
+                  </p>
+                  <p className="mt-3 pt-3 border-t border-border/40 text-xs text-muted-foreground/70 leading-relaxed italic">
+                    {ing.synergy}
                   </p>
                 </div>
               </Reveal>
@@ -309,36 +351,38 @@ function SachetShowcase() {
   return (
     <section id="sachet" className="py-28 lg:py-40 bg-[#1a1a1a]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        <div className="min-h-[500px] rounded-2xl border border-orange-500/30 bg-orange-500/5 flex items-center justify-center">
-          <span className="text-orange-500/50 text-sm font-medium tracking-widest uppercase">SACHET GIF</span>
-        </div>
+        <Reveal>
+          <div className="min-h-[500px] rounded-2xl border border-orange-500/30 bg-orange-500/5 flex items-center justify-center">
+            <span className="text-orange-500/50 text-sm font-medium tracking-widest uppercase">SACHET GIF</span>
+          </div>
+        </Reveal>
         <div className="flex flex-col gap-8">
           <Reveal>
             <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest">● FLOURISH SACHET FORMAT</p>
           </Reveal>
-          <Reveal delay={80}>
+          <Reveal delay={120}>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-[1.1]">
               Every serve.<br />Perfectly measured.
             </h2>
           </Reveal>
-          <Reveal delay={160}>
+          <Reveal delay={240}>
             <p className="text-zinc-400 text-lg leading-relaxed">
-              Each Flourish sachet contains a precise 8g dose of all seven clinically-studied ingredients — pre-measured, portable, and ready whenever you are. No scoops, no mess, no guesswork.
+              The Flourish Formula is a precision blend — not a collection of ingredients you could recreate at home. The sourcing, the ratios, the order they work in your body — that's what took time to get right.
             </p>
           </Reveal>
-          <Reveal delay={240}>
+          <Reveal delay={360}>
             <div className="flex gap-12">
               <div>
                 <p className="text-5xl font-bold text-orange-500">8g</p>
                 <p className="mt-1 text-sm text-zinc-400">Precise dose, every time</p>
               </div>
               <div>
-                <p className="text-5xl font-bold text-orange-500">7</p>
-                <p className="mt-1 text-sm text-zinc-400">Active ingredients per sachet</p>
+                <p className="text-5xl font-bold text-orange-500">1</p>
+                <p className="mt-1 text-sm text-zinc-400">Daily ritual, before every meal</p>
               </div>
             </div>
           </Reveal>
-          <Reveal delay={320}>
+          <Reveal delay={480}>
             <p className="text-zinc-500 text-sm italic">Available in single-serve sachets and 30-serve tubs</p>
           </Reveal>
         </div>
@@ -381,14 +425,14 @@ function GutStory() {
         </Reveal>
         <div className="mt-20 grid lg:grid-cols-3 gap-10 text-left">
           {columns.map((col, i) => (
-            <Reveal key={col.title} delay={i * 100}>
+            <Reveal key={col.title} delay={i * 120}>
               <div className="w-10 h-10 rounded-full bg-orange-100 mb-4" />
               <h3 className="font-serif text-xl font-semibold text-foreground mb-3">{col.title}</h3>
               <p className="text-zinc-500 leading-relaxed">{col.body}</p>
             </Reveal>
           ))}
         </div>
-        <Reveal delay={200}>
+        <Reveal delay={360}>
           <p className="mt-16 font-serif text-2xl italic text-foreground">This is what it means to Flourish.</p>
         </Reveal>
       </div>
@@ -406,12 +450,18 @@ function FinalCTA() {
             <br />
             <span className="text-primary">Starting now.</span>
           </h2>
+        </Reveal>
+        <Reveal delay={120}>
           <p className="mt-8 text-lg text-background/75 leading-relaxed">
             Join the Flourish waitlist for early access, exclusive launch pricing, and updates from the founder.
           </p>
+        </Reveal>
+        <Reveal delay={240}>
           <div className="mt-12 flex justify-center">
             <WaitlistForm id="cta-email" variant="dark" />
           </div>
+        </Reveal>
+        <Reveal delay={360}>
           <div className="mt-8 flex items-center justify-center gap-3 text-sm text-background/65">
             <div className="flex text-primary">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -430,30 +480,34 @@ function Footer() {
   return (
     <footer className="bg-[oklch(0.18_0.015_60)] text-background/85">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16">
-        <div className="grid lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-4">
-            <p className="font-serif text-3xl font-semibold text-primary">Flourish</p>
-            <p className="mt-2 text-background/60 italic">Feel lighter. Every day.</p>
+        <Reveal>
+          <div className="grid lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-4">
+              <p className="font-serif text-3xl font-semibold text-primary">Flourish</p>
+              <p className="mt-2 text-background/60 italic">Feel lighter. Every day.</p>
+            </div>
+            <nav className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+              {navLinks.map((l) => (
+                <a key={l.label} href={l.href} className="hover:text-primary transition">
+                  {l.label}
+                </a>
+              ))}
+              <a href="/contact" className="hover:text-primary transition">Contact</a>
+            </nav>
           </div>
-          <nav className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
-            {navLinks.map((l) => (
-              <a key={l.label} href={l.href} className="hover:text-primary transition">
-                {l.label}
-              </a>
-            ))}
-            <a href="/contact" className="hover:text-primary transition">Contact</a>
-          </nav>
-        </div>
-        <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
-          <p>© 2025 Flourish. All rights reserved.</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <a href="#" className="hover:text-primary transition">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition">Terms</a>
-            <a href="/contact" className="hover:text-primary transition">Contact</a>
-            <a href="#" className="hover:text-primary transition">Instagram</a>
-            <a href="#" className="hover:text-primary transition">TikTok</a>
+        </Reveal>
+        <Reveal delay={120}>
+          <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
+            <p>© 2025 Flourish. All rights reserved.</p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              <a href="#" className="hover:text-primary transition">Privacy Policy</a>
+              <a href="#" className="hover:text-primary transition">Terms</a>
+              <a href="/contact" className="hover:text-primary transition">Contact</a>
+              <a href="#" className="hover:text-primary transition">Instagram</a>
+              <a href="#" className="hover:text-primary transition">TikTok</a>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </footer>
   );
