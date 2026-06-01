@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().email().max(254),
 });
 
 export const sendWaitlistEmail = createServerFn({ method: "POST" })

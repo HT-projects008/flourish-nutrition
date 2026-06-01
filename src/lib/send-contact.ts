@@ -3,9 +3,9 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 const schema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  message: z.string().min(1),
+  name: z.string().trim().min(1).max(100),
+  email: z.string().trim().email().max(254),
+  message: z.string().trim().min(1).max(5000),
 });
 
 const escHtml = (s: string) =>

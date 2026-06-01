@@ -3,8 +3,8 @@ import { z } from "zod";
 import { supabase } from "./supabase";
 
 const schema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  source: z.string().default("waitlist-page"),
+  email: z.string().trim().email({ message: "Please enter a valid email address." }).max(254),
+  source: z.enum(["homepage", "waitlist-page", "footer"]).default("waitlist-page"),
 });
 
 export type WaitlistResult =

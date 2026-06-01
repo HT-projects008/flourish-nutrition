@@ -4,7 +4,7 @@ import { submitWaitlist } from "../lib/submit-waitlist";
 interface Props {
   id?: string;
   variant?: "light" | "dark";
-  source?: string;
+  source?: "homepage" | "waitlist-page" | "footer";
 }
 
 export function WaitlistForm({ id, variant = "light", source = "homepage" }: Props) {
