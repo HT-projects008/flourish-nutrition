@@ -15,6 +15,7 @@ export const Route = createFileRoute("/journal")({
         content: "Science-backed reading on gut health, nutrition, and the ingredients behind the Flourish formula.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://flourish.com/journal" }],
   }),
   component: JournalPage,
 });
@@ -45,12 +46,12 @@ function JournalPage() {
 
 function JournalListing() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
-  const heroRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
-      if (heroRef.current) {
-        heroRef.current.style.backgroundPositionY = `calc(50% + ${window.scrollY * 0.5}px)`;
+      if (bgRef.current) {
+        bgRef.current.style.transform = `translateY(${window.scrollY * 0.25}px)`;
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -73,36 +74,38 @@ function JournalListing() {
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
       <Nav />
-      <main>
+      <main id="main-content">
         {/* Hero — full viewport height */}
-        <div
-          ref={heroRef}
-          className="relative min-h-screen overflow-hidden"
-          style={{
-            backgroundImage: `url('/assets/journal-hero.jpg'), ${HERO_FALLBACK}`,
-            backgroundSize: "cover",
-            backgroundPosition: "center 50%",
-          }}
-        >
+        <div className="relative min-h-screen overflow-hidden">
+          {/* Parallax bg layer — composited via transform, not backgroundPositionY */}
+          <div
+            ref={bgRef}
+            className="absolute inset-[-30%] z-0 will-change-transform"
+            style={{
+              backgroundImage: `url('/assets/journal-hero.jpg'), ${HERO_FALLBACK}`,
+              backgroundSize: "cover",
+              backgroundPosition: "center center",
+            }}
+          />
           {/* Grain texture overlay */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-[1]"
             style={{ backgroundImage: GRAIN_SVG, opacity: 0.08 }}
           />
           {/* Bottom fade overlay */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-[2]"
             style={{ background: "linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3) 100%)" }}
           />
           {/* Text */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div className="absolute inset-0 z-[3] flex flex-col items-center justify-center text-center px-6">
             <h1 className="font-serif text-5xl lg:text-6xl font-bold text-white leading-tight">
               How Flourish helps you...
             </h1>
             <p className="mt-3 text-white/80 text-sm">
               Explore the science behind every ingredient.
             </p>
-            <ChevronDown className="mt-6 size-6 text-white animate-bounce-slow" />
+            <ChevronDown className="mt-6 size-6 text-white animate-bounce-slow" aria-hidden="true" />
           </div>
         </div>
 
@@ -110,18 +113,20 @@ function JournalListing() {
         <section className="py-10 px-6 lg:px-10 text-center">
           <Reveal>
             <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest mb-6">
-              ● FLOURISH JOURNAL
+              Flourish Journal
             </p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
               Ingredients for a better life.
             </h2>
-            <p className="mt-6 text-lg text-zinc-500 leading-relaxed max-w-xl mx-auto">
+            <p className="mt-6 text-lg text-zinc-600 leading-relaxed max-w-xl mx-auto">
               Science-backed reading on gut health, nutrition, and the ingredients behind the Flourish formula.
             </p>
           </Reveal>
           <div
             className="mt-10 flex gap-2 overflow-x-auto pb-2 justify-start lg:justify-center"
             style={{ scrollbarWidth: "none" }}
+            role="group"
+            aria-label="Filter articles by category"
           >
             {CATEGORIES.map((cat) => {
               const count = countFor(cat);
@@ -130,14 +135,15 @@ function JournalListing() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
+                  aria-pressed={active}
                   className={`rounded-full px-5 py-2 text-sm cursor-pointer transition-colors whitespace-nowrap flex-shrink-0 ${
                     active
                       ? "bg-orange-500 text-white"
-                      : "border border-zinc-300 text-zinc-500 bg-transparent hover:border-orange-400"
+                      : "border border-zinc-300 text-zinc-600 bg-transparent hover:border-orange-400"
                   }`}
                 >
                   {cat}
-                  <span className={`ml-1.5 text-xs ${active ? "text-white/70" : "text-zinc-400"}`}>
+                  <span className={`ml-1.5 text-xs ${active ? "text-white/70" : "text-zinc-500"}`}>
                     ({count})
                   </span>
                 </button>
@@ -157,9 +163,10 @@ function JournalListing() {
                     params={{ slug: article.slug }}
                     className="bg-white rounded-2xl overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
                   >
-                    <div className="aspect-video w-full bg-zinc-100 flex items-center justify-center text-zinc-300 text-xs tracking-widest uppercase">
-                      Article Image
-                    </div>
+                    <div
+                      className="aspect-video w-full bg-gradient-to-br from-orange-100 to-orange-50"
+                      aria-hidden="true"
+                    />
                     <div className="p-6 flex flex-col flex-1">
                       <p className="text-orange-500 text-xs uppercase tracking-wider mb-2">
                         {article.category}
@@ -167,7 +174,7 @@ function JournalListing() {
                       <h3 className="font-serif font-bold text-lg leading-snug mb-3 text-zinc-900">
                         {article.title}
                       </h3>
-                      <p className="text-zinc-500 text-sm leading-relaxed mb-4 flex-1">
+                      <p className="text-zinc-600 text-sm leading-relaxed mb-4 flex-1">
                         {article.excerpt}
                       </p>
                       <p className="text-orange-500 text-sm font-medium">Read more →</p>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ShoppingBag } from "lucide-react";
 import { articles } from "../data/articles";
 
@@ -29,7 +29,6 @@ const TOPICS = [
 const LATEST_ARTICLES = articles.slice(0, 3);
 
 export default function Nav() {
-  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -40,7 +39,6 @@ export default function Nav() {
   const journalRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdowns on outside click
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (journalRef.current && !journalRef.current.contains(e.target as Node)) {
@@ -54,19 +52,18 @@ export default function Nav() {
     return () => document.removeEventListener("mousedown", onDown);
   }, []);
 
-  // Close dropdowns on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setJournalOpen(false);
         setCurrencyOpen(false);
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -74,24 +71,7 @@ export default function Nav() {
     }
   }, [mobileMenuOpen]);
 
-  const goHome = () => navigate({ to: "/" });
-  const goShop = () => {
-    setJournalOpen(false);
-    navigate({ to: "/" });
-    setTimeout(() => document.getElementById("flavours")?.scrollIntoView({ behavior: "smooth" }), 50);
-  };
-  const goWaitlist = () => {
-    setJournalOpen(false);
-    navigate({ to: "/" });
-    setTimeout(() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" }), 50);
-  };
-  const goJournal = () => {
-    setJournalOpen(false);
-    setMobileMenuOpen(false);
-    navigate({ to: "/journal" });
-  };
-
-  const navLinkClass = "text-sm text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer";
+  const navLinkClass = "text-sm text-zinc-700 hover:text-zinc-900 transition-colors";
 
   return (
     <>
@@ -99,8 +79,8 @@ export default function Nav() {
         <div className="relative h-full mx-auto max-w-7xl px-8 grid grid-cols-3 items-center">
 
           {/* LEFT — desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8 justify-self-start">
-            <button onClick={goShop} className={navLinkClass}>Shop</button>
+          <nav aria-label="Main" className="hidden lg:flex items-center gap-8 justify-self-start">
+            <a href="/#flavours" className={navLinkClass}>Shop</a>
 
             {/* Journal trigger */}
             <div ref={journalRef} className="relative">
@@ -117,7 +97,7 @@ export default function Nav() {
               </button>
             </div>
 
-            <button onClick={goWaitlist} className={navLinkClass}>About</button>
+            <a href="/#waitlist" className={navLinkClass}>About</a>
           </nav>
 
           {/* LEFT — mobile hamburger */}
@@ -132,30 +112,37 @@ export default function Nav() {
           </button>
 
           {/* CENTRE — wordmark */}
-          <button
-            onClick={goHome}
+          <Link
+            to="/"
             className="justify-self-center font-serif text-xl font-bold text-orange-500 tracking-tight"
           >
             Flourish
-          </button>
+          </Link>
 
           {/* RIGHT — desktop */}
           <div className="hidden lg:flex items-center gap-6 justify-self-end">
             <div ref={currencyRef} className="relative">
               <button
                 onClick={() => setCurrencyOpen((v) => !v)}
+                aria-expanded={currencyOpen}
+                aria-haspopup="listbox"
+                aria-label={`Change currency, currently ${currency.code}`}
                 className={navLinkClass}
               >
                 {currency.code}
               </button>
               {currencyOpen && (
                 <div
+                  role="listbox"
+                  aria-label="Currency"
                   className="absolute right-0 top-[calc(100%+8px)] w-36 bg-white rounded-xl border border-zinc-100 shadow-md py-2 z-40"
                   style={{ animation: "navDropIn 180ms ease-out" }}
                 >
                   {currencies.map((c) => (
                     <button
                       key={c.code}
+                      role="option"
+                      aria-selected={currency.code === c.code}
                       onClick={() => { setCurrency(c); setCurrencyOpen(false); }}
                       className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-zinc-50 transition-colors ${
                         currency.code === c.code ? "text-orange-500 font-medium" : "text-zinc-700"
@@ -168,16 +155,16 @@ export default function Nav() {
                 </div>
               )}
             </div>
-            <a href="#" className={navLinkClass}>Log in</a>
-            <a href="#" className={navLinkClass}>Bag [ 0 ]</a>
+            <span className={`${navLinkClass} opacity-40 cursor-default select-none`} aria-hidden="true">Log in</span>
+            <span className={`${navLinkClass} opacity-40 cursor-default select-none`} aria-hidden="true">Bag [ 0 ]</span>
           </div>
 
           {/* RIGHT — mobile bag */}
           <div className="lg:hidden ml-auto justify-self-end">
-            <a href="#" className="flex items-center gap-1 p-2 text-zinc-800">
+            <span className="flex items-center gap-1 p-2 text-zinc-400" aria-hidden="true">
               <ShoppingBag className="size-5" />
               <span className="text-sm font-medium">[ 0 ]</span>
-            </a>
+            </span>
           </div>
         </div>
       </header>
@@ -190,23 +177,25 @@ export default function Nav() {
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 -translate-y-1.5 pointer-events-none"
         }`}
+        aria-hidden={!journalOpen}
       >
         <div className="mx-auto max-w-7xl px-8 py-8 grid grid-cols-3 gap-12">
           {/* Column 1 — Featured */}
           <div className="flex flex-col justify-between">
             <div>
               <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Journal</p>
-              <button
-                onClick={goJournal}
-                className="font-serif font-bold text-2xl text-zinc-900 hover:text-orange-500 transition-colors duration-150 text-left leading-snug"
+              <Link
+                to="/journal"
+                onClick={() => setJournalOpen(false)}
+                className="font-serif font-bold text-2xl text-zinc-900 hover:text-orange-500 transition-colors duration-150 text-left leading-snug block"
               >
                 All Articles →
-              </button>
-              <p className="text-zinc-400 text-sm mt-2 leading-relaxed">
+              </Link>
+              <p className="text-zinc-600 text-sm mt-2 leading-relaxed">
                 Science-backed reading on gut health and nutrition.
               </p>
             </div>
-            <p className="text-zinc-300 text-xs mt-6">{articles.length} articles</p>
+            <p className="text-zinc-500 text-xs mt-6">{articles.length} articles</p>
           </div>
 
           {/* Column 2 — Topics */}
@@ -214,13 +203,14 @@ export default function Nav() {
             <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Browse by Topic</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
               {TOPICS.map((topic) => (
-                <button
+                <Link
                   key={topic}
-                  onClick={goJournal}
+                  to="/journal"
+                  onClick={() => setJournalOpen(false)}
                   className="py-1 text-sm text-zinc-700 hover:text-orange-500 transition-colors duration-150 text-left"
                 >
                   {topic}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -230,16 +220,18 @@ export default function Nav() {
             <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Latest</p>
             <div className="space-y-1">
               {LATEST_ARTICLES.map((article) => (
-                <button
+                <Link
                   key={article.slug}
-                  onClick={goJournal}
+                  to="/journal/$slug"
+                  params={{ slug: article.slug }}
+                  onClick={() => setJournalOpen(false)}
                   className="group block py-1.5 text-left w-full"
                 >
                   <span className="text-sm text-zinc-700 group-hover:text-orange-500 transition-colors duration-150 leading-snug">
                     {article.title}
                   </span>
-                  <span className="block text-[11px] text-zinc-400 mt-0.5">{article.category}</span>
-                </button>
+                  <span className="block text-[11px] text-zinc-500 mt-0.5">{article.category}</span>
+                </Link>
               ))}
             </div>
           </div>
@@ -252,11 +244,15 @@ export default function Nav() {
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
       />
 
       {/* Mobile menu — left-slide panel */}
       <div
         id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
         className={`fixed top-0 left-0 h-full z-[70] w-72 max-w-[80vw] bg-white shadow-2xl flex flex-col will-change-transform transition-transform duration-[300ms] lg:hidden ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -271,25 +267,28 @@ export default function Nav() {
         </button>
 
         <div className="flex flex-col flex-1 pt-8 pb-6 px-6 overflow-y-auto">
-          <button
-            onClick={() => { setMobileMenuOpen(false); goHome(); }}
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
             className="font-serif text-lg font-bold text-orange-500 tracking-tight mb-8 text-left"
           >
             Flourish
-          </button>
+          </Link>
 
-          <nav className="space-y-1">
-            <button
-              onClick={() => { setMobileMenuOpen(false); goShop(); }}
+          <nav aria-label="Mobile navigation" className="space-y-1">
+            <a
+              href="/#flavours"
+              onClick={() => setMobileMenuOpen(false)}
               className="block w-full text-left text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors py-2"
             >
               Shop
-            </button>
+            </a>
 
             {/* Journal accordion */}
             <div>
               <button
                 onClick={() => setMobileJournalOpen((v) => !v)}
+                aria-expanded={mobileJournalOpen}
                 className="flex w-full items-center justify-between text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors py-2"
               >
                 Journal
@@ -301,31 +300,34 @@ export default function Nav() {
                 className={`overflow-hidden transition-[max-height] duration-200 ease-out ${mobileJournalOpen ? "max-h-96" : "max-h-0"}`}
               >
                 <div className="pl-4 space-y-3 pt-2 pb-3">
-                  <button
-                    onClick={goJournal}
+                  <Link
+                    to="/journal"
+                    onClick={() => setMobileMenuOpen(false)}
                     className="block text-sm text-zinc-600 hover:text-orange-500 transition-colors"
                   >
                     All Articles
-                  </button>
+                  </Link>
                   {TOPICS.map((topic) => (
-                    <button
+                    <Link
                       key={topic}
-                      onClick={goJournal}
+                      to="/journal"
+                      onClick={() => setMobileMenuOpen(false)}
                       className="block text-sm text-zinc-600 hover:text-orange-500 transition-colors"
                     >
                       {topic}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
             </div>
 
-            <button
-              onClick={() => { setMobileMenuOpen(false); goWaitlist(); }}
+            <a
+              href="/#waitlist"
+              onClick={() => setMobileMenuOpen(false)}
               className="block w-full text-left text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors py-2"
             >
               About
-            </button>
+            </a>
           </nav>
 
           <div className="border-t border-zinc-100 my-6" />
@@ -364,17 +366,8 @@ export default function Nav() {
             </div>
           </div>
 
-          <div className="mt-4 space-y-3">
-            <a href="#" className="block text-zinc-500 text-sm hover:text-zinc-900 transition-colors">
-              Log in
-            </a>
-            <a href="#" className="block text-zinc-500 text-sm hover:text-zinc-900 transition-colors">
-              Bag [ 0 ]
-            </a>
-          </div>
-
           <div className="mt-auto pt-6">
-            <p className="text-zinc-300 text-xs">© 2025 Flourish. All rights reserved.</p>
+            <p className="text-zinc-400 text-xs">© {new Date().getFullYear()} Flourish. All rights reserved.</p>
           </div>
         </div>
       </div>

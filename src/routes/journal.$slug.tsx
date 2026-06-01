@@ -6,14 +6,26 @@ import Footer from "../components/Footer";
 export const Route = createFileRoute("/journal/$slug")({
   head: ({ params }) => {
     const article = articles.find((a) => a.slug === params.slug);
-    return {
-      meta: article
-        ? [
+    return article
+      ? {
+          meta: [
             { title: `${article.title} — Flourish Journal` },
             { name: "description", content: article.excerpt },
-          ]
-        : [{ title: "Article not found — Flourish Journal" }],
-    };
+            { name: "robots", content: "noindex, follow" },
+          ],
+          links: [
+            {
+              rel: "canonical",
+              href: `https://flourish.com/journal/${params.slug}`,
+            },
+          ],
+        }
+      : {
+          meta: [
+            { title: "Article not found — Flourish Journal" },
+            { name: "robots", content: "noindex" },
+          ],
+        };
   },
   component: ArticlePage,
 });
@@ -26,7 +38,7 @@ function ArticlePage() {
     return (
       <div className="min-h-screen bg-[var(--color-cream)]">
         <Nav />
-        <main className="mx-auto max-w-3xl px-6 lg:px-10 py-32 text-center">
+        <main id="main-content" className="mx-auto max-w-3xl px-6 lg:px-10 py-32 text-center">
           <h1 className="font-serif text-4xl font-bold text-foreground">Article not found</h1>
           <Link to="/journal" className="mt-8 inline-block text-primary hover:underline">
             ← Back to Journal
@@ -40,11 +52,27 @@ function ArticlePage() {
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
       <Nav />
-      <main className="mx-auto max-w-3xl px-6 lg:px-10 py-32">
-        <Link to="/journal" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-          ← Journal
-        </Link>
-        <p className="mt-8 text-xs font-semibold tracking-[0.2em] uppercase text-primary">
+      <main id="main-content" className="mx-auto max-w-3xl px-6 lg:px-10 py-32">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+            <li>
+              <Link to="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">·</li>
+            <li>
+              <Link to="/journal" className="hover:text-primary transition-colors">
+                Journal
+              </Link>
+            </li>
+            <li aria-hidden="true">·</li>
+            <li className="text-foreground truncate max-w-[200px]" aria-current="page">
+              {article.title}
+            </li>
+          </ol>
+        </nav>
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary">
           {article.category}
         </p>
         <h1 className="mt-4 font-serif text-4xl sm:text-5xl font-bold text-foreground leading-[1.1]">

@@ -1,10 +1,13 @@
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 
 const footerLinks = [
   { label: "Shop", href: "/#flavours" },
   { label: "Journal", href: "/journal" },
-  { label: "About", href: "#" },
+  { label: "About", href: "/#waitlist" },
 ];
+
+const year = new Date().getFullYear();
 
 export default function Footer() {
   return (
@@ -13,10 +16,12 @@ export default function Footer() {
         <Reveal>
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-4">
-              <a href="/" className="font-serif text-3xl font-semibold text-primary">Flourish</a>
+              <Link to="/" className="font-serif text-3xl font-semibold text-primary">
+                Flourish
+              </Link>
               <p className="mt-2 text-background/60 italic">Feel lighter. Every day.</p>
             </div>
-            <nav className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+            <nav aria-label="Footer links" className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
               {footerLinks.map((l) => (
                 <a key={l.label} href={l.href} className="hover:text-primary transition">
                   {l.label}
@@ -28,13 +33,13 @@ export default function Footer() {
         </Reveal>
         <Reveal delay={120}>
           <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
-            <p>© 2025 Flourish. All rights reserved.</p>
+            <p>© {year} Flourish. All rights reserved.</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
-              <a href="#" className="hover:text-primary transition">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition">Terms</a>
+              <span className="opacity-50 cursor-default">Privacy Policy</span>
+              <span className="opacity-50 cursor-default">Terms</span>
               <a href="/contact" className="hover:text-primary transition">Contact</a>
-              <a href="#" className="hover:text-primary transition">Instagram</a>
-              <a href="#" className="hover:text-primary transition">TikTok</a>
+              <span className="opacity-50 cursor-default">Instagram</span>
+              <span className="opacity-50 cursor-default">TikTok</span>
             </div>
           </div>
         </Reveal>

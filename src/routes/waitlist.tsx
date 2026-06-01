@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { submitWaitlist } from "../lib/submit-waitlist";
@@ -13,6 +13,7 @@ export const Route = createFileRoute("/waitlist")({
           "Be the first to try Flourish. Join the waitlist for early access and 20% off your first order.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://flourish.com/waitlist" }],
   }),
   component: WaitlistPage,
 });
@@ -20,7 +21,6 @@ export const Route = createFileRoute("/waitlist")({
 const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
 function WaitlistPage() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -50,23 +50,15 @@ function WaitlistPage() {
           background: "linear-gradient(135deg, #D4744A 0%, #E8B84B 50%, #C4445A 100%)",
         }}
       >
-        {/* Grain overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ backgroundImage: GRAIN_SVG, opacity: 0.08 }}
         />
-
-        {/* Wordmark */}
         <div className="relative z-10 p-8">
-          <button
-            onClick={() => navigate({ to: "/" })}
-            className="font-serif text-2xl font-bold text-white tracking-tight"
-          >
+          <Link to="/" className="font-serif text-2xl font-bold text-white tracking-tight">
             Flourish
-          </button>
+          </Link>
         </div>
-
-        {/* Centre content */}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-12">
           <div className="max-w-xs">
             <h2 className="font-serif text-5xl font-bold text-white leading-tight">
@@ -93,18 +85,15 @@ function WaitlistPage() {
 
       {/* RIGHT — form */}
       <div className="relative flex flex-col min-h-screen bg-white">
-        {/* Mobile top bar */}
         <div className="lg:hidden h-2 w-full bg-orange-500 flex-shrink-0" />
 
-        {/* Form area */}
-        <div className="flex-1 flex flex-col items-center justify-center px-8 lg:px-16 py-16">
-          {/* Mobile wordmark */}
-          <button
-            onClick={() => navigate({ to: "/" })}
+        <main id="main-content" className="flex-1 flex flex-col items-center justify-center px-8 lg:px-16 py-16">
+          <Link
+            to="/"
             className="lg:hidden font-serif text-xl font-bold text-orange-500 mb-8 self-start"
           >
             Flourish
-          </button>
+          </Link>
 
           <div className="w-full max-w-sm">
             {status === "success" ? (
@@ -113,32 +102,33 @@ function WaitlistPage() {
                 <h1 className="font-serif text-3xl font-bold text-zinc-900">
                   You're on the list.
                 </h1>
-                <p className="mt-2 text-zinc-500 text-sm leading-relaxed">
+                <p className="mt-2 text-zinc-600 text-sm leading-relaxed">
                   We'll be in touch as soon as Flourish launches. Check your inbox for a
                   confirmation.
                 </p>
-                <button
-                  onClick={() => navigate({ to: "/" })}
-                  className="mt-8 text-orange-500 text-sm hover:underline"
+                <Link
+                  to="/"
+                  className="mt-8 inline-block text-orange-500 text-sm hover:underline"
                 >
                   ← Back to Flourish
-                </button>
+                </Link>
               </div>
             ) : (
               <>
-                <p className="text-xs font-semibold tracking-widest uppercase text-orange-500 mb-3">
-                  ● Early Access
-                </p>
                 <h1 className="font-serif text-3xl lg:text-4xl font-bold text-zinc-900 mb-2">
                   Be first to Flourish.
                 </h1>
-                <p className="text-zinc-500 text-sm mb-8 leading-relaxed">
+                <p className="text-zinc-600 text-sm mb-8 leading-relaxed">
                   We're putting the finishing touches on our formula. Join the waitlist and get 20%
                   off when we launch.
                 </p>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-0">
+                  <label htmlFor="waitlist-page-email" className="sr-only">
+                    Email address
+                  </label>
                   <input
+                    id="waitlist-page-email"
                     type="email"
                     required
                     value={email}
@@ -165,22 +155,18 @@ function WaitlistPage() {
                   </p>
                 )}
 
-                <p className="mt-4 text-zinc-400 text-xs text-center">
+                <p className="mt-4 text-zinc-500 text-xs text-center">
                   No spam. Just your early access notification. Unsubscribe anytime.
                 </p>
               </>
             )}
           </div>
-        </div>
+        </main>
 
-        {/* Back link */}
         <div className="flex justify-center pb-6 flex-shrink-0">
-          <button
-            onClick={() => navigate({ to: "/" })}
-            className="text-zinc-400 text-xs hover:text-zinc-600 transition-colors"
-          >
+          <Link to="/" className="text-zinc-500 text-xs hover:text-zinc-600 transition-colors">
             ← Back to Flourish
-          </button>
+          </Link>
         </div>
       </div>
 

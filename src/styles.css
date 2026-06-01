@@ -74,6 +74,40 @@
   html { scroll-behavior: smooth; }
 }
 
+/* ─── Focus styles ─────────────────────────────────────────────────────── */
+:focus { outline: none; }
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Skip link ────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus,
+.focus\:not-sr-only:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
 /* ─── Reveal animation ─────────────────────────────────────────────────────
    Content is visible by default (opacity: 1) so SSR, hidden tabs, and
    headless renderers always show content. The animation enhances the
@@ -83,11 +117,8 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.reveal {
-  will-change: transform, opacity;
-}
-
 .reveal.in-view {
+  will-change: transform, opacity;
   animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -121,5 +152,15 @@
   }
   .animate-bounce-slow {
     animation: none;
+  }
+  /* Hero words are hidden by GSAP (yPercent: 110) — ensure they stay visible
+     when GSAP animations are skipped due to prefers-reduced-motion. */
+  .hero-word {
+    transform: none !important;
+  }
+  /* Flavour cards are hidden by gsap.set — keep them visible. */
+  [data-flavour-card] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

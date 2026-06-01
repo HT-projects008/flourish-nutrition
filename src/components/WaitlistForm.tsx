@@ -8,6 +8,7 @@ interface Props {
 }
 
 export function WaitlistForm({ id, variant = "light", source = "homepage" }: Props) {
+  const inputId = id ?? "waitlist-email";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -46,8 +47,9 @@ export function WaitlistForm({ id, variant = "light", source = "homepage" }: Pro
   return (
     <div className="flex flex-col gap-3 w-full max-w-lg">
       <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-3 w-full">
+        <label htmlFor={inputId} className="sr-only">Email address</label>
         <input
-          id={id}
+          id={inputId}
           type="email"
           required
           value={email}

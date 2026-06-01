@@ -5,8 +5,13 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Flourish" },
-      { name: "description", content: "Get in touch with the Flourish team." },
+      {
+        name: "description",
+        content:
+          "Questions about the Flourish formula, ingredients, or your waitlist spot? We'd love to hear from you. Message us and we'll reply within 2 business days.",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://flourish.com/contact" }],
   }),
   component: ContactPage,
 });
@@ -14,7 +19,7 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-3xl w-full px-6 lg:px-10 py-32">
+      <main id="main-content" className="mx-auto max-w-3xl w-full px-6 lg:px-10 py-32">
         <a href="/" className="font-serif text-2xl font-semibold text-primary tracking-tight mb-16 block">
           Flourish
         </a>
@@ -28,7 +33,7 @@ function ContactPage() {
           Questions about the formula, the waitlist, or anything else? Drop us a message and we'll get back to you shortly.
         </p>
         <ContactForm />
-      </div>
+      </main>
     </div>
   );
 }

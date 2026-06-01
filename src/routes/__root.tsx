@@ -10,6 +10,24 @@ import {
 
 import appCss from "../styles.css?url";
 
+const SITE_URL = "https://flourish.com";
+const OG_IMAGE =
+  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8a61770-ced5-4ad9-9971-6d9dec347f5b/id-preview-9bbd1dee--3d807b8d-4e92-433c-b421-5f28cdb489c6.lovable.app-1780079048218.png";
+
+const ORG_SCHEMA = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Flourish",
+  url: SITE_URL,
+  description:
+    "Premium gut health drink mix with 7 clinically-studied ingredients to reduce bloating, support digestion, and help you feel your best.",
+  logo: `${SITE_URL}/favicon.ico`,
+  sameAs: [
+    "https://instagram.com/flourishnutrition",
+    "https://tiktok.com/@flourishnutrition",
+  ],
+});
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -33,7 +51,6 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
   const router = useRouter();
 
   return (
@@ -73,21 +90,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Flourish — Feel lighter. Every day." },
-      { name: "description", content: "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best." },
+      {
+        name: "description",
+        content:
+          "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best.",
+      },
       { property: "og:title", content: "Flourish — Feel lighter. Every day." },
-      { property: "og:description", content: "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best." },
+      {
+        property: "og:description",
+        content:
+          "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:site_name", content: "Flourish" },
+      { property: "og:image", content: OG_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Flourish — Feel lighter. Every day." },
-      { name: "twitter:description", content: "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8a61770-ced5-4ad9-9971-6d9dec347f5b/id-preview-9bbd1dee--3d807b8d-4e92-433c-b421-5f28cdb489c6.lovable.app-1780079048218.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8a61770-ced5-4ad9-9971-6d9dec347f5b/id-preview-9bbd1dee--3d807b8d-4e92-433c-b421-5f28cdb489c6.lovable.app-1780079048218.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Flourish is a premium gut health drink designed to aid de-bloating and fat-loss, support digestion, and help you look and feel your best.",
+      },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=optional",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -101,8 +135,19 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* eslint-disable-next-line react/no-danger */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: ORG_SCHEMA }}
+        />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"
+        >
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>
