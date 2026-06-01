@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Star, Menu, X } from "lucide-react";
+import { Star } from "lucide-react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,97 +44,18 @@ const marqueeItems = [
   "Made in the UK",
 ];
 
-const navLinks = [
-  { label: "Shop", href: "#" },
-  { label: "Flavours", href: "#flavours" },
-  { label: "About", href: "#" },
-];
-
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-md border-b border-border/60"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 h-18 py-4 flex items-center justify-between">
-        <a href="#top" className="font-serif text-2xl font-semibold text-primary tracking-tight">
-          Flourish
-        </a>
-        <nav className="hidden lg:flex items-center gap-10">
-          {navLinks.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <div className="flex items-center gap-3">
-          <a
-            href="#waitlist"
-            className="hidden sm:inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
-          >
-            Join Waitlist
-          </a>
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="lg:hidden p-2 -mr-2 text-foreground"
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </div>
-      {open && (
-        <div className="lg:hidden bg-white border-t border-border px-6 py-6 flex flex-col gap-5">
-          {navLinks.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="text-base font-medium text-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
-          <a
-            href="#waitlist"
-            onClick={() => setOpen(false)}
-            className="sm:hidden inline-flex justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-          >
-            Join Waitlist
-          </a>
-        </div>
-      )}
-    </header>
-  );
-}
-
 function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
+      className="relative min-h-[85vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-screen">
-        <div className="lg:col-span-7 pt-32 lg:pt-48 pl-0 lg:pl-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[85vh]">
+        <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-6">
               <span className="size-1.5 rounded-full bg-primary" />
               Premium gut health, daily
             </span>
@@ -142,10 +64,10 @@ function Hero() {
               <br />
               <span className="text-primary">Every day.</span>
             </h1>
-            <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
+            <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
               The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row justify-start gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row justify-start gap-3">
               <a
                 href="#waitlist"
                 className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
@@ -153,13 +75,13 @@ function Hero() {
                 Join the Waitlist
               </a>
               <a
-                href="#science"
+                href="#flavours"
                 className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
               >
-                See the Science
+                See the Flavours
               </a>
             </div>
-            <div className="mt-8 flex items-center justify-start gap-3 text-sm text-muted-foreground">
+            <div className="mt-5 flex items-center justify-start gap-3 text-sm text-muted-foreground">
               <div className="flex text-primary">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-current" />
@@ -468,43 +390,6 @@ function FinalCTA() {
         </Reveal>
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="bg-[oklch(0.18_0.015_60)] text-background/85">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16">
-        <Reveal>
-          <div className="grid lg:grid-cols-12 gap-10 items-start">
-            <div className="lg:col-span-4">
-              <p className="font-serif text-3xl font-semibold text-primary">Flourish</p>
-              <p className="mt-2 text-background/60 italic">Feel lighter. Every day.</p>
-            </div>
-            <nav className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
-              {navLinks.map((l) => (
-                <a key={l.label} href={l.href} className="hover:text-primary transition">
-                  {l.label}
-                </a>
-              ))}
-              <a href="/contact" className="hover:text-primary transition">Contact</a>
-            </nav>
-          </div>
-        </Reveal>
-        <Reveal delay={120}>
-          <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-background/55">
-            <p>© 2025 Flourish. All rights reserved.</p>
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
-              <a href="#" className="hover:text-primary transition">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition">Terms</a>
-              <a href="/contact" className="hover:text-primary transition">Contact</a>
-              <a href="#" className="hover:text-primary transition">Instagram</a>
-              <a href="#" className="hover:text-primary transition">TikTok</a>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </footer>
   );
 }
 
