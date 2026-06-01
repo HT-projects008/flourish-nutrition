@@ -1,19 +1,29 @@
 import { useState, type FormEvent } from "react";
-import { sendWaitlistEmail } from "../lib/send-waitlist";
+import { submitWaitlist } from "../lib/submit-waitlist";
 
-export function WaitlistForm({ id, variant = "light" }: { id?: string; variant?: "light" | "dark" }) {
+interface Props {
+  id?: string;
+  variant?: "light" | "dark";
+  source?: string;
+}
+
+export function WaitlistForm({ id, variant = "light", source = "homepage" }: Props) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isDuplicate, setIsDuplicate] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!email) return;
     setStatus("loading");
-    try {
-      await sendWaitlistEmail({ data: { email } });
+    const result = await submitWaitlist({ data: { email, source } });
+    if (result.success) {
       setStatus("success");
-    } catch {
+    } else {
       setStatus("error");
+      setIsDuplicate(result.code === "DUPLICATE");
+      setErrorMsg(result.error);
     }
   }
 
@@ -63,8 +73,8 @@ export function WaitlistForm({ id, variant = "light" }: { id?: string; variant?:
         </button>
       </form>
       {status === "error" && (
-        <p className={`text-sm text-center ${dark ? "text-red-400" : "text-red-600"}`}>
-          Something went wrong — please try again.
+        <p className={`text-sm text-center ${isDuplicate ? (dark ? "text-orange-300" : "text-orange-500") : (dark ? "text-red-400" : "text-red-600")}`}>
+          {errorMsg}
         </p>
       )}
     </div>
