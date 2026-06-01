@@ -306,13 +306,12 @@ function SachetShowcase() {
     <section id="sachet" className="py-28 lg:py-40 bg-[#1a1a1a]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <Reveal>
-          <div className="min-h-[500px] rounded-2xl border border-orange-500/20 bg-orange-500/5 flex flex-col items-center justify-center gap-6 p-8">
-            <div className="w-28 h-48 rounded-2xl bg-gradient-to-b from-[#D4744A] to-[#C43C20] shadow-2xl flex flex-col items-center justify-center gap-3 border border-white/10">
-              <span className="font-serif text-white text-xl font-bold tracking-tight">Flourish</span>
-              <span className="h-px w-8 bg-white/30" />
-              <span className="text-white/70 text-[10px] tracking-[0.2em] uppercase font-medium">8g sachet</span>
-            </div>
-            <p className="text-zinc-500 text-xs tracking-widest uppercase">Packaging in production</p>
+          <div className="min-h-[500px] rounded-2xl overflow-hidden">
+            <img
+              src="/assets/sachet-rip.gif"
+              alt="Flourish sachet opening"
+              className="w-full h-full object-contain rounded-2xl"
+            />
           </div>
         </Reveal>
         <div className="flex flex-col gap-8">
