@@ -20,7 +20,7 @@ const ORG_SCHEMA = JSON.stringify({
   name: "Flourish",
   url: SITE_URL,
   description:
-    "Premium gut health drink mix with 7 clinically-studied ingredients to reduce bloating, support digestion, and help you feel your best.",
+    "Premium gut health drink mix with 8 clinically-studied ingredients to reduce bloating, support digestion, and help you feel your best.",
   logo: `${SITE_URL}/favicon.ico`,
   sameAs: [
     "https://instagram.com/flourishnutrition",

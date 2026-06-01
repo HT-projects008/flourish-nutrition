@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Flourish is a premium gut health drink mix with 7 clinically-studied ingredients designed to reduce bloating, support digestion and help you feel your best.",
+          "Flourish is a premium gut health drink mix with 8 clinically-studied ingredients designed to reduce bloating, support digestion and help you feel your best.",
       },
       { property: "og:title", content: "Flourish — Feel lighter. Every day." },
       {
@@ -112,7 +112,7 @@ function Hero() {
               </a>
             </div>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-              {["7 clinically-studied ingredients", "Made in the UK", "500+ on the waitlist"].map((item) => (
+              {["8 clinically-studied ingredients", "Made in the UK", "500+ on the waitlist"].map((item) => (
                 <span key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className="size-1 rounded-full bg-primary/60 flex-shrink-0" aria-hidden="true" />
                   {item}
@@ -172,7 +172,7 @@ function ProductFeatures() {
             Whole body health starts in the gut.
           </h2>
           <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-            Seven clinically-studied ingredients. One precise ratio. Taken before every meal.
+            Eight clinically-studied ingredients. One precise ratio. Taken before every meal.
           </p>
         </Reveal>
         <div className="mt-20 grid md:grid-cols-3 gap-6 lg:gap-8">
@@ -383,7 +383,7 @@ function GutStory() {
             Your body is waiting to Flourish.
           </h2>
           <p className="mt-6 text-xl text-zinc-600 leading-relaxed max-w-2xl mx-auto">
-            Inside every serve of Flourish, seven ingredients work together to transform how your gut feels — and how your whole body thrives.
+            Inside every serve of Flourish, eight ingredients work together to transform how your gut feels — and how your whole body thrives.
           </p>
         </Reveal>
         <div className="mt-20 grid lg:grid-cols-3 gap-10 text-left">
