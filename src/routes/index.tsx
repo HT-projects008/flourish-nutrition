@@ -4,6 +4,7 @@ import { Star, Menu, X } from "lucide-react";
 import heroDrink from "../assets/hero-flourish.jpg";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
+import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -167,7 +168,8 @@ function Hero() {
       className="relative min-h-screen pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[calc(100vh-9rem)]">
+      <MicrobiomeCanvas />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[calc(100vh-9rem)]">
         <div className="lg:col-span-7 order-2 lg:order-1">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
