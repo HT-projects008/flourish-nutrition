@@ -63,15 +63,15 @@ function makeParticle(w: number, h: number): Particle {
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     rotation: Math.random() * Math.PI * 2,
     rotationSpeed: Math.random() * 0.008 - 0.004,
-    baseRadius: 4 + Math.random() * 8,
+    baseRadius: 10 + Math.random() * 18,
     pulseSpeed: 0.008 + Math.random() * 0.012,
     pulseOffset: Math.random() * Math.PI * 2,
     hasRing: Math.random() < 0.4,
-    bw: 12 + Math.random() * 16,
-    bh: 5 + Math.random() * 4,
+    bw: 28 + Math.random() * 27,
+    bh: 10 + Math.random() * 8,
     wobbleOffset: Math.random() * Math.PI * 2,
-    span: 14 + Math.random() * 16,
-    strokeW: 1.5 + Math.random() * 1.5,
+    span: 30 + Math.random() * 30,
+    strokeW: 3 + Math.random() * 3,
     curveS: Math.random() < 0.5,
   };
 }
@@ -79,14 +79,14 @@ function makeParticle(w: number, h: number): Particle {
 function drawParticle(ctx: CanvasRenderingContext2D, p: Particle, fc: number) {
   const [r, g, b] = p.color;
   const ls = p.layer === 1 ? 0.5 : p.layer === 2 ? 0.8 : 1;
-  const lo = p.layer === 1 ? 0.4 : p.layer === 2 ? 0.7 : 1;
+  const lo = p.layer === 1 ? 0.6 : p.layer === 2 ? 0.85 : 1;
   const a = (v: number) => +(v * lo).toFixed(3);
 
   if (p.type === "cocci") {
     const rad =
       (p.baseRadius + Math.sin(fc * p.pulseSpeed + p.pulseOffset) * 2) * ls;
     const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rad);
-    grad.addColorStop(0, `rgba(${r},${g},${b},${a(0.8)})`);
+    grad.addColorStop(0, `rgba(${r},${g},${b},${a(1.0)})`);
     grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
     ctx.beginPath();
     ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
@@ -95,8 +95,8 @@ function drawParticle(ctx: CanvasRenderingContext2D, p: Particle, fc: number) {
     if (p.hasRing) {
       ctx.beginPath();
       ctx.arc(p.x, p.y, rad + 4 * ls, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(${r},${g},${b},${a(0.08)})`;
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = `rgba(${r},${g},${b},${a(0.20)})`;
+      ctx.lineWidth = 1.5;
       ctx.stroke();
     }
   } else if (p.type === "bacillus") {
@@ -108,8 +108,8 @@ function drawParticle(ctx: CanvasRenderingContext2D, p: Particle, fc: number) {
     ctx.translate(p.x, p.y);
     ctx.rotate(rot);
     const grad = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
-    grad.addColorStop(0, `rgba(${r},${g},${b},${a(0.6)})`);
-    grad.addColorStop(1, `rgba(${r},${g},${b},${a(0.2)})`);
+    grad.addColorStop(0, `rgba(${r},${g},${b},${a(0.85)})`);
+    grad.addColorStop(1, `rgba(${r},${g},${b},${a(0.45)})`);
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.moveTo(-w / 2 + cr, -cr);
@@ -133,7 +133,7 @@ function drawParticle(ctx: CanvasRenderingContext2D, p: Particle, fc: number) {
       ctx.moveTo(-span / 2, 0);
       ctx.quadraticCurveTo(0, -span / 3, span / 2, 0);
     }
-    ctx.strokeStyle = `rgba(${r},${g},${b},${a(0.5)})`;
+    ctx.strokeStyle = `rgba(${r},${g},${b},${a(0.75)})`;
     ctx.lineWidth = p.strokeW * ls;
     ctx.lineCap = "round";
     ctx.stroke();
@@ -160,7 +160,7 @@ export function MicrobiomeCanvas() {
       canvas.width = section.offsetWidth;
       canvas.height = section.offsetHeight;
       const mobile = window.innerWidth < 768;
-      particlesRef.current = Array.from({ length: mobile ? 35 : 70 }, () =>
+      particlesRef.current = Array.from({ length: mobile ? 50 : 90 }, () =>
         makeParticle(canvas.width, canvas.height)
       );
     };

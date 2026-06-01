@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Star, Menu, X } from "lucide-react";
-import heroDrink from "../assets/hero-flourish.jpg";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
@@ -169,55 +168,41 @@ function Hero() {
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[calc(100vh-9rem)]">
-        <div className="lg:col-span-7 order-2 lg:order-1">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
-              <span className="size-1.5 rounded-full bg-primary" />
-              Premium gut health, daily
-            </span>
-            <h1 className="font-serif text-[clamp(3.5rem,10vw,9rem)] font-bold text-foreground leading-[1.1] tracking-[-0.03em]">
-              Feel lighter.
-              <br />
-              <span className="text-primary">Every day.</span>
-            </h1>
-            <p className="mt-8 text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed">
-              The daily gut health ritual that reduces bloating, supports digestion, and helps you feel your best.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-3">
-              <a
-                href="#waitlist"
-                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
-              >
-                Join the Waitlist
-              </a>
-              <a
-                href="#science"
-                className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
-              >
-                See the Science
-              </a>
+      <div className="relative z-10 mx-auto max-w-3xl px-6 lg:px-10 text-center flex flex-col items-center justify-center min-h-[calc(100vh-9rem)]">
+        <Reveal>
+          <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-8">
+            <span className="size-1.5 rounded-full bg-primary" />
+            Premium gut health, daily
+          </span>
+          <h1 className="font-serif text-[clamp(3.5rem,10vw,9rem)] font-bold text-foreground leading-[1.1] tracking-[-0.03em]">
+            Feel lighter.
+            <br />
+            <span className="text-primary">Every day.</span>
+          </h1>
+          <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed">
+            The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-3">
+            <a
+              href="#waitlist"
+              className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 transition"
+            >
+              Join the Waitlist
+            </a>
+            <a
+              href="#science"
+              className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 transition"
+            >
+              See the Science
+            </a>
+          </div>
+          <div className="mt-8 flex items-center justify-center gap-3 text-sm text-muted-foreground">
+            <div className="flex text-primary">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="size-4 fill-current" />
+              ))}
             </div>
-            <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground">
-              <div className="flex text-primary">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
-              </div>
-              <span>500+ people already waiting · Early access gets 20% off</span>
-            </div>
-          </Reveal>
-        </div>
-        <Reveal delay={150} className="lg:col-span-5 order-1 lg:order-2">
-          <div className="relative">
-            <div className="absolute -inset-8 bg-gradient-to-tr from-primary/20 via-primary/5 to-transparent rounded-[3rem] blur-3xl" />
-            <img
-              src={heroDrink}
-              alt="A glass of Flourish gut health drink with lemon and fresh ginger"
-              width={1024}
-              height={1280}
-              className="relative w-full rounded-3xl object-cover shadow-2xl ring-1 ring-black/5"
-            />
+            <span>500+ people already waiting · Early access gets 20% off</span>
           </div>
         </Reveal>
       </div>
