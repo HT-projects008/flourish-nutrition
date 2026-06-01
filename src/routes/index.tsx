@@ -25,49 +25,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const ingredients = [
-  {
-    name: "Apple cider vinegar",
-    benefit: "Supports digestion and appetite control before meals",
-    synergy: "Primes your digestive system before the other actives go to work",
-  },
-  {
-    name: "Lemon juice",
-    benefit: "Stimulates digestive enzymes and brightens the formula naturally",
-    synergy: "Stimulates digestive enzymes that help every other ingredient absorb more effectively",
-  },
-  {
-    name: "Turmeric",
-    benefit: "Powerful anti-inflammatory, paired with black pepper for bioavailability",
-    synergy: "Paired specifically with black pepper — inactive without it",
-  },
-  {
-    name: "Black pepper",
-    benefit: "Increases curcumin absorption from turmeric by up to 2,000%",
-    synergy: "Unlocks turmeric's bioavailability — this pairing is the reason both are in the formula",
-  },
-  {
-    name: "Ceylon cinnamon",
-    benefit: "Helps maintain steady blood sugar levels after eating",
-    synergy: "Specifically Ceylon — not Cassia — for daily use at therapeutic doses",
-  },
-  {
-    name: "Inulin",
-    benefit: "Prebiotic fibre that feeds your beneficial gut bacteria daily",
-    synergy: "The prebiotic foundation that makes the whole formula work over time",
-  },
-  {
-    name: "Ginger extract",
-    benefit: "Clinically shown to reduce bloating and digestive discomfort",
-    synergy: "Standardised to 5% gingerols — the minimum dose shown to reduce bloating in clinical studies",
-  },
-  {
-    name: "Monk fruit",
-    benefit: "Naturally sweet with zero sugar and zero artificial additives",
-    synergy: "Zero sugar, zero compromise — chosen so nothing in this formula works against you",
-  },
-];
-
 const marqueeItems = [
   "Natural ingredients",
   "Made in the UK",
@@ -79,11 +36,16 @@ const marqueeItems = [
   "Gut health",
   "Debloat",
   "Fat loss support",
+  "Premium organic ingredients",
+  "Responsibly sourced",
+  "No artificial additives",
+  "Vegan friendly",
+  "Made in the UK",
 ];
 
 const navLinks = [
   { label: "Shop", href: "#" },
-  { label: "Science", href: "#science" },
+  { label: "Flavours", href: "#flavours" },
   { label: "About", href: "#" },
 ];
 
@@ -215,7 +177,7 @@ function Hero() {
 function Marquee() {
   const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
   return (
-    <section className="bg-foreground text-background overflow-hidden py-5 border-y border-foreground">
+    <section className="bg-[#1a1a1a] text-white overflow-hidden py-5">
       <div className="flex animate-marquee whitespace-nowrap">
         {track.map((item, i) => (
           <span key={i} className="flex items-center gap-8 px-8 text-sm tracking-wide uppercase font-medium">
@@ -283,54 +245,98 @@ function ProductFeatures() {
   );
 }
 
-function Ingredients() {
+function Flavours() {
+  const flavours = [
+    {
+      id: "01",
+      name: "Apple Cinnamon",
+      bg: "#D4744A",
+      dark: false,
+      tags: ["Gut health", "Debloat", "Blood sugar"],
+      description: "Warm apple cider vinegar with Ceylon cinnamon and ginger. The original Flourish ritual.",
+    },
+    {
+      id: "02",
+      name: "Lemon Ginger",
+      bg: "#E8B84B",
+      dark: true,
+      tags: ["Digestion", "Debloat", "Anti-inflammatory"],
+      description: "Bright lemon with warming ginger and turmeric. Citrus-forward and refreshing before every meal.",
+    },
+    {
+      id: "03",
+      name: "Lemon Raspberry",
+      bg: "#C4445A",
+      dark: false,
+      tags: ["Gut health", "Antioxidant", "Refreshing"],
+      description: "Lemon and raspberry with prebiotic inulin. The lightest, most refreshing way to Flourish.",
+    },
+  ];
+
   return (
-    <section id="science" className="bg-[var(--color-cream)]">
-      <div className="py-28 lg:py-40">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <Reveal className="max-w-3xl mx-auto text-center">
-            <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-              The Science
-            </p>
-            <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
-              The Flourish Formula
-            </h2>
-            <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-              Seven clinically-studied actives. One precise daily blend. Every ingredient chosen for a specific role — and for how it works with every other.
-            </p>
-          </Reveal>
-          <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            {ingredients.map((ing, i) => (
-              <Reveal key={ing.name} delay={i * 120}>
-                <div className="rounded-2xl bg-white border border-border/60 p-7 h-full hover:border-primary/30 transition-colors">
-                  <p className="font-serif text-sm text-primary/70 tabular-nums">
-                    {String(i + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-3 font-serif text-xl font-semibold text-foreground leading-tight">
-                    {ing.name}
-                  </h3>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {ing.benefit}
-                  </p>
-                  <p className="mt-3 pt-3 border-t border-border/40 text-xs text-muted-foreground/70 leading-relaxed italic">
-                    {ing.synergy}
-                  </p>
+    <section id="flavours" className="py-28 lg:py-40 bg-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal className="max-w-2xl mx-auto text-center mb-16">
+          <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest mb-6">
+            ● THE FLOURISH FORMULA
+          </p>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
+            One precise daily blend. 3 Flavours.
+          </h2>
+          <p className="mt-6 text-lg text-zinc-500 leading-relaxed">
+            Every ingredient chosen for a specific role — and for how it works with every other. Premium, organic, and crafted to be taken before every meal.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {flavours.map((f, i) => (
+            <Reveal key={f.id} delay={i * 150}>
+              <div
+                className="min-h-[520px] rounded-2xl p-8 flex flex-col"
+                style={{ backgroundColor: f.bg }}
+              >
+                <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
+                  FLAVOUR {f.id}
+                </p>
+                <h3 className={`font-serif text-3xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
+                  {f.name}
+                </h3>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {f.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${f.dark ? "bg-[#1a1a1a]/15 text-[#1a1a1a]" : "bg-white/20 text-white"}`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-              </Reveal>
-            ))}
+                <div className="flex-1 flex items-center justify-center my-4">
+                  <div className={`rounded-xl w-full aspect-square max-w-[200px] flex items-center justify-center ${f.dark ? "bg-[#1a1a1a]/10" : "bg-white/10"}`}>
+                    <span className={`text-xs font-medium tracking-widest uppercase ${f.dark ? "text-[#1a1a1a]/40" : "text-white/40"}`}>
+                      PACKAGING
+                    </span>
+                  </div>
+                </div>
+                <p className={`text-sm leading-relaxed mt-2 ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
+                  {f.description}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={400}>
+          <div className="mt-16 text-center">
+            <p className="text-zinc-400 text-sm mb-6">
+              Launching soon. Join the waitlist for first access to all three flavours.
+            </p>
+            <a
+              href="#waitlist"
+              className="inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition hover:brightness-95 active:scale-[0.98]"
+            >
+              Join the Waitlist
+            </a>
           </div>
-        </div>
-      </div>
-      <div className="bg-foreground text-background">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-background/80">
-          <span>Every ingredient backed by published research</span>
-          <span className="text-primary">●</span>
-          <span>No proprietary blends</span>
-          <span className="text-primary">●</span>
-          <span>Full transparency on every label</span>
-          <span className="text-primary">●</span>
-          <span>Made in GMP-certified facilities</span>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -431,7 +437,7 @@ function GutStory() {
 
 function FinalCTA() {
   return (
-    <section id="waitlist" className="py-28 lg:py-40 bg-foreground text-background">
+    <section id="waitlist" className="py-28 lg:py-40 bg-[#1a1a1a] text-white">
       <div className="mx-auto max-w-3xl px-6 lg:px-10 text-center">
         <Reveal>
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[1.05] tracking-[-0.02em]">
@@ -441,7 +447,7 @@ function FinalCTA() {
           </h2>
         </Reveal>
         <Reveal delay={120}>
-          <p className="mt-8 text-lg text-background/75 leading-relaxed">
+          <p className="mt-8 text-lg text-white/75 leading-relaxed">
             Join the Flourish waitlist for early access, exclusive launch pricing, and updates from the founder.
           </p>
         </Reveal>
@@ -451,7 +457,7 @@ function FinalCTA() {
           </div>
         </Reveal>
         <Reveal delay={360}>
-          <div className="mt-8 flex items-center justify-center gap-3 text-sm text-background/65">
+          <div className="mt-8 flex items-center justify-center gap-3 text-sm text-white/65">
             <div className="flex text-primary">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="size-4 fill-current" />
@@ -510,7 +516,7 @@ function Index() {
         <Hero />
         <Marquee />
         <ProductFeatures />
-        <Ingredients />
+        <Flavours />
         <SachetShowcase />
         <GutStory />
         <FinalCTA />
