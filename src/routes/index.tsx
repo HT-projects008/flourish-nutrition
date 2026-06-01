@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Star } from "lucide-react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { BotanicalCanvas } from "../components/BotanicalCanvas";
