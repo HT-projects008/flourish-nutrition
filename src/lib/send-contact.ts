@@ -8,6 +8,9 @@ const schema = z.object({
   message: z.string().min(1),
 });
 
+const escHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
 export const sendContactEmail = createServerFn({ method: "POST" })
   .inputValidator(schema)
   .handler(async ({ data }) => {
@@ -18,7 +21,7 @@ export const sendContactEmail = createServerFn({ method: "POST" })
       replyTo: data.email,
       subject: `New contact message from ${data.name}`,
       text: `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`,
-      html: `<p><strong>Name:</strong> ${data.name}</p><p><strong>Email:</strong> ${data.email}</p><hr/><p>${data.message.replace(/\n/g, "<br/>")}</p>`,
+      html: `<p><strong>Name:</strong> ${escHtml(data.name)}</p><p><strong>Email:</strong> ${escHtml(data.email)}</p><hr/><p>${escHtml(data.message).replace(/\n/g, "<br/>")}</p>`,
     });
     return { success: true };
   });

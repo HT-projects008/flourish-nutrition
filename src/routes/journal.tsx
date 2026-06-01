@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 import Nav from "../components/Nav";
@@ -38,6 +38,12 @@ const HERO_FALLBACK = "radial-gradient(ellipse at 50% 70%, #F5A623 0%, #E8622A 4
 const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
 function JournalPage() {
+  const { pathname } = useLocation();
+  if (pathname.startsWith("/journal/")) return <Outlet />;
+  return <JournalListing />;
+}
+
+function JournalListing() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -146,7 +152,11 @@ function JournalPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((article, i) => (
                 <Reveal key={article.slug} delay={i * 80}>
-                  <div className="bg-white rounded-2xl overflow-hidden cursor-pointer hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+                  <Link
+                    to="/journal/$slug"
+                    params={{ slug: article.slug }}
+                    className="bg-white rounded-2xl overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+                  >
                     <div className="aspect-video w-full bg-zinc-100 flex items-center justify-center text-zinc-300 text-xs tracking-widest uppercase">
                       Article Image
                     </div>
@@ -162,7 +172,7 @@ function JournalPage() {
                       </p>
                       <p className="text-orange-500 text-sm font-medium">Read more →</p>
                     </div>
-                  </div>
+                  </Link>
                 </Reveal>
               ))}
             </div>

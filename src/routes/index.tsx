@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
-import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
+import { BotanicalCanvas } from "../components/BotanicalCanvas";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -51,7 +51,7 @@ function Hero() {
       className="relative min-h-[85vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
-      <MicrobiomeCanvas />
+      <BotanicalCanvas />
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[85vh]">
         <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
