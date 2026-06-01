@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { Menu, X, ChevronDown, Check } from "lucide-react";
+import { Menu, X, ChevronDown, Check, ShoppingBag } from "lucide-react";
 import JournalPanel from "./JournalPanel";
 
 const currencies = [
@@ -15,8 +15,8 @@ const currencies = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [journalOpen, setJournalOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [currency, setCurrency] = useState(currencies[0]);
   const currencyRef = useRef<HTMLDivElement>(null);
@@ -42,6 +42,10 @@ export default function Nav() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <header
@@ -51,13 +55,13 @@ export default function Nav() {
       >
         <div className="relative h-full mx-auto max-w-7xl px-6 lg:px-10 flex items-center">
 
-          {/* LEFT */}
+          {/* LEFT — desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
             <a href={shopHref} className="text-sm font-medium text-zinc-800 hover:text-orange-500 transition-colors">
               Shop
             </a>
             <button
-              onClick={() => setPanelOpen(true)}
+              onClick={() => setJournalOpen(true)}
               className="text-sm font-medium text-zinc-800 hover:text-orange-500 transition-colors"
             >
               Journal
@@ -67,16 +71,24 @@ export default function Nav() {
             </a>
           </nav>
 
-          {/* CENTRE */}
+          {/* LEFT — mobile hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden p-2 -ml-2 text-zinc-800"
+            aria-label="Open menu"
+          >
+            <Menu className="size-5" />
+          </button>
+
+          {/* CENTRE — wordmark */}
           <div className="absolute left-1/2 -translate-x-1/2">
             <a href="/" className="font-serif text-xl font-bold text-orange-500 tracking-tight">
               Flourish
             </a>
           </div>
 
-          {/* RIGHT */}
+          {/* RIGHT — desktop */}
           <div className="hidden lg:flex items-center gap-6 ml-auto">
-            {/* Currency */}
             <div ref={currencyRef} className="relative">
               <button
                 onClick={() => setCurrencyOpen((v) => !v)}
@@ -113,43 +125,110 @@ export default function Nav() {
             </a>
           </div>
 
-          {/* MOBILE — hamburger only */}
-          <button
-            onClick={() => setMobileOpen((v) => !v)}
-            className="lg:hidden ml-auto p-2 text-zinc-800"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+          {/* RIGHT — mobile bag */}
+          <div className="lg:hidden ml-auto">
+            <a href="#" className="flex items-center gap-1 p-2 text-zinc-800">
+              <ShoppingBag className="size-5" />
+              <span className="text-sm font-medium">[0]</span>
+            </a>
+          </div>
         </div>
+      </header>
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-zinc-100 px-6 py-6 flex flex-col gap-5">
-            <a href={shopHref} onClick={() => setMobileOpen(false)} className="text-base font-medium text-zinc-800">
+      {/* Mobile menu — backdrop */}
+      <div
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-[350ms] lg:hidden ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
+      {/* Mobile menu — left-slide panel */}
+      <div
+        className={`fixed top-0 left-0 h-full z-[70] w-72 max-w-[80vw] bg-white shadow-2xl flex flex-col transition-transform duration-[350ms] ease-in-out lg:hidden ${
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <button
+          onClick={() => setMobileMenuOpen(false)}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-50 transition-colors"
+          aria-label="Close menu"
+        >
+          <X className="size-5 text-zinc-500" />
+        </button>
+
+        <div className="flex flex-col flex-1 pt-8 pb-6 px-6 overflow-y-auto">
+          <a
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="font-serif text-lg font-bold text-orange-500 tracking-tight mb-8 inline-block"
+          >
+            Flourish
+          </a>
+
+          <nav className="space-y-6">
+            <a
+              href={shopHref}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors"
+            >
               Shop
             </a>
             <button
-              onClick={() => { setMobileOpen(false); setPanelOpen(true); }}
-              className="text-base font-medium text-zinc-800 text-left"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setTimeout(() => setJournalOpen(true), 350);
+              }}
+              className="block w-full text-left text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors"
             >
               Journal
             </button>
-            <a href={aboutHref} onClick={() => setMobileOpen(false)} className="text-base font-medium text-zinc-800">
+            <a
+              href={aboutHref}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors"
+            >
               About
             </a>
-            <a
-              href={onHome ? "#waitlist" : "/#waitlist"}
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              Join Waitlist
+          </nav>
+
+          <div className="border-t border-zinc-100 my-6" />
+
+          <div className="space-y-4">
+            <div>
+              <p className="text-zinc-400 text-xs uppercase tracking-widest mb-2">Currency</p>
+              <div className="space-y-1">
+                {currencies.map((c) => (
+                  <button
+                    key={c.code}
+                    onClick={() => setCurrency(c)}
+                    className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-zinc-50 transition-colors text-left"
+                  >
+                    <span className="text-base leading-none">{c.flag}</span>
+                    <span className="text-sm font-medium text-zinc-700">{c.code}</span>
+                    <span className="text-xs text-zinc-400 flex-1">{c.name}</span>
+                    {currency.code === c.code && (
+                      <span className="size-2 rounded-full bg-orange-500 flex-shrink-0" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <a href="#" className="block text-zinc-500 text-sm hover:text-zinc-900 transition-colors">
+              Log in
+            </a>
+            <a href="#" className="block text-zinc-500 text-sm hover:text-zinc-900 transition-colors">
+              Bag [0]
             </a>
           </div>
-        )}
-      </header>
 
-      <JournalPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
+          <div className="mt-auto pt-6">
+            <p className="text-zinc-300 text-xs">© 2025 Flourish. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+
+      <JournalPanel open={journalOpen} onClose={() => setJournalOpen(false)} />
     </>
   );
 }

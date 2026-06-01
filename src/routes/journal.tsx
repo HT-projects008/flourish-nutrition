@@ -33,16 +33,18 @@ const CATEGORIES = [
   "Skin",
 ];
 
-const HERO_GRADIENT = "linear-gradient(135deg, #D4744A 0%, #E8B84B 50%, #C4445A 100%)";
+const HERO_FALLBACK = "radial-gradient(ellipse at 50% 70%, #F5A623 0%, #E8622A 40%, #CC2200 80%, #E84B1A 100%)";
+
+const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
 function JournalPage() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
-  const heroBgRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
-      if (heroBgRef.current) {
-        heroBgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+      if (heroRef.current) {
+        heroRef.current.style.backgroundPositionY = `calc(50% + ${window.scrollY * 0.5}px)`;
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -66,21 +68,35 @@ function JournalPage() {
     <div className="min-h-screen bg-[var(--color-cream)]">
       <Nav />
       <main>
-        {/* Hero banner */}
-        <div className="relative h-72 lg:h-96 overflow-hidden">
+        {/* Hero — full viewport height */}
+        <div
+          ref={heroRef}
+          className="relative min-h-screen overflow-hidden"
+          style={{
+            backgroundImage: `url('/assets/journal-hero.jpg'), ${HERO_FALLBACK}`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 50%",
+          }}
+        >
+          {/* Grain texture overlay */}
           <div
-            ref={heroBgRef}
-            className="absolute inset-0 w-full"
-            style={{ background: HERO_GRADIENT, height: "140%", top: "-20%" }}
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundImage: GRAIN_SVG, opacity: 0.08 }}
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-16">
-            <h1 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-tight">
+          {/* Bottom fade overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3) 100%)" }}
+          />
+          {/* Text */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+            <h1 className="font-serif text-5xl lg:text-6xl font-bold text-white leading-tight">
               How Flourish helps you...
             </h1>
-            <p className="mt-2 text-white/80 text-sm">
+            <p className="mt-3 text-white/80 text-sm">
               Explore the science behind every ingredient.
             </p>
-            <ChevronDown className="mt-4 size-6 text-white animate-bounce-slow" />
+            <ChevronDown className="mt-6 size-6 text-white animate-bounce-slow" />
           </div>
         </div>
 

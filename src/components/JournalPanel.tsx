@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { X, ArrowRight, ChevronDown } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { articles } from "../data/articles";
 
@@ -22,13 +22,10 @@ const CATEGORIES = [
   "Skin",
 ];
 
-const PANEL_GRADIENT = "linear-gradient(135deg, #D4744A 0%, #E8B84B 50%, #C4445A 100%)";
-
 function Panel({ open, onClose }: Props) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const heroImgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -38,11 +35,6 @@ function Panel({ open, onClose }: Props) {
   useEffect(() => {
     if (!open) setActiveCategory(null);
   }, [open]);
-
-  const handleScroll = () => {
-    if (!scrollRef.current || !heroImgRef.current) return;
-    heroImgRef.current.style.transform = `translateY(${scrollRef.current.scrollTop * 0.4}px)`;
-  };
 
   const goJournal = () => {
     onClose();
@@ -65,54 +57,39 @@ function Panel({ open, onClose }: Props) {
 
       {/* Panel */}
       <div
-        className={`fixed top-0 right-0 h-full z-[70] w-full max-w-2xl bg-[var(--color-cream)] shadow-2xl transition-transform duration-[400ms] ease-in-out flex flex-col ${
+        className={`fixed top-0 right-0 h-full z-[70] w-full max-w-2xl bg-white shadow-2xl transition-transform duration-[400ms] ease-in-out flex flex-col ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
-          aria-label="Close"
-        >
-          <X className="size-4 text-zinc-700" />
-        </button>
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-100 flex-shrink-0">
+          <h2 className="font-serif font-bold text-xl text-zinc-900">Journal</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-zinc-50 transition-colors"
+            aria-label="Close"
+          >
+            <X className="size-4 text-zinc-400 hover:text-zinc-900 transition-colors" />
+          </button>
+        </div>
 
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex-1 overflow-y-auto"
-        >
-          {/* Hero */}
-          <div className="relative h-64 overflow-hidden">
-            <div
-              ref={heroImgRef}
-              className="absolute inset-0 w-full"
-              style={{ background: PANEL_GRADIENT, height: "140%", top: "-20%" }}
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
-              <h2 className="font-serif text-2xl font-bold text-white leading-tight">
-                How Flourish helps you...
-              </h2>
-              <ChevronDown className="mt-4 size-6 text-white animate-bounce-slow" />
-            </div>
-          </div>
-
+        <div ref={scrollRef} className="flex-1 overflow-y-auto">
           {/* All Articles */}
-          <div className="px-6 pt-6 pb-2">
+          <div className="px-6 pt-5 pb-2">
             <button
               onClick={goJournal}
-              className="w-full bg-white rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+              className="w-full bg-zinc-50 rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:bg-zinc-100 transition-colors"
             >
               <div className="flex items-center">
-                <span className="font-serif font-semibold text-zinc-900">All Articles</span>
-                <span className="ml-2 text-zinc-400 text-sm">({articles.length})</span>
+                <span className="font-semibold text-zinc-900">All Articles</span>
+                <span className="ml-1 text-zinc-400 text-sm">({articles.length})</span>
               </div>
               <ArrowRight className="size-4 text-orange-500 flex-shrink-0" />
             </button>
           </div>
 
-          {/* Category pills */}
-          <div className="px-6 pt-4">
+          {/* Browse by topic */}
+          <div className="px-6 pt-5">
             <p className="text-zinc-400 text-xs uppercase tracking-widest mb-3">Browse by topic</p>
             <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
               {CATEGORIES.map((cat) => {
@@ -124,7 +101,7 @@ function Panel({ open, onClose }: Props) {
                     className={`rounded-full px-4 py-1.5 text-xs whitespace-nowrap cursor-pointer transition-colors flex-shrink-0 ${
                       active
                         ? "bg-orange-500 text-white"
-                        : "border border-zinc-300 text-zinc-500"
+                        : "border border-zinc-200 text-zinc-500 bg-transparent"
                     }`}
                   >
                     {cat}
@@ -140,7 +117,7 @@ function Panel({ open, onClose }: Props) {
               <button
                 key={article.slug}
                 onClick={goJournal}
-                className="w-full flex items-start py-5 border-b border-zinc-200 hover:bg-white/60 rounded-xl px-2 -mx-2 transition-colors text-left"
+                className="w-full flex items-start py-5 border-b border-zinc-100 hover:bg-zinc-50 rounded-xl px-2 -mx-2 transition-colors text-left"
               >
                 <div className="w-20 h-20 rounded-xl bg-zinc-100 flex-shrink-0" />
                 <div className="ml-4 flex-1 min-w-0">
@@ -160,7 +137,7 @@ function Panel({ open, onClose }: Props) {
                 onClick={goJournal}
                 className="mt-6 text-orange-500 text-sm font-medium"
               >
-                See all {articles.length} articles →
+                View all articles →
               </button>
             )}
           </div>
