@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ShoppingBag } from "lucide-react";
-import { articles } from "../data/articles";
 
 const currencies = [
   { code: "GBP", symbol: "£" },
@@ -13,37 +12,16 @@ const currencies = [
   { code: "SGD", symbol: "S$" },
 ];
 
-const TOPICS = [
-  "Anti-Inflammatory",
-  "Blood Sugar",
-  "Digestion",
-  "Energy",
-  "Fat Loss",
-  "Gut Health",
-  "Immunity",
-  "Mental Wellbeing",
-  "Nutrient Absorption",
-  "Skin",
-];
-
-const LATEST_ARTICLES = articles.slice(0, 3);
-
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [journalOpen, setJournalOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [currency, setCurrency] = useState(currencies[0]);
-  const [mobileJournalOpen, setMobileJournalOpen] = useState(false);
   const [mobileCurrencyOpen, setMobileCurrencyOpen] = useState(false);
 
-  const journalRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
-      if (journalRef.current && !journalRef.current.contains(e.target as Node)) {
-        setJournalOpen(false);
-      }
       if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) {
         setCurrencyOpen(false);
       }
@@ -55,7 +33,6 @@ export default function Nav() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setJournalOpen(false);
         setCurrencyOpen(false);
         setMobileMenuOpen(false);
       }
@@ -81,22 +58,7 @@ export default function Nav() {
           {/* LEFT — desktop nav */}
           <nav aria-label="Main" className="hidden lg:flex items-center gap-8 justify-self-start">
             <a href="/#flavours" className={navLinkClass}>Shop</a>
-
-            {/* Journal trigger */}
-            <div ref={journalRef} className="relative">
-              <button
-                onClick={() => setJournalOpen((v) => !v)}
-                aria-expanded={journalOpen}
-                aria-controls="journal-dropdown"
-                className={`${navLinkClass} flex items-center gap-1`}
-              >
-                Journal
-                <ChevronDown
-                  className={`size-3.5 opacity-60 transition-transform duration-150 ${journalOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-            </div>
-
+            <Link to="/journal" className={navLinkClass}>Journal</Link>
             <a href="/#waitlist" className={navLinkClass}>About</a>
           </nav>
 
@@ -169,75 +131,6 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* Journal dropdown — full width below nav */}
-      <div
-        id="journal-dropdown"
-        className={`fixed top-16 inset-x-0 z-40 bg-white border-b border-zinc-100 shadow-sm transition-[opacity,transform] duration-[180ms] ease-out ${
-          journalOpen
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-1.5 pointer-events-none"
-        }`}
-        aria-hidden={!journalOpen}
-      >
-        <div className="mx-auto max-w-7xl px-8 py-8 grid grid-cols-3 gap-12">
-          {/* Column 1 — Featured */}
-          <div className="flex flex-col justify-between">
-            <div>
-              <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Journal</p>
-              <Link
-                to="/journal"
-                onClick={() => setJournalOpen(false)}
-                className="font-serif font-bold text-2xl text-zinc-900 hover:text-orange-500 transition-colors duration-150 text-left leading-snug block"
-              >
-                All Articles →
-              </Link>
-              <p className="text-zinc-600 text-sm mt-2 leading-relaxed">
-                Science-backed reading on gut health and nutrition.
-              </p>
-            </div>
-            <p className="text-zinc-500 text-xs mt-6">{articles.length} articles</p>
-          </div>
-
-          {/* Column 2 — Topics */}
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Browse by Topic</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-              {TOPICS.map((topic) => (
-                <Link
-                  key={topic}
-                  to="/journal"
-                  onClick={() => setJournalOpen(false)}
-                  className="py-1 text-sm text-zinc-700 hover:text-orange-500 transition-colors duration-150 text-left"
-                >
-                  {topic}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Column 3 — Latest */}
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-400 mb-4">Latest</p>
-            <div className="space-y-1">
-              {LATEST_ARTICLES.map((article) => (
-                <Link
-                  key={article.slug}
-                  to="/journal/$slug"
-                  params={{ slug: article.slug }}
-                  onClick={() => setJournalOpen(false)}
-                  className="group block py-1.5 text-left w-full"
-                >
-                  <span className="text-sm text-zinc-700 group-hover:text-orange-500 transition-colors duration-150 leading-snug">
-                    {article.title}
-                  </span>
-                  <span className="block text-[11px] text-zinc-500 mt-0.5">{article.category}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Mobile menu — backdrop */}
       <div
         className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-200 lg:hidden ${
@@ -283,44 +176,13 @@ export default function Nav() {
             >
               Shop
             </a>
-
-            {/* Journal accordion */}
-            <div>
-              <button
-                onClick={() => setMobileJournalOpen((v) => !v)}
-                aria-expanded={mobileJournalOpen}
-                className="flex w-full items-center justify-between text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors py-2"
-              >
-                Journal
-                <ChevronDown
-                  className={`size-4 opacity-50 transition-transform duration-200 ${mobileJournalOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              <div
-                className={`overflow-hidden transition-[max-height] duration-200 ease-out ${mobileJournalOpen ? "max-h-96" : "max-h-0"}`}
-              >
-                <div className="pl-4 space-y-3 pt-2 pb-3">
-                  <Link
-                    to="/journal"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block text-sm text-zinc-600 hover:text-orange-500 transition-colors"
-                  >
-                    All Articles
-                  </Link>
-                  {TOPICS.map((topic) => (
-                    <Link
-                      key={topic}
-                      to="/journal"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block text-sm text-zinc-600 hover:text-orange-500 transition-colors"
-                    >
-                      {topic}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
+            <Link
+              to="/journal"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-left text-zinc-900 text-base font-medium hover:text-orange-500 transition-colors py-2"
+            >
+              Journal
+            </Link>
             <a
               href="/#waitlist"
               onClick={() => setMobileMenuOpen(false)}
