@@ -10,9 +10,8 @@ import {
 
 import appCss from "../styles.css?url";
 
-const SITE_URL = "https://flourish.com";
-const OG_IMAGE =
-  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8a61770-ced5-4ad9-9971-6d9dec347f5b/id-preview-9bbd1dee--3d807b8d-4e92-433c-b421-5f28cdb489c6.lovable.app-1780079048218.png";
+const SITE_URL = "https://flourish-nutrition.henrytaylor-projects.workers.dev";
+const OG_IMAGE = `${SITE_URL}/assets/og-image.jpg`;
 
 const ORG_SCHEMA = JSON.stringify({
   "@context": "https://schema.org",

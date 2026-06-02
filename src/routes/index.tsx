@@ -31,27 +31,20 @@ export const Route = createFileRoute("/")({
           "Premium gut health and debloat drink. Precisely chosen ingredients. Real science. Join the waitlist for early access.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://flourish.com/" }],
+    links: [{ rel: "canonical", href: "https://flourish-nutrition.henrytaylor-projects.workers.dev/" }],
   }),
   component: Index,
 });
 
 const marqueeItems = [
-  "Natural ingredients",
-  "Made in the UK",
-  "Scientifically formulated",
-  "500+ on the waitlist",
-  "No artificial sweeteners",
-  "Before every meal",
-  "8g per serve",
-  "Gut health",
-  "Debloat",
-  "Fat loss support",
   "Premium organic ingredients",
-  "Responsibly sourced",
+  "Made in the UK",
+  "8 organic ingredients",
+  "Before every meal",
+  "Gut health · Debloat · Fat loss",
   "No artificial additives",
   "Vegan friendly",
-  "Made in the UK",
+  "Launching soon",
 ];
 
 // Overflow-hidden word mask for the hero headline reveal.
@@ -97,28 +90,12 @@ function Hero() {
             <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
               The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
             </p>
-            <div className="mt-6 flex flex-col sm:flex-row justify-start gap-3">
-              <a
-                href="#waitlist"
-                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground shadow-sm hover:brightness-95 active:scale-[0.97] transition-[filter,transform] duration-150"
-              >
-                Join the Waitlist
-              </a>
-              <a
-                href="#flavours"
-                className="inline-flex justify-center rounded-full border border-foreground/20 px-7 py-4 text-base font-semibold text-foreground hover:bg-foreground/5 active:scale-[0.97] transition-[background-color,transform] duration-150"
-              >
-                See the Flavours
-              </a>
+            <div className="mt-6 max-w-md">
+              <WaitlistForm source="homepage" />
             </div>
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-              {["8 clinically-studied ingredients", "Made in the UK", "500+ on the waitlist"].map((item) => (
-                <span key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span className="size-1 rounded-full bg-primary/60 flex-shrink-0" aria-hidden="true" />
-                  {item}
-                </span>
-              ))}
-            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              Join 500+ people already waiting · Early access gets 20% off
+            </p>
           </Reveal>
         </div>
       </div>
@@ -251,9 +228,17 @@ function Flavours() {
             <div
               key={f.id}
               data-flavour-card
-              className="min-h-[520px] rounded-2xl p-8 flex flex-col"
+              className="min-h-[520px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
+              {/* Watermark number */}
+              <span
+                className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-primary opacity-20"
+                aria-hidden="true"
+              >
+                {f.id}
+              </span>
+
               <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
                 Flavour {f.id}
               </p>
@@ -270,15 +255,15 @@ function Flavours() {
                   </span>
                 ))}
               </div>
-              <div className="flex-1 flex items-center justify-center my-4">
-                <div className={`rounded-2xl w-full aspect-[3/4] max-w-[180px] flex flex-col items-center justify-center gap-3 border ${f.dark ? "bg-[#1a1a1a]/8 border-[#1a1a1a]/10" : "bg-white/8 border-white/10"}`}>
-                  <span className={`font-serif text-5xl font-bold leading-none ${f.dark ? "text-[#1a1a1a]/20" : "text-white/20"}`}>{f.id}</span>
-                  <span className={`text-[9px] font-medium tracking-[0.2em] uppercase ${f.dark ? "text-[#1a1a1a]/30" : "text-white/30"}`}>Coming soon</span>
-                </div>
-              </div>
-              <p className={`text-sm leading-relaxed mt-2 ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
+              <p className={`text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
                 {f.description}
               </p>
+              <a
+                href="#waitlist"
+                className={`mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#1a1a1a]/60 hover:text-[#1a1a1a]/90" : "text-white/70 hover:text-white"}`}
+              >
+                Notify me →
+              </a>
             </div>
           ))}
         </div>
@@ -408,15 +393,18 @@ function FinalCTA() {
     <section id="waitlist" className="py-28 lg:py-40 bg-[#1a1a1a] text-white">
       <div className="mx-auto max-w-3xl px-6 lg:px-10 text-center">
         <Reveal>
+          <div className="flex justify-center mb-6">
+            <span className="bg-orange-50 text-orange-600 text-xs rounded-full px-4 py-1.5">
+              🌿 Early access — limited spots
+            </span>
+          </div>
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[1.05] tracking-[-0.02em]">
-            Feel lighter.
-            <br />
-            <span className="text-primary">Starting now.</span>
+            Join the founding 500.
           </h2>
         </Reveal>
         <Reveal delay={120}>
           <p className="mt-8 text-lg text-white/75 leading-relaxed">
-            Join the Flourish waitlist for early access, exclusive launch pricing, and updates from the founder.
+            Be part of the first wave of people to try Flourish. Early access members get 20% off their first order and first pick of all three flavours.
           </p>
         </Reveal>
         <Reveal delay={240}>

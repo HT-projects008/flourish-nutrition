@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 
 const footerLinks = [
-  { label: "Shop", href: "/#flavours" },
   { label: "Journal", href: "/journal" },
   { label: "About", href: "/#waitlist" },
 ];
@@ -20,6 +19,7 @@ export default function Footer() {
                 Flourish
               </Link>
               <p className="mt-2 text-background/60 italic">Feel lighter. Every day.</p>
+              <p className="mt-3 text-background/40 text-xs">Launching 2026</p>
             </div>
             <nav aria-label="Footer links" className="lg:col-span-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
               {footerLinks.map((l) => (
