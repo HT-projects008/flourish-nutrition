@@ -358,7 +358,7 @@ function GutStory() {
   ];
 
   return (
-    <section id="gut" className="py-32 lg:py-48 bg-[#0f0f0f] text-white">
+    <section id="gut" className="py-32 lg:py-48 bg-[var(--color-cream)]">
       <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
 
         {/* Pill label */}
@@ -372,7 +372,7 @@ function GutStory() {
         </Reveal>
 
         {/* Headline — GSAP gut-word reveal on scroll */}
-        <h2 className="font-serif text-5xl lg:text-7xl font-bold leading-[0.95] text-white">
+        <h2 className="font-serif text-5xl lg:text-7xl font-bold leading-[0.95] text-zinc-900">
           <GutWord spaceAfter>Your</GutWord>
           <GutWord spaceAfter>body</GutWord>
           <GutWord>is</GutWord>
@@ -384,7 +384,7 @@ function GutStory() {
         </h2>
 
         <Reveal delay={200}>
-          <p className="mt-6 text-zinc-400 max-w-lg mx-auto leading-relaxed">
+          <p className="mt-6 text-zinc-500 max-w-lg mx-auto leading-relaxed">
             Inside every serve, eight ingredients work together to transform how your gut feels and how your whole body thrives.
           </p>
         </Reveal>
@@ -397,8 +397,8 @@ function GutStory() {
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-orange-500/15 blur-3xl -z-10"
               aria-hidden="true"
             />
-            <div className="rounded-3xl bg-zinc-900/60 border border-white/5 aspect-video flex items-center justify-center">
-              <span className="text-zinc-700 text-xs tracking-[0.2em] uppercase font-medium">Gut illustration</span>
+            <div className="rounded-3xl bg-white border border-zinc-200 aspect-video flex items-center justify-center">
+              <span className="text-zinc-400 text-xs tracking-[0.2em] uppercase font-medium">Gut illustration</span>
             </div>
           </div>
         </Reveal>
@@ -414,8 +414,8 @@ function GutStory() {
               >
                 0{col.num}
               </p>
-              <h3 className="font-bold text-white text-xl mt-4">{col.title}</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed mt-3">{col.body}</p>
+              <h3 className="font-bold text-zinc-900 text-xl mt-4">{col.title}</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed mt-3">{col.body}</p>
             </div>
           ))}
         </div>
@@ -423,7 +423,7 @@ function GutStory() {
         {/* Closing line + CTA */}
         <Reveal delay={400}>
           <div className="mt-20">
-            <p className="font-serif text-2xl italic text-white/60">
+            <p className="font-serif text-2xl italic text-zinc-400">
               This is what it means to Flourish.
             </p>
             <a
