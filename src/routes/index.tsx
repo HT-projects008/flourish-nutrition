@@ -6,13 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
-import { BotanicalCanvas } from "../components/BotanicalCanvas";
+import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Strong ease-out matching the project's --ease-out-expo
 const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
 export const Route = createFileRoute("/")({
@@ -47,8 +46,10 @@ const marqueeItems = [
   "Launching soon",
 ];
 
-// Overflow-hidden word mask for the hero headline reveal.
-// pb/mb pair gives descenders (y, g) room to breathe inside the clip region.
+// Shared benefit tags — identical across all three flavours since the formula is the same
+const FLAVOUR_TAGS = ["Gut health", "Debloat", "Fat loss", "Anti-inflammatory", "Blood sugar"];
+
+// Overflow-hidden word mask for hero headline — inner span translates up via GSAP on load
 function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
   return (
     <span
@@ -60,6 +61,18 @@ function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boo
   );
 }
 
+// Same mask pattern for GutStory headline — inner span translates up via GSAP on scroll
+function GutWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
+  return (
+    <span
+      className="inline-block overflow-hidden pb-[0.1em] mb-[-0.1em]"
+      style={{ marginRight: spaceAfter ? "0.25em" : undefined }}
+    >
+      <span className="gut-word inline-block">{children}</span>
+    </span>
+  );
+}
+
 function Hero() {
   return (
     <section
@@ -67,7 +80,7 @@ function Hero() {
       className="relative min-h-[85vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
-      <BotanicalCanvas />
+      <MicrobiomeCanvas />
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[85vh]">
         <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
@@ -76,7 +89,6 @@ function Hero() {
               Premium gut health, daily
             </span>
 
-            {/* Word-by-word reveal — each inner span is translated up by GSAP on load */}
             <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-foreground leading-tight tracking-[-0.03em] text-left">
               <HeroWord spaceAfter>Feel</HeroWord>
               <HeroWord>lighter.</HeroWord>
@@ -144,7 +156,6 @@ function ProductFeatures() {
           <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
             The Formula
           </p>
-          {/* section-heading: GSAP slides this in from x:-50 on scroll */}
           <h2 className="section-heading font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
             Whole body health starts in the gut.
           </h2>
@@ -188,7 +199,6 @@ function Flavours() {
       name: "Apple Cinnamon",
       bg: "#D4744A",
       dark: false,
-      tags: ["Gut health", "Debloat", "Blood sugar"],
       description: "Warm apple cider vinegar with Ceylon cinnamon and ginger. The original Flourish ritual.",
     },
     {
@@ -196,7 +206,6 @@ function Flavours() {
       name: "Lemon Ginger",
       bg: "#E8B84B",
       dark: true,
-      tags: ["Digestion", "Debloat", "Anti-inflammatory"],
       description: "Bright lemon with warming ginger and turmeric. Citrus-forward and refreshing before every meal.",
     },
     {
@@ -204,7 +213,6 @@ function Flavours() {
       name: "Lemon Raspberry",
       bg: "#C4445A",
       dark: false,
-      tags: ["Gut health", "Antioxidant", "Refreshing"],
       description: "Lemon and raspberry with prebiotic inulin. The lightest, most refreshing way to Flourish.",
     },
   ];
@@ -213,16 +221,15 @@ function Flavours() {
     <section id="flavours" className="py-28 lg:py-40 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl mx-auto text-center mb-16">
-          {/* section-heading: GSAP slides this in from x:-50 on scroll */}
           <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
             One precise daily blend. 3 flavours.
           </h2>
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">
-            Every ingredient chosen for a specific role — and for how it works with every other. Premium, organic, and crafted to be taken before every meal.
+            The same powerful formula. Three delicious flavours. Every ingredient chosen for a specific role — crafted to be taken before every meal.
           </p>
         </Reveal>
 
-        {/* Cards: Reveal removed — GSAP ScrollTrigger.batch drives the 150ms stagger */}
+        {/* Cards driven by GSAP ScrollTrigger.batch — 150ms stagger */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {flavours.map((f) => (
             <div
@@ -231,7 +238,7 @@ function Flavours() {
               className="min-h-[520px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
-              {/* Watermark number */}
+              {/* Watermark number — decorative background element */}
               <span
                 className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-primary opacity-20"
                 aria-hidden="true"
@@ -246,7 +253,7 @@ function Flavours() {
                 {f.name}
               </h3>
               <div className="flex flex-wrap gap-2 mb-4">
-                {f.tags.map((tag) => (
+                {FLAVOUR_TAGS.map((tag) => (
                   <span
                     key={tag}
                     className={`rounded-full px-3 py-1 text-xs font-medium ${f.dark ? "bg-[#1a1a1a]/15 text-[#1a1a1a]" : "bg-white/20 text-white"}`}
@@ -301,7 +308,6 @@ function SachetShowcase() {
         </Reveal>
         <div className="flex flex-col gap-8">
           <Reveal>
-            {/* section-heading: GSAP slides this in from x:-50 on scroll */}
             <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-white leading-[1.1]">
               Every serve.<br />Perfectly measured.
             </h2>
@@ -314,23 +320,11 @@ function SachetShowcase() {
           <Reveal delay={240}>
             <div className="flex gap-12">
               <div>
-                {/* data-count: GSAP counts up from 0 when stat enters viewport */}
-                <p
-                  data-count="8"
-                  data-count-suffix="g"
-                  className="text-5xl font-bold text-orange-500"
-                >
-                  8g
-                </p>
+                <p data-count="8" data-count-suffix="g" className="text-5xl font-bold text-orange-500">8g</p>
                 <p className="mt-1 text-sm text-zinc-400">Precise dose, every time</p>
               </div>
               <div>
-                <p
-                  data-count="1"
-                  className="text-5xl font-bold text-orange-500"
-                >
-                  1
-                </p>
+                <p data-count="1" className="text-5xl font-bold text-orange-500">1</p>
                 <p className="mt-1 text-sm text-zinc-400">Daily ritual, before every meal</p>
               </div>
             </div>
@@ -347,41 +341,98 @@ function SachetShowcase() {
 function GutStory() {
   const columns = [
     {
+      num: "1",
       title: "In your gut",
       body: "Inulin prebiotics feed your beneficial bacteria. ACV and ginger calm inflammation and support healthy digestion after every meal.",
     },
     {
+      num: "2",
       title: "In your bloodstream",
       body: "Ceylon cinnamon and ACV work together to steady blood sugar levels, reducing energy crashes and cravings throughout the day.",
     },
     {
+      num: "3",
       title: "In your whole body",
-      body: "Turmeric and black pepper deliver bioavailable anti-inflammatory support — so you don't just feel lighter, you feel better everywhere.",
+      body: "Turmeric and black pepper deliver bioavailable anti-inflammatory support. Feel lighter, and better, everywhere.",
     },
   ];
+
   return (
-    <section id="gut" className="py-28 lg:py-40 bg-[var(--color-cream)]">
+    <section id="gut" className="py-32 lg:py-48 bg-[#0f0f0f] text-white">
       <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
+
+        {/* Pill label */}
         <Reveal>
-          {/* section-heading: GSAP slides this in from x:-50 on scroll */}
-          <h2 className="section-heading font-serif text-4xl lg:text-6xl font-bold text-foreground leading-[1.1]">
-            Your body is waiting to Flourish.
-          </h2>
-          <p className="mt-6 text-xl text-zinc-600 leading-relaxed max-w-2xl mx-auto">
-            Inside every serve of Flourish, eight ingredients work together to transform how your gut feels — and how your whole body thrives.
+          <div className="flex justify-center mb-8">
+            <span className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest">
+              <span className="size-1.5 rounded-full bg-orange-400" aria-hidden="true" />
+              Your gut. Your health.
+            </span>
+          </div>
+        </Reveal>
+
+        {/* Headline — GSAP gut-word reveal on scroll */}
+        <h2 className="font-serif text-5xl lg:text-7xl font-bold leading-[0.95] text-white">
+          <GutWord spaceAfter>Your</GutWord>
+          <GutWord spaceAfter>body</GutWord>
+          <GutWord>is</GutWord>
+          <br />
+          <GutWord spaceAfter>waiting</GutWord>
+          <GutWord>to</GutWord>
+          <br />
+          <GutWord>Flourish.</GutWord>
+        </h2>
+
+        <Reveal delay={200}>
+          <p className="mt-6 text-zinc-400 max-w-lg mx-auto leading-relaxed">
+            Inside every serve, eight ingredients work together to transform how your gut feels and how your whole body thrives.
           </p>
         </Reveal>
-        <div className="mt-20 grid lg:grid-cols-3 gap-10 text-left">
-          {columns.map((col, i) => (
-            <Reveal key={col.title} delay={i * 120}>
-              <div className="w-10 h-10 rounded-full bg-orange-100 mb-4" aria-hidden="true" />
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">{col.title}</h3>
-              <p className="text-zinc-600 leading-relaxed">{col.body}</p>
-            </Reveal>
+
+        {/* GIF placeholder with ambient orange glow */}
+        <Reveal delay={300}>
+          <div className="relative max-w-sm mx-auto my-16">
+            <div
+              data-gut-glow
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-orange-500/15 blur-3xl -z-10"
+              aria-hidden="true"
+            />
+            <div className="rounded-3xl bg-zinc-900/60 border border-white/5 aspect-video flex items-center justify-center">
+              <span className="text-zinc-700 text-xs tracking-[0.2em] uppercase font-medium">Gut illustration</span>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Three benefit columns — GSAP fade-up stagger + number count-up */}
+        <div className="mt-4 grid lg:grid-cols-3 gap-8 text-left">
+          {columns.map((col) => (
+            <div key={col.num} data-gut-col>
+              <div className="w-8 h-px bg-orange-500 mb-6 hidden lg:block" aria-hidden="true" />
+              <p
+                data-gut-num={col.num}
+                className="font-serif text-6xl font-bold text-orange-500 leading-none"
+              >
+                0{col.num}
+              </p>
+              <h3 className="font-bold text-white text-xl mt-4">{col.title}</h3>
+              <p className="text-zinc-400 text-sm leading-relaxed mt-3">{col.body}</p>
+            </div>
           ))}
         </div>
-        <Reveal delay={360}>
-          <p className="mt-16 font-serif text-2xl italic text-foreground">This is what it means to Flourish.</p>
+
+        {/* Closing line + CTA */}
+        <Reveal delay={400}>
+          <div className="mt-20">
+            <p className="font-serif text-2xl italic text-white/60">
+              This is what it means to Flourish.
+            </p>
+            <a
+              href="#waitlist"
+              className="mt-8 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
+            >
+              Join the Waitlist
+            </a>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -439,8 +490,6 @@ function Index() {
       const q = gsap.utils.selector(container);
 
       // ── 1. Hero headline: word-by-word reveal on load ───────────────────────
-      // Each .hero-word starts clipped below its overflow:hidden parent (yPercent 110)
-      // and translates up into view. 0.07s stagger across 4 words = ~0.49s total spread.
       gsap.from(q(".hero-word"), {
         yPercent: 110,
         duration: 0.45,
@@ -451,8 +500,6 @@ function Index() {
       });
 
       // ── 2. Flavour cards: stagger in from below on scroll ───────────────────
-      // ScrollTrigger.batch collects all three cards that enter the viewport
-      // together and staggers them with the 150ms delay requested.
       gsap.set(q("[data-flavour-card]"), { y: 64, opacity: 0 });
       ScrollTrigger.batch(q("[data-flavour-card]"), {
         onEnter: (els) => {
@@ -470,8 +517,6 @@ function Index() {
       });
 
       // ── 3. Sachet stats: count up from 0 when they enter the viewport ───────
-      // Each [data-count] element tweens a plain object and writes the rounded
-      // integer (+ optional suffix) back to textContent on every update tick.
       (q("[data-count]") as HTMLElement[]).forEach((el) => {
         const target = parseInt(el.dataset.count ?? "0");
         const suffix = el.dataset.countSuffix ?? "";
@@ -484,7 +529,6 @@ function Index() {
           onEnter: () => {
             gsap.to(obj, {
               val: target,
-              // longer duration for multi-digit counts so each increment is visible
               duration: target > 5 ? 1.2 : 0.8,
               ease: "power2.out",
               onUpdate: () => {
@@ -496,9 +540,6 @@ function Index() {
       });
 
       // ── 4. Section headings: slide in from the left on scroll ───────────────
-      // immediateRender: false prevents GSAP from setting x:-50 at setup time
-      // (which would cause a visible jump before the trigger fires). The from-state
-      // is applied only in the same frame the tween starts, so the snap is invisible.
       (q(".section-heading") as HTMLElement[]).forEach((el) => {
         gsap.from(el, {
           x: -50,
@@ -512,6 +553,76 @@ function Index() {
           },
         });
       });
+
+      // ── 5. GutStory headline: word-by-word reveal on scroll ─────────────────
+      const gutWordEls = q(".gut-word") as HTMLElement[];
+      if (gutWordEls.length) {
+        gsap.set(gutWordEls, { yPercent: 110 });
+        const gutH2 = gutWordEls[0].closest("h2") as Element | null;
+        ScrollTrigger.create({
+          trigger: (gutH2 ?? gutWordEls[0]) as Element,
+          start: "top 82%",
+          once: true,
+          onEnter: () => {
+            gsap.to(gutWordEls, {
+              yPercent: 0,
+              duration: 0.5,
+              stagger: 0.06,
+              ease: EASE,
+              clearProps: "transform",
+            });
+          },
+        });
+      }
+
+      // ── 6. GutStory columns: fade up + in with 150ms stagger ────────────────
+      gsap.set(q("[data-gut-col]"), { y: 40, opacity: 0 });
+      ScrollTrigger.batch(q("[data-gut-col]"), {
+        onEnter: (els) => {
+          gsap.to(els, {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.15,
+            ease: EASE,
+            overwrite: true,
+          });
+        },
+        start: "top 85%",
+        once: true,
+      });
+
+      // ── 7. GutStory numbers: count up 0→n staggered 200ms apart ─────────────
+      (q("[data-gut-num]") as HTMLElement[]).forEach((el, i) => {
+        const target = parseInt(el.dataset.gutNum ?? "1");
+        const obj = { val: 0 };
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 85%",
+          once: true,
+          onEnter: () => {
+            gsap.to(obj, {
+              val: target,
+              duration: 0.8,
+              delay: i * 0.2,
+              ease: "power2.out",
+              onUpdate: () => {
+                el.textContent = String(Math.round(obj.val)).padStart(2, "0");
+              },
+            });
+          },
+        });
+      });
+
+      // ── 8. GutStory glow: ambient pulse — scale + opacity, repeat forever ───
+      const glowEl = (q("[data-gut-glow]") as HTMLElement[])[0];
+      if (glowEl) {
+        gsap.fromTo(
+          glowEl,
+          { scale: 0.8, opacity: 0.1 },
+          { scale: 1.2, opacity: 0.25, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 },
+        );
+      }
     },
     { scope: mainRef },
   );
