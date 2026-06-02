@@ -1,5 +1,9 @@
 import { useRef, useEffect, useCallback } from "react";
 import * as d3 from "d3";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface TreeDatum {
   name: string;
@@ -82,8 +86,14 @@ function appendWrappedText(
 export function BenefitsMindmap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const gsapCtxRef = useRef<gsap.Context | null>(null);
+  const hasAnimatedRef = useRef(false);
 
   const draw = useCallback((width: number) => {
+    // Kill previous GSAP context before clearing the DOM
+    gsapCtxRef.current?.revert();
+    gsapCtxRef.current = null;
+
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -131,6 +141,8 @@ export function BenefitsMindmap() {
         .attr("fill", "none")
         .attr("stroke", "#D4744A")
         .attr("stroke-width", 1.5)
+        .attr("pathLength", 1)
+        .attr("stroke-dasharray", 1)
         .attr("d", radialLink({ source: treeRoot, target: bNode }) ?? "");
     });
 
@@ -143,6 +155,7 @@ export function BenefitsMindmap() {
       // Sub links: benefit → ingredient (dashed)
       (bNode.children ?? []).forEach(iNode => {
         branchG.append("path")
+          .attr("class", "sub-link")
           .attr("fill", "none")
           .attr("stroke", "#E8B84B")
           .attr("stroke-width", 1)
@@ -155,6 +168,7 @@ export function BenefitsMindmap() {
         const ix = iNode.y * Math.sin(iNode.x);
         const iy = -iNode.y * Math.cos(iNode.x);
         const ig = branchG.append("g")
+          .attr("class", "ingredient-node-g")
           .attr("transform", `translate(${ix.toFixed(2)},${iy.toFixed(2)})`);
 
         ig.append("circle")
@@ -175,11 +189,12 @@ export function BenefitsMindmap() {
         appendWrappedText(it, iNode.data.name.split(" "), 6.5);
       });
 
-      // Benefit node (renders on top of sub-links within group)
+      // Benefit node (on top of sub-links within group)
       const bx = bNode.y * Math.sin(bNode.x);
       const by = -bNode.y * Math.cos(bNode.x);
 
       const bG = branchG.append("g")
+        .attr("class", "benefit-node-group")
         .attr("transform", `translate(${bx.toFixed(2)},${by.toFixed(2)})`)
         .style("cursor", "pointer");
 
@@ -221,7 +236,7 @@ export function BenefitsMindmap() {
     });
 
     // ── Root node (always on top) ────────────────────────────────────
-    const rootG = g.append("g");
+    const rootG = g.append("g").attr("class", "root-node");
     rootG.append("circle").attr("r", 42).attr("fill", "url(#bmGrad)");
     rootG.append("circle")
       .attr("r", 50)
@@ -240,6 +255,51 @@ export function BenefitsMindmap() {
       .style("pointer-events", "none");
 
     appendWrappedText(rt, ["Gut", "Health"], 13);
+
+    // ── GSAP scroll animations ───────────────────────────────────────
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      if (!hasAnimatedRef.current) {
+        // Hide everything before scroll trigger fires
+        gsap.set(".root-node", { scale: 0, opacity: 0, transformOrigin: "0px 0px" });
+        gsap.set(".main-link", { strokeDashoffset: 1 });
+        gsap.set(".benefit-node-group", { scale: 0, opacity: 0, transformOrigin: "0px 0px" });
+        gsap.set(".sub-link", { opacity: 0 });
+        gsap.set(".ingredient-node-g", { scale: 0, opacity: 0, transformOrigin: "0px 0px" });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: svgRef.current,
+            start: "top 80%",
+            once: true,
+            onEnter: () => { hasAnimatedRef.current = true; },
+          },
+        })
+          // 1. Root node springs in
+          .to(".root-node", {
+            scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.4)",
+          })
+          // 2. Main branch lines draw outward
+          .to(".main-link", {
+            strokeDashoffset: 0, duration: 0.5, ease: "power2.out", stagger: 0.08,
+          }, "-=0.15")
+          // 3. Benefit nodes pop in as their branch arrives
+          .to(".benefit-node-group", {
+            scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.7)", stagger: 0.08,
+          }, "-=0.3")
+          // 4. Sub-links fade in
+          .to(".sub-link", {
+            opacity: 1, duration: 0.3, ease: "power2.out", stagger: 0.04,
+          }, "-=0.1")
+          // 5. Ingredient nodes pop in last
+          .to(".ingredient-node-g", {
+            scale: 1, opacity: 1, duration: 0.25, ease: "back.out(1.7)", stagger: 0.04,
+          }, "-=0.15");
+      }
+    }, svgRef);
+
+    gsapCtxRef.current = ctx;
   }, []);
 
   useEffect(() => {
@@ -255,7 +315,10 @@ export function BenefitsMindmap() {
     const w = container.clientWidth;
     if (w > 0) draw(w);
 
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      gsapCtxRef.current?.revert();
+    };
   }, [draw]);
 
   return (
