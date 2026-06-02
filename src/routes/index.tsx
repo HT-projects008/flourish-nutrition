@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
+import { BenefitsMindmap } from "../components/BenefitsMindmap";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -45,9 +46,6 @@ const marqueeItems = [
   "Vegan friendly",
   "Launching soon",
 ];
-
-// Shared benefit tags — identical across all three flavours since the formula is the same
-const FLAVOUR_TAGS = ["Gut health", "Debloat", "Fat loss", "Anti-inflammatory", "Blood sugar"];
 
 // Overflow-hidden word mask for hero headline — inner span translates up via GSAP on load
 function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
@@ -132,23 +130,6 @@ function Marquee() {
 }
 
 function ProductFeatures() {
-  const features = [
-    {
-      title: "Beat the bloat",
-      copy: "ACV and ginger work together to support digestion and reduce uncomfortable fullness after every meal.",
-      ingredients: ["Apple cider vinegar", "Ginger extract"],
-    },
-    {
-      title: "Support fat loss",
-      copy: "Ceylon cinnamon and ACV help regulate blood sugar, curb cravings, and support your metabolism before you eat.",
-      ingredients: ["Ceylon cinnamon", "ACV"],
-    },
-    {
-      title: "Gut health, daily",
-      copy: "Inulin prebiotic fibre feeds the beneficial bacteria your gut needs — every day, not just when you remember.",
-      ingredients: ["Inulin prebiotic", "Turmeric", "Black pepper"],
-    },
-  ];
   return (
     <section id="formula" className="py-28 lg:py-40 bg-[var(--color-cream)]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -160,33 +141,15 @@ function ProductFeatures() {
             Whole body health starts in the gut.
           </h2>
           <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-            Eight clinically-studied ingredients. One precise ratio. Taken before every meal.
+            Eight evidence-based ingredients. One precise ratio. Taken before your first meal.
           </p>
         </Reveal>
-        <div className="mt-20 grid md:grid-cols-3 gap-6 lg:gap-8">
-          {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 120}>
-              <div className="rounded-3xl bg-white border border-border/80 p-10 h-full hover:border-primary/30 transition-colors duration-200 flex flex-col">
-                <h3 className="font-serif text-2xl font-semibold text-foreground">{f.title}</h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed flex-1">{f.copy}</p>
-                <div className="mt-6 flex flex-wrap gap-1.5">
-                  {f.ingredients.map((ing) => (
-                    <span key={ing} className="text-[11px] text-primary/70 bg-primary/8 rounded-full px-2.5 py-1">
-                      {ing}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
+        <div className="mt-10">
+          <BenefitsMindmap />
         </div>
-        <Reveal delay={360}>
-          <div className="mt-6 rounded-3xl bg-white border border-primary/20 p-10">
-            <p className="font-serif text-lg text-muted-foreground leading-relaxed italic">
-              The Flourish Formula works as a system. Remove one ingredient and the others are less effective. That's not marketing — that's the science behind why each one is here.
-            </p>
-          </div>
-        </Reveal>
+        <p className="text-zinc-400 text-xs text-center mt-4">
+          Every branch traces back to the same source — a healthier gut.
+        </p>
       </div>
     </section>
   );
@@ -249,19 +212,9 @@ function Flavours() {
               <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
                 Flavour {f.id}
               </p>
-              <h3 className={`font-serif text-3xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
+              <h3 className={`font-serif text-3xl font-bold mb-6 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
                 {f.name}
               </h3>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {FLAVOUR_TAGS.map((tag) => (
-                  <span
-                    key={tag}
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${f.dark ? "bg-[#1a1a1a]/15 text-[#1a1a1a]" : "bg-white/20 text-white"}`}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
               <p className={`text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
                 {f.description}
               </p>
