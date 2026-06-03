@@ -10,7 +10,7 @@ const PALETTE: [number, number, number][] = [
   [234,  88,  12],  // orange-600
 ];
 
-type BacteriaType = "cocci" | "bacilli" | "spirilli";
+type BacteriaType = "cocci" | "bacilli" | "spirilli" | "bifido";
 
 interface Particle {
   type: BacteriaType;
@@ -29,9 +29,14 @@ interface Particle {
   // bacilli
   bw: number; bh: number;
   wobbleOffset: number;
+  // spirilli + bifido (stroke weight)
+  strokeW: number;
   // spirilli
   span: number;
-  strokeW: number;
+  // bifido (Y-shape Bifidobacterium)
+  stemLen: number;
+  branchLen: number;
+  branchAngle: number;
 }
 
 function rand(min: number, max: number) {
@@ -39,51 +44,68 @@ function rand(min: number, max: number) {
 }
 
 function mkParticle(cw: number, ch: number): Particle {
+  // Type distribution: cocci 30%, bacilli 30%, spirilli 25%, bifido 15%
   const tr = Math.random();
-  const type: BacteriaType = tr < 0.40 ? "cocci" : tr < 0.75 ? "bacilli" : "spirilli";
+  const type: BacteriaType =
+    tr < 0.30 ? "cocci" :
+    tr < 0.60 ? "bacilli" :
+    tr < 0.85 ? "spirilli" :
+    "bifido";
 
-  // Three depth layers with increased contrast: back dim/slow → front bright/fast
+  // Three depth layers — back dim/slow → front bright/fast
   const lr = Math.random();
   let layerScale: number, layerOpacity: number, layerSpeed: number;
-  if (lr < 0.25)      { layerScale = 0.5; layerOpacity = 0.30; layerSpeed = 0.25; }
-  else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.60; layerSpeed = 0.60; }
+  if (lr < 0.25)      { layerScale = 0.5; layerOpacity = 0.35; layerSpeed = 0.25; }
+  else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.65; layerSpeed = 0.60; }
   else                 { layerScale = 1.0; layerOpacity = 0.90; layerSpeed = 1.00; }
 
-  // Base velocities slowed 30% for a premium, unhurried feel
-  const bvx = rand(-0.105, 0.105);
-  const bvy = rand(-0.14, 0.056);
+  // Floaty, slow base velocities
+  const bvx = rand(-0.09, 0.09);
+  const bvy = rand(-0.12, 0.05);
+
+  // Stroke weight per type
+  let strokeW = 1;
+  if (type === "spirilli") strokeW = rand(1.5, 3.0);
+  else if (type === "bifido") strokeW = rand(1.5, 2.5);
 
   return {
     type,
     x: rand(0, cw), y: rand(0, ch),
     vx: bvx, vy: bvy, baseVx: bvx, baseVy: bvy,
     rotation: rand(0, Math.PI * 2),
-    rotationSpeed: rand(-0.005, 0.005),
+    rotationSpeed: rand(-0.003, 0.003),
     color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
     layerScale, layerOpacity, layerSpeed,
-    radius: rand(12, 32),
+    // Cocci: smaller radius range
+    radius: rand(5, 14),
     pulseOffset: rand(0, Math.PI * 2),
-    bw: rand(28, 60), bh: rand(10, 20),
+    // Bacilli: smaller capsule
+    bw: rand(12, 26), bh: rand(4, 9),
     wobbleOffset: rand(0, Math.PI * 2),
-    span: rand(30, 65),
-    strokeW: rand(3, 6),
+    // Spirilli: smaller S-curve span
+    span: rand(14, 30),
+    strokeW,
+    // Bifido: Y-shape dimensions
+    stemLen: rand(10, 18),
+    branchLen: rand(6, 12),
+    branchAngle: rand(35 * Math.PI / 180, 45 * Math.PI / 180),
   };
 }
 
 function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal size breathing: ±8% of base radius, phase-offset per particle
+  // Universal breathing: ±8% of base radius, phase-offset per particle
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const rad = p.radius * p.layerScale * breathe;
 
-  // Soft biological glow: larger halo at 2× radius, 4% opacity — drawn first
+  // Soft biological glow at 2× radius, 4% opacity
   ctx.beginPath();
   ctx.arc(0, 0, rad * 2, 0, Math.PI * 2);
   ctx.fillStyle = `rgba(${r},${g},${b},0.04)`;
   ctx.fill();
 
-  // Radial gradient fill: full colour at centre, transparent at edge
+  // Radial gradient fill
   const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, rad);
   grd.addColorStop(0, `rgba(${r},${g},${b},${(0.9 * a).toFixed(3)})`);
   grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
@@ -92,30 +114,30 @@ function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Outer ring at 25% opacity — depth cue
+  // Outer ring — depth cue at 25% opacity
   ctx.beginPath();
-  ctx.arc(0, 0, rad + 6 * p.layerScale, 0, Math.PI * 2);
+  ctx.arc(0, 0, rad + 4 * p.layerScale, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.25 * a).toFixed(3)})`;
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth = 1;
   ctx.stroke();
 }
 
 function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal size breathing applied to capsule dimensions
+  // Universal breathing applied to capsule dimensions
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const w = p.bw * p.layerScale * breathe;
   const h = p.bh * p.layerScale * breathe;
-  // Slow wobble on top of base rotation
-  const wobble = Math.sin(frame * 0.008 + p.wobbleOffset) * 0.4;
+  // Gentler wobble
+  const wobble = Math.sin(frame * 0.008 + p.wobbleOffset) * 0.2;
 
   ctx.save();
   ctx.rotate(wobble);
 
-  // Capsule path: two straight edges connected by arcs at each end
+  // Capsule path
   const capR = h / 2;
-  const halfInner = (w - h) / 2;
+  const halfInner = Math.max(0, (w - h) / 2);
 
   ctx.beginPath();
   ctx.moveTo(-halfInner, -capR);
@@ -132,7 +154,7 @@ function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) 
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Highlight sheen: small white ellipse at 10% opacity in upper third
+  // Highlight sheen at 10% opacity in upper third
   ctx.save();
   ctx.translate(-halfInner * 0.2, -capR * 0.45);
   ctx.scale(w * 0.26, h * 0.18);
@@ -148,7 +170,7 @@ function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) 
 function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal size breathing applied to spiral span
+  // Universal breathing applied to spiral span
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const s = (p.span / 2) * p.layerScale * breathe;
 
@@ -162,6 +184,35 @@ function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number)
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.70 * a).toFixed(3)})`;
   ctx.lineWidth = p.strokeW * p.layerScale;
   ctx.lineCap = "round";
+  ctx.stroke();
+}
+
+// Bifidobacterium: Y-shape representing the bifid (forked) morphology
+// This genus is the primary target of prebiotic inulin in the Flourish formula
+function drawBifido(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
+  const [r, g, b] = p.color;
+  const a = p.layerOpacity;
+  // Universal breathing applied to Y dimensions
+  const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
+  const stemHalf = (p.stemLen / 2) * p.layerScale * breathe;
+  const bLen = p.branchLen * p.layerScale * breathe;
+  const angle = p.branchAngle;
+
+  ctx.beginPath();
+  // Vertical stem: bottom to top
+  ctx.moveTo(0, stemHalf);
+  ctx.lineTo(0, -stemHalf);
+  // Left branch from top of stem
+  ctx.moveTo(0, -stemHalf);
+  ctx.lineTo(-bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
+  // Right branch from top of stem
+  ctx.moveTo(0, -stemHalf);
+  ctx.lineTo(bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
+
+  ctx.strokeStyle = `rgba(${r},${g},${b},${(0.60 * a).toFixed(3)})`;
+  ctx.lineWidth = p.strokeW * p.layerScale;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
   ctx.stroke();
 }
 
@@ -181,7 +232,8 @@ export function MicrobiomeCanvas() {
     canvas.width = cw;
     canvas.height = ch;
 
-    const targetCount = () => (window.innerWidth < 768 ? 50 : 90);
+    // More particles to compensate for smaller size
+    const targetCount = () => (window.innerWidth < 768 ? 65 : 110);
     let particles = Array.from({ length: targetCount() }, () => mkParticle(cw, ch));
     let mx = -999, my = -999;
     let frame = 0;
@@ -223,20 +275,20 @@ export function MicrobiomeCanvas() {
           p.vy += (dy / dist) * force;
         }
 
-        // Lerp back toward base velocity at 2% per frame
+        // Lerp back toward base velocity
         p.vx += (p.baseVx - p.vx) * 0.02;
         p.vy += (p.baseVy - p.vy) * 0.02;
 
-        // Cap at 1.26 px/frame (30% reduction from original 1.8)
+        // Cap speed (proportional to reduced velocity range)
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (spd > 1.26) { p.vx = (p.vx / spd) * 1.26; p.vy = (p.vy / spd) * 1.26; }
+        if (spd > 1.0) { p.vx = (p.vx / spd) * 1.0; p.vy = (p.vy / spd) * 1.0; }
 
         p.x += p.vx * p.layerSpeed;
         p.y += p.vy * p.layerSpeed;
         p.rotation += p.rotationSpeed;
 
         // Seamless edge wrap
-        const pad = 80;
+        const pad = 60;
         if (p.x < -pad) p.x = cw + pad;
         else if (p.x > cw + pad) p.x = -pad;
         if (p.y < -pad) p.y = ch + pad;
@@ -245,9 +297,10 @@ export function MicrobiomeCanvas() {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
-        if (p.type === "cocci") drawCocci(ctx, p, frame);
+        if (p.type === "cocci")        drawCocci(ctx, p, frame);
         else if (p.type === "bacilli") drawBacilli(ctx, p, frame);
-        else drawSpirilli(ctx, p, frame);
+        else if (p.type === "spirilli") drawSpirilli(ctx, p, frame);
+        else                            drawBifido(ctx, p, frame);
         ctx.restore();
       }
 
