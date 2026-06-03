@@ -14,6 +14,17 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
+const marqueeItems = [
+  "Premium organic ingredients",
+  "Made in the UK",
+  "8 organic ingredients",
+  "Before every meal",
+  "Gut health · Debloat · Fat loss",
+  "No artificial additives",
+  "Vegan friendly",
+  "Launching soon",
+];
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -89,6 +100,242 @@ function Hero() {
   );
 }
 
+function Marquee() {
+  const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
+  return (
+    <section aria-hidden="true" className="bg-[#1a1a1a] text-white overflow-hidden py-5">
+      <div className="flex animate-marquee whitespace-nowrap">
+        {track.map((item, i) => (
+          <span key={i} className="flex items-center gap-8 px-8 text-sm tracking-wide uppercase font-medium">
+            {item}
+            <span className="text-primary">●</span>
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Benefits() {
+  const problemCards = [
+    {
+      heading: "Ultra-processed food",
+      body: "Modern diets strip away the fibre and diversity your gut bacteria need to thrive.",
+    },
+    {
+      heading: "Chronic stress",
+      body: "Cortisol disrupts the gut-brain axis, slowing digestion and triggering inflammation throughout the body.",
+    },
+    {
+      heading: "Missing daily ritual",
+      body: "Your gut needs consistent daily support, not occasional supplements taken when you remember.",
+    },
+  ];
+
+  const timelineEntries = [
+    {
+      time: "FIRST DRINK",
+      heading: "Feel it working immediately.",
+      body: "ACV and ginger begin supporting your digestive system within 30 minutes of your meal. Most people notice reduced post-meal heaviness from the very first serve.",
+    },
+    {
+      time: "DAY 3",
+      heading: "Bloating starts to ease.",
+      body: "The combination of ginger, ACV, and lemon begins reducing digestive inflammation. Post-meal bloating becomes noticeably less frequent for most people.",
+    },
+    {
+      time: "WEEK 1",
+      heading: "Energy starts to stabilise.",
+      body: "Ceylon cinnamon and ACV work together to steady blood sugar after meals, reducing the energy crashes that follow eating. You start feeling more consistent throughout the day.",
+    },
+    {
+      time: "WEEK 2",
+      heading: "Your gut microbiome responds.",
+      body: "Prebiotic inulin begins feeding your beneficial gut bacteria. Digestion becomes more regular. The foundation of long-term gut health starts here.",
+    },
+    {
+      time: "MONTH 1",
+      heading: "Measurable change.",
+      body: "A full month of daily Flourish ritual. Most people report consistently less bloating, clearer skin, more stable energy, and a noticeably lighter feeling after every meal.",
+    },
+    {
+      time: "MONTH 3",
+      heading: "Your gut, transformed.",
+      body: "The cumulative effect of 90 days of prebiotic support and daily gut health ritual. This is what it means to truly Flourish.",
+    },
+  ];
+
+  return (
+    <section id="benefits" className="py-24 lg:py-40 bg-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+
+        {/* ── PART 1: The Problem ───────────────────────────────────────────── */}
+        <div className="max-w-3xl mx-auto text-center">
+          <Reveal>
+            <p className="text-sm font-medium text-primary mb-6">● WHY GUT HEALTH MATTERS</p>
+            <h2 className="font-serif text-4xl lg:text-6xl font-bold text-zinc-900 leading-tight">
+              Most people don't realise their gut is affecting everything.
+            </h2>
+          </Reveal>
+
+          {/* Stat blocks */}
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
+            <Reveal>
+              <div>
+                <p
+                  data-stat-count="70"
+                  data-stat-suffix="%"
+                  className="text-5xl font-bold text-primary"
+                >
+                  70%
+                </p>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed">
+                  of people experience uncomfortable bloating regularly
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={100}>
+              <div>
+                <p
+                  data-stat-count="30"
+                  data-stat-suffix="%"
+                  className="text-5xl font-bold text-primary"
+                >
+                  30%
+                </p>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed">
+                  of adults report low energy directly linked to poor digestion
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <div>
+                <p className="text-5xl font-bold text-primary">1 in 3</p>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed">
+                  people have an imbalanced gut microbiome without knowing it
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Problem cards */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {problemCards.map((card) => (
+            <div
+              key={card.heading}
+              data-problem-card
+              className="bg-zinc-50 rounded-2xl p-6"
+            >
+              <div className="w-8 h-8 rounded-full bg-orange-100 mb-4" aria-hidden="true" />
+              <h3 className="font-bold text-zinc-900 mb-2">{card.heading}</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed">{card.body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* ── PART 2: The Timeline ──────────────────────────────────────────── */}
+        <div className="mt-24">
+          <Reveal className="text-center">
+            <p className="text-sm font-medium text-primary mb-6">● YOUR FLOURISH JOURNEY</p>
+            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
+              Feel the difference.<br />From day one.
+            </h2>
+            <p className="mt-4 text-zinc-500 max-w-xl mx-auto leading-relaxed">
+              Flourish is designed to work immediately and build over time. Here's what to expect.
+            </p>
+          </Reveal>
+
+          {/* Timeline */}
+          <div className="mt-16 relative" data-timeline-container>
+
+            {/* Desktop center line — drawn by GSAP scrub */}
+            <div
+              className="hidden lg:block absolute left-1/2 -translate-x-px top-6 bottom-6 w-0.5 overflow-hidden"
+              aria-hidden="true"
+            >
+              <div
+                data-timeline-line
+                className="w-full h-full bg-orange-200"
+                style={{ transformOrigin: "top center", transform: "scaleY(0)" }}
+              />
+            </div>
+
+            {/* Mobile left border */}
+            <div
+              className="lg:hidden absolute left-[7px] top-4 bottom-4 w-0.5 bg-orange-100"
+              aria-hidden="true"
+            />
+
+            {timelineEntries.map((entry, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <div
+                  key={entry.time}
+                  data-timeline-entry={isLeft ? "left" : "right"}
+                  className="relative"
+                >
+                  {/* Mobile layout */}
+                  <div className="lg:hidden flex gap-5 pb-10">
+                    <div className="shrink-0 mt-1">
+                      <div className="w-3.5 h-3.5 rounded-full bg-orange-500 ring-4 ring-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">
+                        {entry.time}
+                      </p>
+                      <h3 className="font-serif text-lg font-bold text-zinc-900 mb-2">
+                        {entry.heading}
+                      </h3>
+                      <p className="text-zinc-500 text-sm leading-relaxed">{entry.body}</p>
+                    </div>
+                  </div>
+
+                  {/* Desktop layout */}
+                  <div className="hidden lg:grid grid-cols-2 py-10">
+                    {/* Left column */}
+                    <div className="pr-16 text-right">
+                      {isLeft && (
+                        <>
+                          <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">
+                            {entry.time}
+                          </p>
+                          <h3 className="font-serif text-xl font-bold text-zinc-900 mb-2">
+                            {entry.heading}
+                          </h3>
+                          <p className="text-zinc-500 text-sm leading-relaxed">{entry.body}</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Right column */}
+                    <div className="pl-16">
+                      {!isLeft && (
+                        <>
+                          <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">
+                            {entry.time}
+                          </p>
+                          <h3 className="font-serif text-xl font-bold text-zinc-900 mb-2">
+                            {entry.heading}
+                          </h3>
+                          <p className="text-zinc-500 text-sm leading-relaxed">{entry.body}</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Center dot — positioned relative to the outer entry wrapper */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-10">
+                      <div className="w-3.5 h-3.5 rounded-full bg-orange-500 ring-4 ring-orange-50" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Flavours() {
   const flavours = [
     {
@@ -127,7 +374,7 @@ function Flavours() {
   ];
 
   return (
-    <section id="flavours" className="py-28 lg:py-40 bg-white">
+    <section id="flavours" className="py-28 lg:py-40 bg-[var(--color-cream)]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl mx-auto text-center mb-16">
           <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
@@ -203,7 +450,7 @@ function Flavours() {
 
 function PricingTeaser() {
   return (
-    <section className="py-24 bg-[var(--color-cream)]">
+    <section className="py-24 bg-white">
       <div className="max-w-2xl mx-auto px-6 text-center">
         <Reveal>
           <p className="text-sm font-medium text-primary mb-6">● PRICING</p>
@@ -329,6 +576,85 @@ function Index() {
           },
         });
       });
+
+      // ── 4. Stat numbers: count up from 0 when entering viewport ─────────────
+      (q("[data-stat-count]") as HTMLElement[]).forEach((el) => {
+        const target = parseInt(el.dataset.statCount ?? "0");
+        const suffix = el.dataset.statSuffix ?? "";
+        const obj = { val: 0 };
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 85%",
+          once: true,
+          onEnter: () => {
+            gsap.to(obj, {
+              val: target,
+              duration: 1.2,
+              ease: "power2.out",
+              onUpdate: () => {
+                el.textContent = `${Math.round(obj.val)}${suffix}`;
+              },
+            });
+          },
+        });
+      });
+
+      // ── 5. Problem cards: stagger in from below ──────────────────────────────
+      gsap.set(q("[data-problem-card]"), { y: 40, opacity: 0 });
+      ScrollTrigger.batch(q("[data-problem-card]"), {
+        onEnter: (els) => {
+          gsap.to(els, {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.12,
+            ease: EASE,
+            overwrite: true,
+          });
+        },
+        start: "top 85%",
+        once: true,
+      });
+
+      // ── 6. Timeline entries: slide in from their respective sides ────────────
+      (q("[data-timeline-entry]") as HTMLElement[]).forEach((el) => {
+        const dir = el.dataset.timelineEntry;
+        gsap.fromTo(
+          el,
+          { x: dir === "right" ? 30 : -30, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: EASE,
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              once: true,
+            },
+          },
+        );
+      });
+
+      // ── 7. Timeline line: draw downward tied to scroll position ──────────────
+      const timelineContainer = (q("[data-timeline-container]") as HTMLElement[])[0];
+      const timelineLine = (q("[data-timeline-line]") as HTMLElement[])[0];
+      if (timelineContainer && timelineLine) {
+        gsap.fromTo(
+          timelineLine,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: timelineContainer,
+              start: "top center",
+              end: "bottom center",
+              scrub: 1,
+            },
+          },
+        );
+      }
     },
     { scope: mainRef },
   );
@@ -338,6 +664,8 @@ function Index() {
       <Nav />
       <main id="main-content" ref={mainRef}>
         <Hero />
+        <Marquee />
+        <Benefits />
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
