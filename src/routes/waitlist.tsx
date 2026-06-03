@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, Lock, Leaf } from "lucide-react";
 import { submitWaitlist } from "../lib/submit-waitlist";
 
 export const Route = createFileRoute("/waitlist")({
@@ -19,6 +19,8 @@ export const Route = createFileRoute("/waitlist")({
 });
 
 const GRAIN_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
+
+const BENEFITS = ["8 organic ingredients", "Before every meal", "Made in the UK"] as const;
 
 function WaitlistPage() {
   const [email, setEmail] = useState("");
@@ -46,9 +48,7 @@ function WaitlistPage() {
       {/* LEFT — gradient visual, desktop only */}
       <div
         className="hidden lg:flex relative flex-col overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, #D4744A 0%, #E8B84B 50%, #C4445A 100%)",
-        }}
+        style={{ background: "linear-gradient(135deg, #D4744A 0%, #E8622A 55%, #C4441A 100%)" }}
       >
         <div
           className="absolute inset-0 pointer-events-none"
@@ -61,20 +61,21 @@ function WaitlistPage() {
         </div>
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-12">
           <div className="max-w-xs">
+            <div className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-xs font-medium text-white">
+              <Leaf className="size-3" />
+              Founding member offer
+            </div>
             <h2 className="font-serif text-5xl font-bold text-white leading-tight">
               Feel lighter.
               <br />
               Every day.
             </h2>
             <p className="mt-4 text-white/80 text-sm leading-relaxed">
-              Join the waitlist for early access and 20% off your first order.
+              The gut health formula built on 8 organic ingredients — designed to reduce bloating and support digestion, naturally.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {["8 organic ingredients", "Before every meal", "Made in the UK"].map((badge) => (
-                <span
-                  key={badge}
-                  className="rounded-full bg-white/20 text-white px-3 py-1 text-xs"
-                >
+              {BENEFITS.map((badge) => (
+                <span key={badge} className="rounded-full bg-white/20 text-white px-3 py-1 text-xs">
                   {badge}
                 </span>
               ))}
@@ -85,12 +86,17 @@ function WaitlistPage() {
 
       {/* RIGHT — form */}
       <div className="relative flex flex-col min-h-screen bg-white">
-        <div className="lg:hidden h-2 w-full bg-orange-500 flex-shrink-0" />
+        {/* Mobile gradient accent bar */}
+        <div
+          className="lg:hidden h-1.5 w-full flex-shrink-0"
+          style={{ background: "linear-gradient(90deg, #D4744A, #E8622A)" }}
+        />
 
-        <main id="main-content" className="flex-1 flex flex-col items-center justify-center px-8 lg:px-16 py-16">
+        <main id="main-content" className="flex-1 flex flex-col items-center justify-center px-6 sm:px-10 lg:px-16 py-12">
           <Link
             to="/"
-            className="lg:hidden font-serif text-xl font-bold text-orange-500 mb-8 self-start"
+            className="lg:hidden font-serif text-xl font-bold mb-10 self-start"
+            style={{ color: "#D4744A" }}
           >
             Flourish
           </Link>
@@ -98,30 +104,46 @@ function WaitlistPage() {
           <div className="w-full max-w-sm">
             {status === "success" ? (
               <div className="text-center">
-                <CheckCircle className="mx-auto size-12 text-orange-500 mb-4" />
+                <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-orange-50">
+                  <CheckCircle className="size-7 text-primary" />
+                </div>
                 <h1 className="font-serif text-3xl font-bold text-zinc-900">
-                  You're on the list.
+                  You're in. Welcome to Flourish.
                 </h1>
-                <p className="mt-2 text-zinc-600 text-sm leading-relaxed">
-                  We'll be in touch as soon as Flourish launches. Check your inbox for a
-                  confirmation.
+                <p className="mt-3 text-zinc-600 text-sm leading-relaxed">
+                  Your 20% founding member discount is reserved. We'll send it straight to your inbox the moment we launch — no action needed.
                 </p>
                 <Link
                   to="/"
-                  className="mt-8 inline-block text-orange-500 text-sm hover:underline"
+                  className="mt-8 inline-block text-sm font-medium hover:underline"
+                  style={{ color: "#D4744A" }}
                 >
                   ← Back to Flourish
                 </Link>
               </div>
             ) : (
               <>
-                <h1 className="font-serif text-3xl lg:text-4xl font-bold text-zinc-900 mb-2">
+                {/* Founding member badge */}
+                <div className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1.5 text-xs font-medium">
+                  <Leaf className="size-3" />
+                  Founding member — 20% off at launch
+                </div>
+
+                <h1 className="font-serif text-3xl lg:text-4xl font-bold text-zinc-900 mb-3">
                   Be first to Flourish.
                 </h1>
-                <p className="text-zinc-600 text-sm mb-8 leading-relaxed">
-                  We're putting the finishing touches on our formula. Join the waitlist and get 20%
-                  off when we launch.
+                <p className="text-zinc-600 text-sm mb-6 leading-relaxed">
+                  Flourish launches soon. Secure your founding member discount — 20% off your first order, reserved exclusively for waitlist subscribers.
                 </p>
+
+                {/* Mobile benefit pills — hidden on desktop (desktop left panel shows these) */}
+                <div className="lg:hidden flex flex-wrap gap-1.5 mb-6">
+                  {BENEFITS.map((b) => (
+                    <span key={b} className="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
+                      {b}
+                    </span>
+                  ))}
+                </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-0">
                   <label htmlFor="waitlist-page-email" className="sr-only">
@@ -135,28 +157,27 @@ function WaitlistPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
                     disabled={status === "loading"}
-                    className="w-full px-4 py-3.5 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all disabled:opacity-60"
+                    className="w-full px-4 py-3.5 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-transparent transition-all disabled:opacity-60"
                   />
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="mt-3 w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm py-3.5 rounded-xl transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="mt-3 w-full flex items-center justify-center gap-2 bg-primary hover:brightness-95 active:brightness-90 text-white font-semibold text-sm py-3.5 rounded-xl transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {status === "loading" && <Loader2 className="size-4 animate-spin" />}
-                    {status === "loading" ? "Joining…" : "Join the Waitlist"}
+                    {status === "loading" ? "Joining…" : "Claim My 20% Off"}
                   </button>
                 </form>
 
                 {status === "error" && (
-                  <p
-                    className={`mt-2 text-sm text-center ${isDuplicate ? "text-orange-500" : "text-red-500"}`}
-                  >
+                  <p className={`mt-2 text-sm text-center ${isDuplicate ? "text-primary" : "text-red-500"}`}>
                     {message}
                   </p>
                 )}
 
-                <p className="mt-4 text-zinc-500 text-xs text-center">
-                  No spam. Just your early access notification. Unsubscribe anytime.
+                <p className="mt-4 text-zinc-400 text-xs text-center flex items-center justify-center gap-1.5">
+                  <Lock className="size-3 shrink-0" />
+                  No spam. Your discount is held until launch. Unsubscribe anytime.
                 </p>
               </>
             )}
@@ -164,7 +185,7 @@ function WaitlistPage() {
         </main>
 
         <div className="flex justify-center pb-6 flex-shrink-0">
-          <Link to="/" className="text-zinc-500 text-xs hover:text-zinc-600 transition-colors">
+          <Link to="/" className="text-zinc-400 text-xs hover:text-zinc-600 transition-colors">
             ← Back to Flourish
           </Link>
         </div>
