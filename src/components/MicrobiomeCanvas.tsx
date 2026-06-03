@@ -25,7 +25,6 @@ interface Particle {
   layerSpeed: number;
   // cocci
   radius: number;
-  pulseSpeed: number;
   pulseOffset: number;
   // bacilli
   bw: number; bh: number;
@@ -43,14 +42,16 @@ function mkParticle(cw: number, ch: number): Particle {
   const tr = Math.random();
   const type: BacteriaType = tr < 0.40 ? "cocci" : tr < 0.75 ? "bacilli" : "spirilli";
 
+  // Three depth layers with increased contrast: back dim/slow → front bright/fast
   const lr = Math.random();
   let layerScale: number, layerOpacity: number, layerSpeed: number;
-  if (lr < 0.25)      { layerScale = 0.5; layerOpacity = 0.50; layerSpeed = 0.35; }
-  else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.75; layerSpeed = 0.70; }
-  else                 { layerScale = 1.0; layerOpacity = 1.00; layerSpeed = 1.00; }
+  if (lr < 0.25)      { layerScale = 0.5; layerOpacity = 0.30; layerSpeed = 0.25; }
+  else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.60; layerSpeed = 0.60; }
+  else                 { layerScale = 1.0; layerOpacity = 0.90; layerSpeed = 1.00; }
 
-  const bvx = rand(-0.15, 0.15);
-  const bvy = rand(-0.20, 0.08);
+  // Base velocities slowed 30% for a premium, unhurried feel
+  const bvx = rand(-0.105, 0.105);
+  const bvy = rand(-0.14, 0.056);
 
   return {
     type,
@@ -61,7 +62,6 @@ function mkParticle(cw: number, ch: number): Particle {
     color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
     layerScale, layerOpacity, layerSpeed,
     radius: rand(12, 32),
-    pulseSpeed: rand(0.006, 0.018),
     pulseOffset: rand(0, Math.PI * 2),
     bw: rand(28, 60), bh: rand(10, 20),
     wobbleOffset: rand(0, Math.PI * 2),
@@ -73,10 +73,17 @@ function mkParticle(cw: number, ch: number): Particle {
 function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  const pulse = Math.sin(frame * p.pulseSpeed + p.pulseOffset) * 3;
-  const rad = (p.radius + pulse) * p.layerScale;
+  // Universal size breathing: ±8% of base radius, phase-offset per particle
+  const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
+  const rad = p.radius * p.layerScale * breathe;
 
-  // Radial gradient: full colour at centre, transparent at edge
+  // Soft biological glow: larger halo at 2× radius, 4% opacity — drawn first
+  ctx.beginPath();
+  ctx.arc(0, 0, rad * 2, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(${r},${g},${b},0.04)`;
+  ctx.fill();
+
+  // Radial gradient fill: full colour at centre, transparent at edge
   const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, rad);
   grd.addColorStop(0, `rgba(${r},${g},${b},${(0.9 * a).toFixed(3)})`);
   grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
@@ -85,7 +92,7 @@ function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Outer ring at 25% opacity — gives depth
+  // Outer ring at 25% opacity — depth cue
   ctx.beginPath();
   ctx.arc(0, 0, rad + 6 * p.layerScale, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.25 * a).toFixed(3)})`;
@@ -96,9 +103,11 @@ function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
 function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  const w = p.bw * p.layerScale;
-  const h = p.bh * p.layerScale;
-  // Additional slow wobble on top of base rotation
+  // Universal size breathing applied to capsule dimensions
+  const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
+  const w = p.bw * p.layerScale * breathe;
+  const h = p.bh * p.layerScale * breathe;
+  // Slow wobble on top of base rotation
   const wobble = Math.sin(frame * 0.008 + p.wobbleOffset) * 0.4;
 
   ctx.save();
@@ -123,23 +132,25 @@ function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) 
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Subtle specular highlight — small white oval in upper third
+  // Highlight sheen: small white ellipse at 10% opacity in upper third
   ctx.save();
   ctx.translate(-halfInner * 0.2, -capR * 0.45);
   ctx.scale(w * 0.26, h * 0.18);
   ctx.beginPath();
   ctx.arc(0, 0, 1, 0, Math.PI * 2);
-  ctx.fillStyle = `rgba(255,255,255,${(0.12 * a).toFixed(3)})`;
+  ctx.fillStyle = `rgba(255,255,255,${(0.10 * a).toFixed(3)})`;
   ctx.fill();
   ctx.restore();
 
   ctx.restore();
 }
 
-function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle) {
+function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  const s = (p.span / 2) * p.layerScale;
+  // Universal size breathing applied to spiral span
+  const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
+  const s = (p.span / 2) * p.layerScale * breathe;
 
   // 3 bezier segments forming a visible S-curve
   ctx.beginPath();
@@ -162,7 +173,6 @@ export function MicrobiomeCanvas() {
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // Cast after the null guard — TS can't narrow ctx through closures
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) return;
 
@@ -217,9 +227,9 @@ export function MicrobiomeCanvas() {
         p.vx += (p.baseVx - p.vx) * 0.02;
         p.vy += (p.baseVy - p.vy) * 0.02;
 
-        // Cap at 1.8 px/frame
+        // Cap at 1.26 px/frame (30% reduction from original 1.8)
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (spd > 1.8) { p.vx = (p.vx / spd) * 1.8; p.vy = (p.vy / spd) * 1.8; }
+        if (spd > 1.26) { p.vx = (p.vx / spd) * 1.26; p.vy = (p.vy / spd) * 1.26; }
 
         p.x += p.vx * p.layerSpeed;
         p.y += p.vy * p.layerSpeed;
@@ -237,7 +247,7 @@ export function MicrobiomeCanvas() {
         ctx.rotate(p.rotation);
         if (p.type === "cocci") drawCocci(ctx, p, frame);
         else if (p.type === "bacilli") drawBacilli(ctx, p, frame);
-        else drawSpirilli(ctx, p);
+        else drawSpirilli(ctx, p, frame);
         ctx.restore();
       }
 

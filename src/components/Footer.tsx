@@ -27,7 +27,6 @@ export default function Footer() {
                   {l.label}
                 </a>
               ))}
-              <a href="/contact" className="hover:text-primary transition">Contact</a>
             </nav>
           </div>
         </Reveal>
@@ -37,7 +36,6 @@ export default function Footer() {
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               <span className="opacity-50 cursor-default">Privacy Policy</span>
               <span className="opacity-50 cursor-default">Terms</span>
-              <a href="/contact" className="hover:text-primary transition">Contact</a>
               <span className="opacity-50 cursor-default">Instagram</span>
               <span className="opacity-50 cursor-default">TikTok</span>
             </div>

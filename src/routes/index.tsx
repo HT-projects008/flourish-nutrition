@@ -7,7 +7,6 @@ import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
-import { BenefitsMindmap } from "../components/BenefitsMindmap";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -36,17 +35,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const marqueeItems = [
-  "Premium organic ingredients",
-  "Made in the UK",
-  "8 organic ingredients",
-  "Before every meal",
-  "Gut health · Debloat · Fat loss",
-  "No artificial additives",
-  "Vegan friendly",
-  "Launching soon",
-];
-
 // Overflow-hidden word mask for hero headline — inner span translates up via GSAP on load
 function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
   return (
@@ -55,18 +43,6 @@ function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boo
       style={{ marginRight: spaceAfter ? "0.28em" : undefined }}
     >
       <span className="hero-word inline-block">{children}</span>
-    </span>
-  );
-}
-
-// Same mask pattern for GutStory headline — inner span translates up via GSAP on scroll
-function GutWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
-  return (
-    <span
-      className="inline-block overflow-hidden pb-[0.1em] mb-[-0.1em]"
-      style={{ marginRight: spaceAfter ? "0.25em" : undefined }}
-    >
-      <span className="gut-word inline-block">{children}</span>
     </span>
   );
 }
@@ -113,70 +89,40 @@ function Hero() {
   );
 }
 
-function Marquee() {
-  const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
-  return (
-    <section aria-hidden="true" className="bg-[#1a1a1a] text-white overflow-hidden py-5">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {track.map((item, i) => (
-          <span key={i} className="flex items-center gap-8 px-8 text-sm tracking-wide uppercase font-medium">
-            {item}
-            <span className="text-primary">●</span>
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ProductFeatures() {
-  return (
-    <section id="formula" className="py-28 lg:py-40 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-6">
-            The Formula
-          </p>
-          <h2 className="section-heading font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05]">
-            Whole body health starts in the gut.
-          </h2>
-          <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-            Eight evidence-based ingredients. One precise ratio. Taken before your first meal.
-          </p>
-        </Reveal>
-        <div className="mt-10">
-          <BenefitsMindmap />
-        </div>
-        <p className="text-zinc-400 text-xs text-center mt-4">
-          Every branch traces back to the same source — a healthier gut.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 function Flavours() {
   const flavours = [
     {
       id: "01",
-      name: "Apple Cinnamon",
-      bg: "#D4744A",
-      dark: false,
-      description: "Warm apple cider vinegar with Ceylon cinnamon and ginger. The original Flourish ritual.",
-    },
-    {
-      id: "02",
       name: "Lemon Ginger",
       bg: "#E8B84B",
       dark: true,
-      description: "Bright lemon with warming ginger and turmeric. Citrus-forward and refreshing before every meal.",
+      label: "FLAVOUR 01 · THE ORIGINAL",
+      description: "Bright lemon with warming ginger and ACV. The flavour that started it all.",
+      cta: "Notify me →",
+      ctaHref: "#waitlist",
+      comingSoon: false,
+    },
+    {
+      id: "02",
+      name: "Apple Cinnamon",
+      bg: "#D4744A",
+      dark: false,
+      label: "FLAVOUR 02",
+      description: "Warm apple cider vinegar with Ceylon cinnamon. Smooth, spiced, and grounding.",
+      cta: "Notify me →",
+      ctaHref: "#waitlist",
+      comingSoon: false,
     },
     {
       id: "03",
-      name: "Lemon Raspberry",
-      bg: "#C4445A",
+      name: "You decide.",
+      bg: "#2D2D2D",
       dark: false,
-      description: "Lemon and raspberry with prebiotic inulin. The lightest, most refreshing way to Flourish.",
+      label: "FLAVOUR 03 · COMING SOON",
+      description: "A third flavour is coming. We're still perfecting it, and we want your input.",
+      cta: "Vote for your flavour →",
+      ctaHref: "#waitlist",
+      comingSoon: true,
     },
   ];
 
@@ -188,7 +134,7 @@ function Flavours() {
             One precise daily blend. 3 flavours.
           </h2>
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">
-            The same powerful formula. Three delicious flavours. Every ingredient chosen for a specific role — crafted to be taken before every meal.
+            The same powerful formula. Three delicious flavours. Every ingredient chosen for a specific role, crafted to be taken before every meal.
           </p>
         </Reveal>
 
@@ -201,16 +147,25 @@ function Flavours() {
               className="min-h-[520px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
-              {/* Watermark number — decorative background element */}
-              <span
-                className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-primary opacity-20"
-                aria-hidden="true"
-              >
-                {f.id}
-              </span>
+              {/* Watermark: "?" for coming soon card, number for others */}
+              {f.comingSoon ? (
+                <span
+                  className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-white opacity-20"
+                  aria-hidden="true"
+                >
+                  ?
+                </span>
+              ) : (
+                <span
+                  className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-primary opacity-20"
+                  aria-hidden="true"
+                >
+                  {f.id}
+                </span>
+              )}
 
               <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
-                Flavour {f.id}
+                {f.label}
               </p>
               <h3 className={`font-serif text-3xl font-bold mb-6 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
                 {f.name}
@@ -219,10 +174,10 @@ function Flavours() {
                 {f.description}
               </p>
               <a
-                href="#waitlist"
+                href={f.ctaHref}
                 className={`mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#1a1a1a]/60 hover:text-[#1a1a1a]/90" : "text-white/70 hover:text-white"}`}
               >
-                Notify me →
+                {f.cta}
               </a>
             </div>
           ))}
@@ -246,146 +201,37 @@ function Flavours() {
   );
 }
 
-function SachetShowcase() {
+function PricingTeaser() {
   return (
-    <section id="sachet" className="py-28 lg:py-40 bg-[#1a1a1a]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section className="py-24 bg-[var(--color-cream)]">
+      <div className="max-w-2xl mx-auto px-6 text-center">
         <Reveal>
-          <div className="min-h-[500px] rounded-2xl overflow-hidden">
-            <img
-              src="/assets/sachet-rip.gif"
-              alt="Flourish sachet opening"
-              className="w-full h-full object-contain rounded-2xl"
-            />
-          </div>
-        </Reveal>
-        <div className="flex flex-col gap-8">
-          <Reveal>
-            <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-white leading-[1.1]">
-              Every serve.<br />Perfectly measured.
-            </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="text-zinc-400 text-lg leading-relaxed">
-              The Flourish Formula is a precision blend — not a collection of ingredients you could recreate at home. The sourcing, the ratios, the order they work in your body — that's what took time to get right.
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <div className="flex gap-12">
-              <div>
-                <p data-count="8" data-count-suffix="g" className="text-5xl font-bold text-orange-500">8g</p>
-                <p className="mt-1 text-sm text-zinc-400">Precise dose, every time</p>
-              </div>
-              <div>
-                <p data-count="1" className="text-5xl font-bold text-orange-500">1</p>
-                <p className="mt-1 text-sm text-zinc-400">Daily ritual, before every meal</p>
-              </div>
+          <p className="text-sm font-medium text-primary mb-6">● PRICING</p>
+          <h2 className="font-serif text-4xl font-bold text-zinc-900 leading-[1.1] mb-10">
+            Simple pricing.<br />Early access discount.
+          </h2>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-6">
+            <div>
+              <p className="text-5xl font-bold text-zinc-900">£34.99</p>
+              <p className="mt-2 text-sm text-zinc-600">one-off purchase</p>
             </div>
-          </Reveal>
-          <Reveal delay={360}>
-            <p className="text-zinc-500 text-sm italic">Available in single-serve sachets and 30-serve tubs</p>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function GutStory() {
-  const columns = [
-    {
-      num: "1",
-      title: "In your gut",
-      body: "Inulin prebiotics feed your beneficial bacteria. ACV and ginger calm inflammation and support healthy digestion after every meal.",
-    },
-    {
-      num: "2",
-      title: "In your bloodstream",
-      body: "Ceylon cinnamon and ACV work together to steady blood sugar levels, reducing energy crashes and cravings throughout the day.",
-    },
-    {
-      num: "3",
-      title: "In your whole body",
-      body: "Turmeric and black pepper deliver bioavailable anti-inflammatory support. Feel lighter, and better, everywhere.",
-    },
-  ];
-
-  return (
-    <section id="gut" className="py-32 lg:py-48 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
-
-        {/* Pill label */}
-        <Reveal>
-          <div className="flex justify-center mb-8">
-            <span className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest">
-              <span className="size-1.5 rounded-full bg-orange-400" aria-hidden="true" />
-              Your gut. Your health.
-            </span>
-          </div>
-        </Reveal>
-
-        {/* Headline — GSAP gut-word reveal on scroll */}
-        <h2 className="font-serif text-5xl lg:text-7xl font-bold leading-[0.95] text-zinc-900">
-          <GutWord spaceAfter>Your</GutWord>
-          <GutWord spaceAfter>body</GutWord>
-          <GutWord>is</GutWord>
-          <br />
-          <GutWord spaceAfter>waiting</GutWord>
-          <GutWord>to</GutWord>
-          <br />
-          <GutWord>Flourish.</GutWord>
-        </h2>
-
-        <Reveal delay={200}>
-          <p className="mt-6 text-zinc-500 max-w-lg mx-auto leading-relaxed">
-            Inside every serve, eight ingredients work together to transform how your gut feels and how your whole body thrives.
-          </p>
-        </Reveal>
-
-        {/* GIF placeholder with ambient orange glow */}
-        <Reveal delay={300}>
-          <div className="relative max-w-sm mx-auto my-16">
-            <div
-              data-gut-glow
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-orange-500/15 blur-3xl -z-10"
-              aria-hidden="true"
-            />
-            <div className="rounded-3xl bg-white border border-zinc-200 aspect-video flex items-center justify-center">
-              <span className="text-zinc-400 text-xs tracking-[0.2em] uppercase font-medium">Gut illustration</span>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Three benefit columns — GSAP fade-up stagger + number count-up */}
-        <div className="mt-4 grid lg:grid-cols-3 gap-8 text-left">
-          {columns.map((col) => (
-            <div key={col.num} data-gut-col>
-              <div className="w-8 h-px bg-orange-500 mb-6 hidden lg:block" aria-hidden="true" />
-              <p
-                data-gut-num={col.num}
-                className="font-serif text-6xl font-bold text-orange-500 leading-none"
-              >
-                0{col.num}
+            <div className="w-px h-14 bg-zinc-300 hidden sm:block" aria-hidden="true" />
+            <div>
+              <p className="text-5xl font-bold text-orange-500">
+                £27.99<span className="text-2xl font-semibold">/mo</span>
               </p>
-              <h3 className="font-bold text-zinc-900 text-xl mt-4">{col.title}</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed mt-3">{col.body}</p>
+              <p className="mt-2 text-sm text-zinc-600">monthly subscription</p>
             </div>
-          ))}
-        </div>
-
-        {/* Closing line + CTA */}
-        <Reveal delay={400}>
-          <div className="mt-20">
-            <p className="font-serif text-2xl italic text-zinc-400">
-              This is what it means to Flourish.
-            </p>
-            <a
-              href="#waitlist"
-              className="mt-8 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
-            >
-              Join the Waitlist
-            </a>
           </div>
+          <p className="text-zinc-500 text-sm mb-8">
+            Save 20% with a subscription. Cancel anytime. Free UK delivery.
+          </p>
+          <a
+            href="#waitlist"
+            className="inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
+          >
+            Join waitlist for early access pricing
+          </a>
         </Reveal>
       </div>
     </section>
@@ -469,30 +315,7 @@ function Index() {
         once: true,
       });
 
-      // ── 3. Sachet stats: count up from 0 when they enter the viewport ───────
-      (q("[data-count]") as HTMLElement[]).forEach((el) => {
-        const target = parseInt(el.dataset.count ?? "0");
-        const suffix = el.dataset.countSuffix ?? "";
-        const obj = { val: 0 };
-
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 80%",
-          once: true,
-          onEnter: () => {
-            gsap.to(obj, {
-              val: target,
-              duration: target > 5 ? 1.2 : 0.8,
-              ease: "power2.out",
-              onUpdate: () => {
-                el.textContent = `${Math.round(obj.val)}${suffix}`;
-              },
-            });
-          },
-        });
-      });
-
-      // ── 4. Section headings: slide in from the left on scroll ───────────────
+      // ── 3. Section headings: slide in from the left on scroll ───────────────
       (q(".section-heading") as HTMLElement[]).forEach((el) => {
         gsap.from(el, {
           x: -50,
@@ -506,76 +329,6 @@ function Index() {
           },
         });
       });
-
-      // ── 5. GutStory headline: word-by-word reveal on scroll ─────────────────
-      const gutWordEls = q(".gut-word") as HTMLElement[];
-      if (gutWordEls.length) {
-        gsap.set(gutWordEls, { yPercent: 110 });
-        const gutH2 = gutWordEls[0].closest("h2") as Element | null;
-        ScrollTrigger.create({
-          trigger: (gutH2 ?? gutWordEls[0]) as Element,
-          start: "top 82%",
-          once: true,
-          onEnter: () => {
-            gsap.to(gutWordEls, {
-              yPercent: 0,
-              duration: 0.5,
-              stagger: 0.06,
-              ease: EASE,
-              clearProps: "transform",
-            });
-          },
-        });
-      }
-
-      // ── 6. GutStory columns: fade up + in with 150ms stagger ────────────────
-      gsap.set(q("[data-gut-col]"), { y: 40, opacity: 0 });
-      ScrollTrigger.batch(q("[data-gut-col]"), {
-        onEnter: (els) => {
-          gsap.to(els, {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: EASE,
-            overwrite: true,
-          });
-        },
-        start: "top 85%",
-        once: true,
-      });
-
-      // ── 7. GutStory numbers: count up 0→n staggered 200ms apart ─────────────
-      (q("[data-gut-num]") as HTMLElement[]).forEach((el, i) => {
-        const target = parseInt(el.dataset.gutNum ?? "1");
-        const obj = { val: 0 };
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 85%",
-          once: true,
-          onEnter: () => {
-            gsap.to(obj, {
-              val: target,
-              duration: 0.8,
-              delay: i * 0.2,
-              ease: "power2.out",
-              onUpdate: () => {
-                el.textContent = String(Math.round(obj.val)).padStart(2, "0");
-              },
-            });
-          },
-        });
-      });
-
-      // ── 8. GutStory glow: ambient pulse — scale + opacity, repeat forever ───
-      const glowEl = (q("[data-gut-glow]") as HTMLElement[])[0];
-      if (glowEl) {
-        gsap.fromTo(
-          glowEl,
-          { scale: 0.8, opacity: 0.1 },
-          { scale: 1.2, opacity: 0.25, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 },
-        );
-      }
     },
     { scope: mainRef },
   );
@@ -585,11 +338,8 @@ function Index() {
       <Nav />
       <main id="main-content" ref={mainRef}>
         <Hero />
-        <Marquee />
-        <ProductFeatures />
         <Flavours />
-        <SachetShowcase />
-        <GutStory />
+        <PricingTeaser />
         <FinalCTA />
       </main>
       <Footer />
