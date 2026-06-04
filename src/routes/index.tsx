@@ -93,7 +93,7 @@ function Hero() {
               Join 500+ people already waiting · Early access gets 20% off
             </p>
             <p className="mt-3 text-xs text-zinc-500 italic">
-              Animation represents Lactobacillus, Bifidobacterium, and Bacteroidetes, gut bacteria supported by the Flourish formula.
+              Animation represents Lactobacillus, Bifidobacterium, Faecalibacterium, Bacteroidetes, and Akkermansia, gut bacteria supported by the Flourish formula.
             </p>
           </Reveal>
         </div>
@@ -120,38 +120,17 @@ function Marquee() {
 
 function Benefits() {
   const items = [
-    {
-      name: "Reduced bloating",
-      desc: "Feel lighter after every meal",
-    },
-    {
-      name: "Consistent energy throughout the day",
-      desc: "Steadier blood sugar after meals",
-    },
-    {
-      name: "Fat loss support",
-      desc: "Appetite and metabolism control",
-    },
-    {
-      name: "Clearer and brighter skin",
-      desc: "Regulates inflammation and supports detoxification",
-    },
-    {
-      name: "Stronger immunity",
-      desc: "Anti-tumour properties and strengthened immune system",
-    },
-    {
-      name: "Thriving gut microbiome",
-      desc: "Feeds the beneficial bacteria your gut needs most",
-    },
-    {
-      name: "Improved mood and mental clarity",
-      desc: "Increased nutrient absorption fed to your brain",
-    },
+    { name: "Reduced bloating",                    desc: "Feel lighter after every meal" },
+    { name: "Consistent energy throughout the day", desc: "Steadier blood sugar after meals" },
+    { name: "Fat loss support",                     desc: "Appetite and metabolism control" },
+    { name: "Clearer and brighter skin",            desc: "Regulates inflammation and supports detoxification" },
+    { name: "Stronger immunity",                    desc: "Anti-tumour properties and strengthened immune system" },
+    { name: "Thriving gut microbiome",              desc: "Feeds the beneficial bacteria your gut needs most" },
+    { name: "Improved mood and mental clarity",     desc: "Increased nutrient absorption fed to your brain" },
   ];
 
   return (
-    <section id="benefits" className="py-24 lg:py-40 bg-[var(--color-cream)]">
+    <section id="benefits" className="py-24 lg:py-40 bg-white">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
@@ -166,17 +145,20 @@ function Benefits() {
             </p>
           </div>
 
-          {/* Right — benefits list + footer */}
+          {/* Right — numbered benefits list + footer */}
           <div>
             <ul>
               {items.map((item, i) => (
                 <li
                   key={item.name}
                   data-benefit-item
-                  className={`flex gap-4 py-6 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
+                  className={`flex items-start py-6 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
                 >
-                  <span className="text-orange-500 text-lg font-bold mt-0.5 shrink-0 select-none" aria-hidden="true">
-                    *
+                  <span
+                    className="font-mono text-xs text-orange-400 font-medium mr-4 mt-1 shrink-0 w-6 text-right select-none"
+                    aria-hidden="true"
+                  >
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
                     <p className="font-serif font-bold text-lg text-zinc-900 leading-snug">
@@ -188,7 +170,7 @@ function Benefits() {
               ))}
             </ul>
 
-            {/* Footer: button + closing quote */}
+            {/* Footer: science link, CTA, closing quote */}
             <div data-benefits-footer className="mt-8">
               <Link
                 to="/journal"
@@ -196,9 +178,16 @@ function Benefits() {
               >
                 See the science →
               </Link>
+              <p className="mt-6 text-zinc-500 text-sm">Ready to experience the difference?</p>
+              <a
+                href="#waitlist"
+                className="mt-3 inline-flex bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2.5 text-sm font-medium transition-colors"
+              >
+                Join the Waitlist
+              </a>
               <div className="mt-12 pt-8 border-t border-zinc-100">
                 <p className="font-serif italic text-2xl text-zinc-400 leading-relaxed">
-                  "This is what it means to Flourish."
+                  This is what it means to Flourish.
                 </p>
               </div>
             </div>
@@ -214,56 +203,55 @@ function Comparison() {
   type CompCell = false | true | string;
 
   const rows: { feature: string; probiotic: CompCell; greens: CompCell; acv: CompCell }[] = [
-    { feature: "Organic ingredients",                                    probiotic: false,         greens: "Sometimes",    acv: false },
-    { feature: "Anti-inflammatory support",                              probiotic: false,         greens: "Sometimes",    acv: false },
-    { feature: "Blood sugar support",                                    probiotic: false,         greens: false,          acv: "Partially" },
-    { feature: "No emulsifiers or preservatives",                        probiotic: "Often added", greens: "Varies",       acv: "Varies" },
-    { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)", probiotic: false,      greens: "Partially",    acv: false },
-    { feature: "8 simple recognisable ingredients",                      probiotic: false,         greens: "Often 50-75+", acv: "3-5 ingredients" },
-    { feature: "Natural sweetener only (zero sugar)",                    probiotic: "Often sugar", greens: "Varies",       acv: "Often sharp" },
-    { feature: "Affordable, from £1/day (subscription)",                 probiotic: true,          greens: "Often £2-3+",  acv: true },
+    { feature: "Organic ingredients",                                       probiotic: false,         greens: "Sometimes",    acv: false },
+    { feature: "Anti-inflammatory support",                                 probiotic: false,         greens: "Sometimes",    acv: false },
+    { feature: "Blood sugar support",                                       probiotic: false,         greens: false,          acv: "Partially" },
+    { feature: "No emulsifiers or preservatives",                           probiotic: "Often added", greens: "Varies",       acv: "Varies" },
+    { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)", probiotic: false,         greens: "Partially",    acv: false },
+    { feature: "8 simple recognisable ingredients",                         probiotic: false,         greens: "Often 50-75+", acv: "3-5 ingredients" },
+    { feature: "Natural sweetener only (zero sugar)",                       probiotic: "Often sugar", greens: "Varies",       acv: "Often sharp" },
+    { feature: "Affordable, from £1/day (subscription)",                    probiotic: true,          greens: "Often £2-3+",  acv: true },
   ];
 
   const compCell = (v: CompCell) => {
     if (v === false) return (
       <div className="flex justify-center">
-        <X className="w-5 h-5 text-zinc-300" strokeWidth={1.5} aria-label="No" />
+        <X className="w-5 h-5 text-zinc-600" strokeWidth={1.5} aria-label="No" />
       </div>
     );
     if (v === true) return (
       <div className="flex justify-center">
-        <div className="w-7 h-7 bg-zinc-200 rounded-full flex items-center justify-center">
+        <div className="w-7 h-7 bg-zinc-700 rounded-full flex items-center justify-center">
           <Check className="w-4 h-4 text-zinc-400" strokeWidth={2.5} aria-label="Yes" />
         </div>
       </div>
     );
-    return <span className="text-zinc-400 text-xs italic">{v}</span>;
+    return <span className="text-zinc-500 text-xs italic">{v}</span>;
   };
 
   return (
-    <section id="comparison" className="py-24 lg:py-40 bg-[var(--color-cream)]">
+    <section id="comparison" className="py-24 lg:py-40 bg-[#1a1a1a]">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
 
         {/* Top copy */}
         <div data-comparison-copy className="text-center">
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-tight">
             Simple ingredients,<br />backed by science.
           </h2>
-          <p className="text-zinc-500 mt-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-zinc-400 mt-4 max-w-xl mx-auto leading-relaxed">
             Most gut health drinks do one thing well. Flourish was built to do everything, simply, organically, and affordably.
           </p>
         </div>
 
         {/* Table */}
-        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-200 relative">
+        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-700 relative">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse">
               <thead>
-                <tr className="bg-zinc-900">
-                  {/* Feature column */}
+                <tr className="bg-[#0f0f0f]">
                   <th className="pl-6 pr-4 py-4 text-left w-[30%]" scope="col" />
 
-                  {/* Flourish column */}
+                  {/* Flourish column — orange header */}
                   <th className="bg-orange-500 py-4 text-center w-[17.5%]" scope="col">
                     <div className="flex flex-col items-center">
                       <span className="w-1.5 h-1.5 rounded-full bg-white mb-1" aria-hidden="true" />
@@ -278,8 +266,8 @@ function Comparison() {
                     { label: "ACV Shots",         sub: "e.g. Bragg, H&B" },
                   ].map((col) => (
                     <th key={col.label} className="py-4 px-2 text-center w-[17.5%]" scope="col">
-                      <p className="text-zinc-400 text-sm font-medium">{col.label}</p>
-                      <p className="text-zinc-500 text-xs mt-0.5 font-normal">{col.sub}</p>
+                      <p className="text-zinc-500 text-sm font-medium">{col.label}</p>
+                      <p className="text-zinc-600 text-xs mt-0.5 font-normal">{col.sub}</p>
                     </th>
                   ))}
                 </tr>
@@ -290,15 +278,14 @@ function Comparison() {
                   <tr
                     key={row.feature}
                     data-comparison-row
-                    className={`border-b border-zinc-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-zinc-50"}`}
+                    className={`border-b border-zinc-800 last:border-b-0 ${i % 2 === 0 ? "bg-[#242424]" : "bg-[#1f1f1f]"}`}
                   >
-                    {/* Feature label */}
-                    <td className="pl-6 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
+                    <td className="pl-6 pr-4 py-4 text-zinc-300 text-sm font-medium align-middle">
                       {row.feature}
                     </td>
 
-                    {/* Flourish check — always ✓, orange, prominent */}
-                    <td className="bg-orange-50/50 py-4 text-center align-middle">
+                    {/* Flourish — always ✓, orange, prominent */}
+                    <td className="bg-orange-500/10 py-4 text-center align-middle">
                       <div className="flex items-center justify-center">
                         <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
                           <Check className="w-4 h-4 text-white" strokeWidth={2.5} aria-label="Yes" />
@@ -316,28 +303,17 @@ function Comparison() {
             </table>
           </div>
 
-          {/* Mobile horizontal scroll hint */}
+          {/* Mobile scroll fade — dark bg */}
           <div
-            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[var(--color-cream)] to-transparent pointer-events-none lg:hidden"
+            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#1a1a1a] to-transparent pointer-events-none lg:hidden"
             aria-hidden="true"
           />
         </div>
 
         {/* Legal disclaimer */}
-        <p className="text-zinc-400 text-xs mt-4 text-center italic">
+        <p className="text-zinc-600 text-xs mt-4 text-center italic">
           Comparison based on commonly available products in each category. Category characteristics are generalised, individual products may vary. Brand names referenced are category examples only.
         </p>
-
-        {/* Bottom CTA */}
-        <div className="mt-12 text-center">
-          <p className="text-zinc-500 text-sm">Ready to experience the difference?</p>
-          <a
-            href="#waitlist"
-            className="mt-6 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
-          >
-            Join the Waitlist
-          </a>
-        </div>
 
       </div>
     </section>
@@ -399,9 +375,9 @@ function Flavours() {
               className="min-h-[520px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
-              {/* Consistent number watermark across all three cards */}
+              {/* Number watermark — consistent across all three cards */}
               <span
-                className="absolute -bottom-6 -right-4 font-serif text-[12rem] font-bold leading-none select-none pointer-events-none text-primary opacity-20"
+                className="absolute bottom-4 right-6 font-serif text-8xl font-bold leading-none select-none pointer-events-none text-white opacity-20"
                 aria-hidden="true"
               >
                 {f.id}
@@ -448,8 +424,7 @@ function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    // Flavours() is bg-[var(--color-cream)] — same bg here, so border-t separates them
-    <section id="pricing" className="py-24 lg:py-40 bg-[var(--color-cream)] border-t border-zinc-100">
+    <section id="pricing" className="py-24 lg:py-40 bg-white">
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
         {/* Top copy */}

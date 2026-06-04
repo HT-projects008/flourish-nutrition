@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-// Warm amber microbiome palette — stored as [r, g, b] for gradient construction
+// Warm amber microbiome palette — [r, g, b] for gradient construction
 const PALETTE: [number, number, number][] = [
   [251, 146,  60],  // orange-400
   [245, 158,  11],  // amber-400
@@ -10,7 +10,16 @@ const PALETTE: [number, number, number][] = [
   [234,  88,  12],  // orange-600
 ];
 
-type BacteriaType = "cocci" | "bacilli" | "spirilli" | "bifido";
+type BacteriaType = "cocci" | "bacilli" | "spirilli" | "bifido" | "akkermansia";
+
+// Scientific label for each bacteria type shown as a floating annotation
+const LABEL_NAMES: Record<BacteriaType, string> = {
+  cocci:       "Lactobacillus",
+  bacilli:     "Bacteroidetes",
+  spirilli:    "Faecalibacterium",
+  bifido:      "Bifidobacterium",
+  akkermansia: "Akkermansia",
+};
 
 interface Particle {
   type: BacteriaType;
@@ -23,20 +32,27 @@ interface Particle {
   layerScale: number;
   layerOpacity: number;
   layerSpeed: number;
+  // Label (one representative per type, desktop only)
+  isLabel: boolean;
+  labelName: string;
   // cocci
   radius: number;
   pulseOffset: number;
   // bacilli
   bw: number; bh: number;
   wobbleOffset: number;
-  // spirilli + bifido (stroke weight)
+  // spirilli + bifido stroke weight
   strokeW: number;
   // spirilli
   span: number;
-  // bifido (Y-shape Bifidobacterium)
+  // bifido: Y-shape or V-shape (50/50)
   stemLen: number;
   branchLen: number;
   branchAngle: number;
+  bifidoVariant: "Y" | "V";
+  // akkermansia: oval shape
+  akkRadiusX: number;
+  akkRadiusY: number;
 }
 
 function rand(min: number, max: number) {
@@ -44,13 +60,14 @@ function rand(min: number, max: number) {
 }
 
 function mkParticle(cw: number, ch: number): Particle {
-  // Type distribution: cocci 30%, bacilli 30%, spirilli 25%, bifido 15%
+  // Distribution: cocci 25%, bacilli 25%, spirilli 20%, bifido 20%, akkermansia 10%
   const tr = Math.random();
   const type: BacteriaType =
-    tr < 0.30 ? "cocci" :
-    tr < 0.60 ? "bacilli" :
-    tr < 0.85 ? "spirilli" :
-    "bifido";
+    tr < 0.25 ? "cocci" :
+    tr < 0.50 ? "bacilli" :
+    tr < 0.70 ? "spirilli" :
+    tr < 0.90 ? "bifido" :
+    "akkermansia";
 
   // Three depth layers — back dim/slow → front bright/fast
   const lr = Math.random();
@@ -59,13 +76,11 @@ function mkParticle(cw: number, ch: number): Particle {
   else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.65; layerSpeed = 0.60; }
   else                 { layerScale = 1.0; layerOpacity = 0.90; layerSpeed = 1.00; }
 
-  // Floaty, slow base velocities
   const bvx = rand(-0.09, 0.09);
   const bvy = rand(-0.12, 0.05);
 
-  // Stroke weight per type
   let strokeW = 1;
-  if (type === "spirilli") strokeW = rand(1.5, 3.0);
+  if (type === "spirilli")    strokeW = rand(1.5, 3.0);
   else if (type === "bifido") strokeW = rand(1.5, 2.5);
 
   return {
@@ -76,30 +91,49 @@ function mkParticle(cw: number, ch: number): Particle {
     rotationSpeed: rand(-0.003, 0.003),
     color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
     layerScale, layerOpacity, layerSpeed,
-    // Cocci: smaller radius range
+    // Label fields — populated by labelParticles() after array is built
+    isLabel: false,
+    labelName: LABEL_NAMES[type],
+    // Cocci
     radius: rand(5, 14),
     pulseOffset: rand(0, Math.PI * 2),
-    // Bacilli: smaller capsule
+    // Bacilli
     bw: rand(12, 26), bh: rand(4, 9),
     wobbleOffset: rand(0, Math.PI * 2),
-    // Spirilli: smaller S-curve span
+    // Spirilli
     span: rand(14, 30),
     strokeW,
-    // Bifido: Y-shape dimensions
+    // Bifido
     stemLen: rand(10, 18),
     branchLen: rand(6, 12),
     branchAngle: rand(35 * Math.PI / 180, 45 * Math.PI / 180),
+    bifidoVariant: Math.random() < 0.5 ? "Y" : "V",
+    // Akkermansia
+    akkRadiusX: rand(4, 8),
+    akkRadiusY: rand(6, 12),
   };
+}
+
+// Mark the first particle of each type as the label carrier (desktop only)
+function labelParticles(ps: Particle[]) {
+  const seen = new Set<BacteriaType>();
+  for (const p of ps) {
+    if (!seen.has(p.type)) {
+      p.isLabel = true;
+      seen.add(p.type);
+    } else {
+      p.isLabel = false;
+    }
+  }
 }
 
 function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal breathing: ±8% of base radius, phase-offset per particle
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const rad = p.radius * p.layerScale * breathe;
 
-  // Soft biological glow at 2× radius, 4% opacity
+  // Soft biological glow at 2× radius
   ctx.beginPath();
   ctx.arc(0, 0, rad * 2, 0, Math.PI * 2);
   ctx.fillStyle = `rgba(${r},${g},${b},0.04)`;
@@ -114,7 +148,7 @@ function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Outer ring — depth cue at 25% opacity
+  // Outer ring — depth cue
   ctx.beginPath();
   ctx.arc(0, 0, rad + 4 * p.layerScale, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.25 * a).toFixed(3)})`;
@@ -125,17 +159,14 @@ function drawCocci(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
 function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal breathing applied to capsule dimensions
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const w = p.bw * p.layerScale * breathe;
   const h = p.bh * p.layerScale * breathe;
-  // Gentler wobble
   const wobble = Math.sin(frame * 0.008 + p.wobbleOffset) * 0.2;
 
   ctx.save();
   ctx.rotate(wobble);
 
-  // Capsule path
   const capR = h / 2;
   const halfInner = Math.max(0, (w - h) / 2);
 
@@ -147,14 +178,13 @@ function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) 
   ctx.arc(-halfInner, 0, capR, Math.PI / 2, 3 * Math.PI / 2);
   ctx.closePath();
 
-  // Linear gradient along long axis
   const grd = ctx.createLinearGradient(-halfInner, 0, halfInner, 0);
   grd.addColorStop(0, `rgba(${r},${g},${b},${(0.75 * a).toFixed(3)})`);
   grd.addColorStop(1, `rgba(${r},${g},${b},${(0.25 * a).toFixed(3)})`);
   ctx.fillStyle = grd;
   ctx.fill();
 
-  // Highlight sheen at 10% opacity in upper third
+  // Highlight sheen in upper third
   ctx.save();
   ctx.translate(-halfInner * 0.2, -capR * 0.45);
   ctx.scale(w * 0.26, h * 0.18);
@@ -170,16 +200,14 @@ function drawBacilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) 
 function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal breathing applied to spiral span
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
   const s = (p.span / 2) * p.layerScale * breathe;
 
-  // 3 bezier segments forming a visible S-curve
   ctx.beginPath();
   ctx.moveTo(-s, 0);
   ctx.bezierCurveTo(-s * 0.70, -s * 0.80, -s * 0.20, -s * 0.80, 0, -s * 0.35);
-  ctx.bezierCurveTo( s * 0.20,  0,         -s * 0.20,  0,          0,  s * 0.35);
-  ctx.bezierCurveTo( s * 0.20,  s * 0.80,   s * 0.70,  s * 0.80,   s,  0);
+  ctx.bezierCurveTo( s * 0.20,  0,          -s * 0.20,  0,          0,  s * 0.35);
+  ctx.bezierCurveTo( s * 0.20,  s * 0.80,    s * 0.70,  s * 0.80,   s,  0);
 
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.70 * a).toFixed(3)})`;
   ctx.lineWidth = p.strokeW * p.layerScale;
@@ -187,32 +215,65 @@ function drawSpirilli(ctx: CanvasRenderingContext2D, p: Particle, frame: number)
   ctx.stroke();
 }
 
-// Bifidobacterium: Y-shape representing the bifid (forked) morphology
-// This genus is the primary target of prebiotic inulin in the Flourish formula
+// Bifidobacterium: Y-shape (stem + two branches) or V-shape (two branches only)
+// Primary target of prebiotic inulin in the Flourish formula
 function drawBifido(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
   const [r, g, b] = p.color;
   const a = p.layerOpacity;
-  // Universal breathing applied to Y dimensions
   const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
-  const stemHalf = (p.stemLen / 2) * p.layerScale * breathe;
   const bLen = p.branchLen * p.layerScale * breathe;
   const angle = p.branchAngle;
-
-  ctx.beginPath();
-  // Vertical stem: bottom to top
-  ctx.moveTo(0, stemHalf);
-  ctx.lineTo(0, -stemHalf);
-  // Left branch from top of stem
-  ctx.moveTo(0, -stemHalf);
-  ctx.lineTo(-bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
-  // Right branch from top of stem
-  ctx.moveTo(0, -stemHalf);
-  ctx.lineTo(bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
 
   ctx.strokeStyle = `rgba(${r},${g},${b},${(0.60 * a).toFixed(3)})`;
   ctx.lineWidth = p.strokeW * p.layerScale;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
+
+  if (p.bifidoVariant === "Y") {
+    const stemHalf = (p.stemLen / 2) * p.layerScale * breathe;
+    ctx.beginPath();
+    // Vertical stem
+    ctx.moveTo(0, stemHalf);
+    ctx.lineTo(0, -stemHalf);
+    // Left branch from top
+    ctx.moveTo(0, -stemHalf);
+    ctx.lineTo(-bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
+    // Right branch from top
+    ctx.moveTo(0, -stemHalf);
+    ctx.lineTo( bLen * Math.sin(angle), -stemHalf - bLen * Math.cos(angle));
+  } else {
+    // V-shape: two branches spreading at ±40° from base, no stem
+    const vAngle = 40 * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-bLen * Math.sin(vAngle), -bLen * Math.cos(vAngle));
+    ctx.moveTo(0, 0);
+    ctx.lineTo( bLen * Math.sin(vAngle), -bLen * Math.cos(vAngle));
+  }
+
+  ctx.stroke();
+}
+
+// Akkermansia muciniphila: oval/egg shape that lines the gut wall
+// Supported by ACV and inulin in the Flourish formula
+function drawAkkermansia(ctx: CanvasRenderingContext2D, p: Particle, frame: number) {
+  const [r, g, b] = p.color;
+  const a = p.layerOpacity;
+  const breathe = 1 + Math.sin(frame * 0.003 + p.pulseOffset) * 0.08;
+  const rx = p.akkRadiusX * p.layerScale * breathe;
+  const ry = p.akkRadiusY * p.layerScale * breathe;
+
+  // Filled ellipse at 50% opacity
+  ctx.beginPath();
+  ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(${r},${g},${b},${(0.50 * a).toFixed(3)})`;
+  ctx.fill();
+
+  // Outer ring at 1.2× size, 15% opacity
+  ctx.beginPath();
+  ctx.ellipse(0, 0, rx * 1.2, ry * 1.2, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(${r},${g},${b},${(0.15 * a).toFixed(3)})`;
+  ctx.lineWidth = 0.8;
   ctx.stroke();
 }
 
@@ -232,9 +293,15 @@ export function MicrobiomeCanvas() {
     canvas.width = cw;
     canvas.height = ch;
 
-    // More particles to compensate for smaller size
-    const targetCount = () => (window.innerWidth < 768 ? 65 : 110);
-    let particles = Array.from({ length: targetCount() }, () => mkParticle(cw, ch));
+    const targetCount = () => (window.innerWidth < 768 ? 80 : 140);
+
+    const makeParticles = () => {
+      const ps = Array.from({ length: targetCount() }, () => mkParticle(cw, ch));
+      labelParticles(ps);
+      return ps;
+    };
+
+    let particles = makeParticles();
     let mx = -999, my = -999;
     let frame = 0;
     let raf: number;
@@ -244,15 +311,13 @@ export function MicrobiomeCanvas() {
       mx = e.clientX - rect.left;
       my = e.clientY - rect.top;
     };
-
     const onMouseLeave = () => { mx = -999; my = -999; };
-
     const onResize = () => {
       cw = canvas.offsetWidth;
       ch = canvas.offsetHeight;
       canvas.width = cw;
       canvas.height = ch;
-      particles = Array.from({ length: targetCount() }, () => mkParticle(cw, ch));
+      particles = makeParticles();
     };
 
     window.addEventListener("mousemove", onMouse);
@@ -262,6 +327,8 @@ export function MicrobiomeCanvas() {
     function tick() {
       ctx.clearRect(0, 0, cw, ch);
       frame++;
+
+      const isDesktop = cw >= 768;
 
       for (const p of particles) {
         // Mouse repulsion within 90px
@@ -275,11 +342,9 @@ export function MicrobiomeCanvas() {
           p.vy += (dy / dist) * force;
         }
 
-        // Lerp back toward base velocity
         p.vx += (p.baseVx - p.vx) * 0.02;
         p.vy += (p.baseVy - p.vy) * 0.02;
 
-        // Cap speed (proportional to reduced velocity range)
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
         if (spd > 1.0) { p.vx = (p.vx / spd) * 1.0; p.vy = (p.vy / spd) * 1.0; }
 
@@ -287,7 +352,6 @@ export function MicrobiomeCanvas() {
         p.y += p.vy * p.layerSpeed;
         p.rotation += p.rotationSpeed;
 
-        // Seamless edge wrap
         const pad = 60;
         if (p.x < -pad) p.x = cw + pad;
         else if (p.x > cw + pad) p.x = -pad;
@@ -297,11 +361,30 @@ export function MicrobiomeCanvas() {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
-        if (p.type === "cocci")        drawCocci(ctx, p, frame);
-        else if (p.type === "bacilli") drawBacilli(ctx, p, frame);
-        else if (p.type === "spirilli") drawSpirilli(ctx, p, frame);
-        else                            drawBifido(ctx, p, frame);
+        if (p.type === "cocci")            drawCocci(ctx, p, frame);
+        else if (p.type === "bacilli")     drawBacilli(ctx, p, frame);
+        else if (p.type === "spirilli")    drawSpirilli(ctx, p, frame);
+        else if (p.type === "bifido")      drawBifido(ctx, p, frame);
+        else                               drawAkkermansia(ctx, p, frame);
         ctx.restore();
+
+        // Draw floating label on one representative particle per type — desktop only
+        if (p.isLabel && isDesktop) {
+          const [r, g, b] = p.color;
+          // Label offset: clear of the particle's visual extent
+          let lx = p.x + 12;
+          if (p.type === "cocci")            lx = p.x + p.radius * p.layerScale + 4;
+          else if (p.type === "bacilli")     lx = p.x + p.bw * 0.5 * p.layerScale + 4;
+          else if (p.type === "spirilli")    lx = p.x + (p.span / 2) * p.layerScale + 4;
+          else if (p.type === "bifido")      lx = p.x + p.branchLen * p.layerScale + 4;
+          else if (p.type === "akkermansia") lx = p.x + p.akkRadiusX * 1.2 * p.layerScale + 4;
+
+          ctx.save();
+          ctx.font = "9px Inter, sans-serif";
+          ctx.fillStyle = `rgba(${r},${g},${b},${(0.40 * p.layerOpacity).toFixed(3)})`;
+          ctx.fillText(p.labelName, lx, p.y + 3);
+          ctx.restore();
+        }
       }
 
       raf = requestAnimationFrame(tick);
