@@ -132,16 +132,31 @@
 
 /* ─── Bounce (journal hero chevron) ───────────────────────────────────── */
 @keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(8px); }
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(12px); }
 }
-.animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+.animate-bounce-slow { animation: bounce-slow 3.5s ease-in-out infinite; }
 
 /* ─── Science hero floating particles ─────────────────────────────────── */
 @keyframes float-particle {
-  0%   { transform: translateY(0px) scale(1);   opacity: var(--start-opacity); }
-  50%  { transform: translateY(-20px) scale(1.2); opacity: calc(var(--start-opacity) * 1.5); }
-  100% { transform: translateY(0px) scale(1);   opacity: var(--start-opacity); }
+  0%, 100% { transform: translateY(0px) scale(1);    opacity: var(--start-opacity); }
+  50%       { transform: translateY(-18px) scale(1.15); opacity: calc(var(--start-opacity) * 1.6); }
+}
+
+/* ─── Ken Burns hero background ────────────────────────────────────────── */
+@keyframes ken-burns {
+  0%   { transform: scale(1.00) translate(0px,   0px); }
+  25%  { transform: scale(1.06) translate(-10px, -5px); }
+  50%  { transform: scale(1.10) translate(-5px,  -10px); }
+  75%  { transform: scale(1.06) translate(5px,   -5px); }
+  100% { transform: scale(1.00) translate(0px,   0px); }
+}
+.ken-burns-img {
+  animation: ken-burns 25s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns-img { animation: none; transform: scale(1.05); }
 }
 .float-particle {
   animation-name: float-particle;

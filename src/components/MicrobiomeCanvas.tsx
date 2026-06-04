@@ -55,6 +55,10 @@ interface Particle {
   akkRadiusY: number;
 }
 
+// Boundary constants: keep particles within visible hero area
+const NAV_HEIGHT = 72;
+const MARQUEE_BUFFER = 60;
+
 function rand(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
@@ -114,15 +118,26 @@ function mkParticle(cw: number, ch: number): Particle {
   };
 }
 
-// Mark the first particle of each type as the label carrier (desktop only)
+// Mark one label carrier per type — prefer front-layer particles (full opacity)
+// so labels always render at maximum brightness. Fall back to mid-layer if needed.
 function labelParticles(ps: Particle[]) {
-  const seen = new Set<BacteriaType>();
+  const frontSeen = new Set<BacteriaType>();
+  const midSeen = new Set<BacteriaType>();
+
+  for (const p of ps) p.isLabel = false;
+
+  // First pass: front layer (layerOpacity === 0.90)
   for (const p of ps) {
-    if (!seen.has(p.type)) {
+    if (p.layerOpacity === 0.90 && !frontSeen.has(p.type)) {
       p.isLabel = true;
-      seen.add(p.type);
-    } else {
-      p.isLabel = false;
+      frontSeen.add(p.type);
+    }
+  }
+  // Second pass: mid layer fallback (layerOpacity === 0.65)
+  for (const p of ps) {
+    if (p.layerOpacity === 0.65 && !frontSeen.has(p.type) && !midSeen.has(p.type)) {
+      p.isLabel = true;
+      midSeen.add(p.type);
     }
   }
 }
@@ -296,7 +311,17 @@ export function MicrobiomeCanvas() {
     const targetCount = () => (window.innerWidth < 768 ? 80 : 140);
 
     const makeParticles = () => {
-      const ps = Array.from({ length: targetCount() }, () => mkParticle(cw, ch));
+      const bTop = NAV_HEIGHT;
+      const bBottom = ch - MARQUEE_BUFFER;
+      const bLeft = 8;
+      const bRight = cw - 8;
+      const ps = Array.from({ length: targetCount() }, () => {
+        const p = mkParticle(cw, ch);
+        // Constrain initial spawn within visible bounds
+        p.x = bLeft + p.radius + Math.random() * Math.max(0, bRight - bLeft - p.radius * 2);
+        p.y = bTop + p.radius + Math.random() * Math.max(0, bBottom - bTop - p.radius * 2);
+        return p;
+      });
       labelParticles(ps);
       return ps;
     };
@@ -352,11 +377,24 @@ export function MicrobiomeCanvas() {
         p.y += p.vy * p.layerSpeed;
         p.rotation += p.rotationSpeed;
 
-        const pad = 60;
-        if (p.x < -pad) p.x = cw + pad;
-        else if (p.x > cw + pad) p.x = -pad;
-        if (p.y < -pad) p.y = ch + pad;
-        else if (p.y > ch + pad) p.y = -pad;
+        // Wall bouncing — constrained to visible hero area between nav and marquee
+        const bTop = NAV_HEIGHT;
+        const bBottom = ch - MARQUEE_BUFFER;
+        const bLeft = 8;
+        const bRight = cw - 8;
+        const pr = p.radius; // approximation for all particle types
+
+        if (p.y - pr < bTop)    { p.y = bTop + pr;    p.vy =  Math.abs(p.vy) * 0.85; }
+        if (p.y + pr > bBottom) { p.y = bBottom - pr;  p.vy = -Math.abs(p.vy) * 0.85; }
+        if (p.x - pr < bLeft)   { p.x = bLeft + pr;   p.vx =  Math.abs(p.vx) * 0.85; }
+        if (p.x + pr > bRight)  { p.x = bRight - pr;  p.vx = -Math.abs(p.vx) * 0.85; }
+
+        // Velocity cap + gentle drift to prevent particles from stopping
+        const MAX_SPEED = 0.8;
+        p.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vx));
+        p.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vy));
+        p.vx += (Math.random() - 0.5) * 0.018;
+        p.vy += (Math.random() - 0.5) * 0.018;
 
         ctx.save();
         ctx.translate(p.x, p.y);
@@ -392,11 +430,8 @@ export function MicrobiomeCanvas() {
           ctx.roundRect(pillX, pillY, textWidth + padding * 2, 16, 4);
           ctx.fill();
 
-          // Darkened version of particle colour for readable text on white
-          const dr = Math.max(0, r - 70);
-          const dg = Math.max(0, g - 50);
-          const db = Math.max(0, b - 20);
-          ctx.fillStyle = `rgb(${dr},${dg},${db})`;
+          // Fixed dark amber — readable on the white pill regardless of particle colour
+          ctx.fillStyle = "rgb(120, 60, 10)";
           ctx.fillText(p.labelName, pillX + padding, p.y + 4);
           ctx.restore();
         }
