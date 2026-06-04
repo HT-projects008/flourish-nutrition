@@ -137,6 +137,18 @@
 }
 .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
 
+/* ─── Science hero floating particles ─────────────────────────────────── */
+@keyframes float-particle {
+  0%   { transform: translateY(0px) scale(1);   opacity: var(--start-opacity); }
+  50%  { transform: translateY(-20px) scale(1.2); opacity: calc(var(--start-opacity) * 1.5); }
+  100% { transform: translateY(0px) scale(1);   opacity: var(--start-opacity); }
+}
+.float-particle {
+  animation-name: float-particle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
 /* ─── Reduced motion: all animations off ─────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
@@ -150,7 +162,8 @@
   .animate-marquee-slow {
     animation: none;
   }
-  .animate-bounce-slow {
+  .animate-bounce-slow,
+  .float-particle {
     animation: none;
   }
   /* Hero words are hidden by GSAP (yPercent: 110) — ensure they stay visible

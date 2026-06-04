@@ -368,10 +368,10 @@ export function MicrobiomeCanvas() {
         else                               drawAkkermansia(ctx, p, frame);
         ctx.restore();
 
-        // Draw floating label on one representative particle per type — desktop only
+        // Draw floating label with white pill background — desktop only
         if (p.isLabel && isDesktop) {
           const [r, g, b] = p.color;
-          // Label offset: clear of the particle's visual extent
+          // Compute x offset clear of the particle's visual extent
           let lx = p.x + 12;
           if (p.type === "cocci")            lx = p.x + p.radius * p.layerScale + 4;
           else if (p.type === "bacilli")     lx = p.x + p.bw * 0.5 * p.layerScale + 4;
@@ -380,9 +380,24 @@ export function MicrobiomeCanvas() {
           else if (p.type === "akkermansia") lx = p.x + p.akkRadiusX * 1.2 * p.layerScale + 4;
 
           ctx.save();
-          ctx.font = "9px Inter, sans-serif";
-          ctx.fillStyle = `rgba(${r},${g},${b},${(0.40 * p.layerOpacity).toFixed(3)})`;
-          ctx.fillText(p.labelName, lx, p.y + 3);
+          ctx.font = "500 10px Inter, sans-serif";
+          const textWidth = ctx.measureText(p.labelName).width;
+          const padding = 4;
+          const pillX = lx - 2;
+          const pillY = p.y - 8;
+
+          // White pill background for legibility
+          ctx.fillStyle = "rgba(255,255,255,0.75)";
+          ctx.beginPath();
+          ctx.roundRect(pillX, pillY, textWidth + padding * 2, 16, 4);
+          ctx.fill();
+
+          // Darkened version of particle colour for readable text on white
+          const dr = Math.max(0, r - 70);
+          const dg = Math.max(0, g - 50);
+          const db = Math.max(0, b - 20);
+          ctx.fillStyle = `rgb(${dr},${dg},${db})`;
+          ctx.fillText(p.labelName, pillX + padding, p.y + 4);
           ctx.restore();
         }
       }

@@ -44,9 +44,28 @@ function JournalPage() {
   return <JournalListing />;
 }
 
+const FLOAT_PARTICLES = [
+  { top: "12%", left: "8%",  opacity: 0.25, duration: "4.5s", delay: "0s"   },
+  { top: "22%", left: "85%", opacity: 0.35, duration: "6s",   delay: "1.2s" },
+  { top: "38%", left: "18%", opacity: 0.20, duration: "5.5s", delay: "0.5s" },
+  { top: "48%", left: "72%", opacity: 0.30, duration: "3.5s", delay: "2s"   },
+  { top: "58%", left: "33%", opacity: 0.25, duration: "7s",   delay: "0.8s" },
+  { top: "18%", left: "53%", opacity: 0.40, duration: "4s",   delay: "3s"   },
+  { top: "65%", left: "14%", opacity: 0.20, duration: "5s",   delay: "1.5s" },
+  { top: "28%", left: "92%", opacity: 0.35, duration: "6.5s", delay: "2.5s" },
+  { top: "72%", left: "62%", opacity: 0.25, duration: "4.5s", delay: "0.3s" },
+  { top: "42%", left: "44%", opacity: 0.30, duration: "5s",   delay: "3.5s" },
+  { top: "10%", left: "76%", opacity: 0.40, duration: "3s",   delay: "1s"   },
+  { top: "82%", left: "27%", opacity: 0.20, duration: "6s",   delay: "4s"   },
+];
+
 function JournalListing() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
   const bgRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollDown = () => {
+    document.getElementById("articles")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -92,6 +111,22 @@ function JournalListing() {
             className="absolute inset-0 pointer-events-none z-[1]"
             style={{ backgroundImage: GRAIN_SVG, opacity: 0.08 }}
           />
+          {/* Floating ambient particles */}
+          <div className="absolute inset-0 pointer-events-none z-[2]" aria-hidden="true">
+            {FLOAT_PARTICLES.map((pt, i) => (
+              <span
+                key={i}
+                className="float-particle absolute w-1.5 h-1.5 rounded-full bg-white"
+                style={{
+                  top: pt.top,
+                  left: pt.left,
+                  ["--start-opacity" as string]: pt.opacity,
+                  animationDuration: pt.duration,
+                  animationDelay: pt.delay,
+                }}
+              />
+            ))}
+          </div>
           {/* Bottom fade overlay */}
           <div
             className="absolute inset-0 pointer-events-none z-[2]"
@@ -100,12 +135,18 @@ function JournalListing() {
           {/* Text */}
           <div className="absolute inset-0 z-[3] flex flex-col items-center justify-center text-center px-6">
             <h1 className="font-serif text-5xl lg:text-6xl font-bold text-white leading-tight">
-              How Flourish helps you...
+              What it means to Flourish...
             </h1>
             <p className="mt-3 text-white/80 text-sm">
               Explore the science behind every ingredient.
             </p>
-            <ChevronDown className="mt-6 size-6 text-white animate-bounce-slow" aria-hidden="true" />
+            <button
+              onClick={handleScrollDown}
+              className="mt-6 cursor-pointer focus-visible:outline-none"
+              aria-label="Scroll to articles"
+            >
+              <ChevronDown className="size-6 text-white animate-bounce-slow" />
+            </button>
           </div>
         </div>
 
@@ -153,7 +194,7 @@ function JournalListing() {
         </section>
 
         {/* Article grid */}
-        <section className="pb-28 px-6 lg:px-10">
+        <section id="articles" className="pb-28 px-6 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((article, i) => (

@@ -65,6 +65,20 @@ function Hero() {
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
+      {/* Warm orange gradient fade — visually connects cream hero to dark marquee below */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "35%",
+          background: "linear-gradient(to bottom, transparent 0%, rgba(232,98,42,0.08) 50%, rgba(232,98,42,0.18) 100%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      />
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[85vh]">
         <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
