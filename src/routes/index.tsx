@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Star } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,10 +15,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
 const marqueeItems = [
-  "Premium organic ingredients",
   "Made in the UK",
   "8 organic ingredients",
-  "Before every meal",
+  "Taken before your first meal",
   "Gut health · Debloat · Fat loss",
   "No artificial additives",
   "Vegan friendly",
@@ -405,37 +404,178 @@ function Flavours() {
 }
 
 function PricingTeaser() {
+  const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
+
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-2xl mx-auto px-6 text-center">
+    // Flavours() is bg-[var(--color-cream)] — same bg here, so border-t separates them
+    <section id="pricing" className="py-24 lg:py-40 bg-[var(--color-cream)] border-t border-zinc-100">
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
+
+        {/* Top copy */}
         <Reveal>
-          <p className="text-sm font-medium text-primary mb-6">● PRICING</p>
-          <h2 className="font-serif text-4xl font-bold text-zinc-900 leading-[1.1] mb-10">
-            Simple pricing.<br />Early access discount.
+          <p className="text-sm font-medium text-primary">● PRICING</p>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 mt-4 leading-tight">
+            Start your ritual.<br />No commitment needed.
           </h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-6">
-            <div>
-              <p className="text-5xl font-bold text-zinc-900">£34.99</p>
-              <p className="mt-2 text-sm text-zinc-600">one-off purchase</p>
-            </div>
-            <div className="w-px h-14 bg-zinc-300 hidden sm:block" aria-hidden="true" />
-            <div>
-              <p className="text-5xl font-bold text-orange-500">
-                £27.99<span className="text-2xl font-semibold">/mo</span>
-              </p>
-              <p className="mt-2 text-sm text-zinc-600">monthly subscription</p>
+          <p className="text-zinc-500 mt-4 max-w-xl mx-auto leading-relaxed">
+            Try Flourish for 7 days or commit to a full month. Early access members get an exclusive founding rate.
+          </p>
+
+          {/* Plan toggle */}
+          <div className="mt-10 flex justify-center">
+            <div className="inline-flex bg-zinc-100 rounded-full p-1">
+              <button
+                onClick={() => setPlan("trial")}
+                className={`px-6 py-2 text-sm rounded-full transition-all duration-200 cursor-pointer ${
+                  plan === "trial"
+                    ? "bg-white shadow-sm text-zinc-900 font-medium"
+                    : "text-zinc-500"
+                }`}
+              >
+                7-Day Trial
+              </button>
+              <button
+                onClick={() => setPlan("monthly")}
+                className={`px-6 py-2 text-sm rounded-full transition-all duration-200 cursor-pointer ${
+                  plan === "monthly"
+                    ? "bg-white shadow-sm text-zinc-900 font-medium"
+                    : "text-zinc-500"
+                }`}
+              >
+                Monthly
+              </button>
             </div>
           </div>
-          <p className="text-zinc-500 text-sm mb-8">
-            Save 20% with a subscription. Cancel anytime. Free UK delivery.
-          </p>
-          <a
-            href="#waitlist"
-            className="inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
-          >
-            Join waitlist for early access pricing
-          </a>
         </Reveal>
+
+        {/* ── Monthly view ──────────────────────────────────────────────────── */}
+        {plan === "monthly" && (
+          <div data-pricing-cards className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 text-left">
+
+            {/* One-off card */}
+            <div className="bg-white rounded-2xl p-8 border border-zinc-200">
+              <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">
+                One-off
+              </p>
+              <div className="flex items-baseline gap-2 mt-4">
+                <p className="text-5xl font-bold text-zinc-900">£27.99</p>
+                <p className="text-zinc-400 text-sm line-through">£34.99</p>
+              </div>
+              <p className="text-zinc-400 text-sm mt-1">per month</p>
+              <span className="mt-3 inline-block bg-orange-50 text-orange-600 text-xs rounded-full px-3 py-1">
+                Early access rate — first 500 only
+              </span>
+              <ul className="mt-6 text-sm text-zinc-500 space-y-2">
+                {[
+                  "30 sachets — 30-day supply",
+                  "8g per sachet",
+                  "Free UK delivery",
+                  "No subscription required",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="size-1 rounded-full bg-zinc-300 shrink-0" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#waitlist"
+                className="mt-8 block w-full text-center border border-zinc-300 text-zinc-700 rounded-xl py-3 font-medium text-sm hover:border-zinc-400 transition-colors"
+              >
+                Join Waitlist — One-off
+              </a>
+            </div>
+
+            {/* Subscribe card — featured */}
+            <div className="bg-zinc-900 rounded-2xl p-8 border-2 border-orange-500 relative overflow-hidden">
+              <span className="absolute top-4 right-4 bg-orange-500 text-white text-xs rounded-full px-3 py-1">
+                Most popular
+              </span>
+              <p className="text-zinc-400 text-sm font-medium uppercase tracking-widest">
+                Monthly subscription
+              </p>
+              <div className="flex items-baseline gap-2 mt-4">
+                <p className="text-5xl font-bold text-white">£23.99</p>
+                <p className="text-zinc-500 text-sm line-through">£29.99</p>
+              </div>
+              <p className="text-zinc-400 text-sm mt-1">/month</p>
+              <span className="mt-3 inline-block bg-orange-500/20 text-orange-400 text-xs rounded-full px-3 py-1">
+                Save 20% — founding member rate
+              </span>
+              <ul className="mt-6 text-sm text-zinc-400 space-y-2">
+                {[
+                  "30 sachets — 30-day supply",
+                  "8g per sachet",
+                  "Free UK delivery",
+                  "Cancel anytime",
+                  "First pick of all 3 flavours",
+                  "Locked-in founding rate",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="size-1 rounded-full bg-orange-500/40 shrink-0" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#waitlist"
+                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-3 font-medium text-sm transition-colors"
+              >
+                Join Waitlist — Subscribe
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* ── Trial view ────────────────────────────────────────────────────── */}
+        {plan === "trial" && (
+          <div data-pricing-cards className="max-w-sm mx-auto mt-10">
+            <div className="bg-white rounded-2xl p-10 border-2 border-orange-500 text-center">
+              <p className="text-orange-500 text-sm font-medium uppercase tracking-widest">
+                7-Day Trial
+              </p>
+              <p className="text-6xl font-bold text-zinc-900 mt-4">£10</p>
+              <p className="text-zinc-500 text-sm mt-2">7 sachets delivered to your door.</p>
+              <ul className="mt-8 text-sm text-zinc-500 space-y-3 text-left max-w-xs mx-auto">
+                {[
+                  "7-day supply — one sachet daily",
+                  "Before your first meal, every day",
+                  "8g per sachet, full formula",
+                  "Free UK delivery",
+                  "No subscription — try it first",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="size-1 rounded-full bg-zinc-300 shrink-0" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-zinc-400 text-xs italic">
+                Shipping costs will be confirmed at launch. Early access members will be notified first.
+              </p>
+              <a
+                href="#waitlist"
+                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-3 font-medium text-sm transition-colors"
+              >
+                Join Waitlist — Trial
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* ── Below both states ─────────────────────────────────────────────── */}
+        <div className="mt-10">
+          <p className="text-zinc-500 text-sm">
+            Early access pricing available to the first 500 members only.
+          </p>
+          <div className="mt-3">
+            <div className="w-64 h-1.5 bg-zinc-200 rounded-full mx-auto overflow-hidden">
+              <div className="w-2/5 h-full bg-orange-500 rounded-full" />
+            </div>
+            <p className="text-zinc-400 text-xs mt-2">Spots filling fast</p>
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -578,7 +718,23 @@ function Index() {
         });
       }
 
-      // ── 6. Benefit numbers: count up from 00 to their value ─────────────────
+      // ── 6. Pricing section: fade up on scroll ───────────────────────────────
+      const pricingSection = (q("[data-pricing-cards]") as HTMLElement[])[0];
+      if (pricingSection) {
+        gsap.fromTo(
+          pricingSection,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.55,
+            ease: EASE,
+            scrollTrigger: { trigger: pricingSection, start: "top 85%", once: true },
+          },
+        );
+      }
+
+      // ── 7. Benefit numbers: count up from 00 to their value ─────────────────
       (q("[data-benefit-num]") as HTMLElement[]).forEach((el) => {
         const target = parseInt(el.dataset.benefitNum ?? "1");
         const obj = { val: 0 };
