@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Star, Check } from "lucide-react";
+import { Star, Check, X } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -119,184 +119,91 @@ function Marquee() {
 }
 
 function Benefits() {
-  const cards = [
+  const items = [
     {
-      num: "01",
-      colClass: "col-span-12 lg:col-span-5",
-      bg: "#1a1a1a",
-      accent: "bg-orange-500",
-      headline: "Feel lighter after every meal.",
-      body: "ACV and ginger work together to reduce post-meal bloating from the very first serve.",
-      tags: ["ACV", "Ginger"],
-      headlineSize: "text-2xl lg:text-3xl",
-      bodyWidth: "max-w-xs",
-      glow: false,
+      name: "Reduced bloating",
+      desc: "Feel lighter after every meal",
     },
     {
-      num: "02",
-      colClass: "col-span-12 lg:col-span-7",
-      bg: "linear-gradient(135deg, #1a1a1a 0%, #1f1510 100%)",
-      accent: "bg-amber-500",
-      headline: "No more afternoon energy crashes.",
-      body: "Ceylon cinnamon and ACV steady your blood sugar after meals, so your energy stays consistent all day.",
-      tags: ["Cinnamon", "ACV"],
-      headlineSize: "text-3xl lg:text-4xl",
-      bodyWidth: "max-w-sm",
-      glow: false,
+      name: "Consistent energy throughout the day",
+      desc: "Steadier blood sugar after meals",
     },
     {
-      num: "03",
-      colClass: "col-span-12 lg:col-span-4",
-      bg: "#161616",
-      accent: "bg-orange-600",
-      headline: "Support your fat loss goals.",
-      body: "ACV, ginger, and cinnamon support metabolism and appetite control before every meal.",
-      tags: ["ACV", "Ginger", "Cinnamon"],
-      headlineSize: "text-2xl",
-      bodyWidth: "",
-      glow: false,
+      name: "Fat loss support",
+      desc: "Appetite and metabolism control",
     },
     {
-      num: "04",
-      colClass: "col-span-12 lg:col-span-4",
-      bg: "#1a1a1a",
-      accent: "bg-orange-400",
-      headline: "A thriving gut microbiome.",
-      body: "Prebiotic inulin feeds Bifidobacterium and Lactobacillus, the beneficial bacteria your gut needs most.",
-      tags: ["Inulin", "Black Pepper"],
-      headlineSize: "text-2xl",
-      bodyWidth: "",
-      glow: false,
+      name: "Clearer and brighter skin",
+      desc: "Regulates inflammation and supports detoxification",
     },
     {
-      num: "05",
-      colClass: "col-span-12 lg:col-span-4",
-      bg: "#161616",
-      accent: "bg-amber-400",
-      headline: "Skin that reflects your gut health.",
-      body: "Lemon's vitamin C supports collagen synthesis. A healthier gut microbiome means clearer, brighter skin.",
-      tags: ["Lemon", "Inulin"],
-      headlineSize: "text-2xl",
-      bodyWidth: "",
-      glow: false,
+      name: "Stronger immunity",
+      desc: "Anti-tumour properties and strengthened immune system",
     },
     {
-      num: "06",
-      colClass: "col-span-12 lg:col-span-6",
-      bg: "linear-gradient(135deg, #1a1a1a 0%, #0f1a0f 100%)",
-      accent: "bg-orange-500",
-      headline: "70% of your immune system lives in your gut.",
-      body: "Inulin, turmeric, and black pepper work together to support your body's natural defences from the inside out.",
-      tags: ["Inulin", "Turmeric", "Black Pepper"],
-      headlineSize: "text-2xl lg:text-3xl",
-      bodyWidth: "max-w-xs",
-      glow: false,
+      name: "Thriving gut microbiome",
+      desc: "Feeds the beneficial bacteria your gut needs most",
     },
     {
-      num: "07",
-      colClass: "col-span-12 lg:col-span-6",
-      bg: "#1a1a1a",
-      accent: "bg-orange-500",
-      headline: "Your gut makes 90% of your serotonin.",
-      body: "The gut-brain axis is real. A healthier microbiome supports mood, mental clarity, and focus every single day.",
-      tags: ["Inulin", "Turmeric", "Ginger"],
-      headlineSize: "text-2xl lg:text-3xl",
-      bodyWidth: "max-w-sm",
-      glow: true,
+      name: "Improved mood and mental clarity",
+      desc: "Increased nutrient absorption fed to your brain",
     },
   ];
 
   return (
-    <section id="benefits" className="py-32 lg:py-48 bg-[#0f0f0f] overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="benefits" className="py-24 lg:py-40 bg-[var(--color-cream)]">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
-        {/* Top copy */}
-        <div data-benefits-copy className="max-w-2xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest">
-            <span className="size-1.5 rounded-full bg-orange-400" aria-hidden="true" />
-            What Flourish does for you
-          </span>
-          <h2 className="font-serif text-5xl lg:text-6xl text-white leading-[0.95] mt-6 font-bold">
-            Seven reasons to make this your daily ritual.
-          </h2>
-          <p className="text-zinc-400 mt-6 text-base max-w-lg mx-auto leading-relaxed">
-            Every benefit backed by the science of your 8 ingredients, felt from the first serve, built over time.
-          </p>
-        </div>
+          {/* Left — sticky heading */}
+          <div data-benefits-heading className="lg:sticky lg:top-32 lg:self-start">
+            <p className="text-sm font-medium text-primary">● WHAT FLOURISH DOES</p>
+            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight mt-4">
+              Seven reasons to make this your daily ritual.
+            </h2>
+            <p className="text-zinc-500 text-sm leading-relaxed mt-6 max-w-xs">
+              8 simple ingredients, backed by science. Every benefit is a direct result of what's inside every serve.
+            </p>
+          </div>
 
-        {/* Benefit card grid */}
-        <div className="mt-20 grid grid-cols-12 gap-4">
-          {cards.map((card) => (
-            <div
-              key={card.num}
-              data-benefit-card
-              className={`group ${card.colClass} rounded-2xl p-8 lg:p-10 relative overflow-hidden min-h-[200px] lg:min-h-[220px] cursor-default transition-[filter] duration-300 hover:brightness-110`}
-              style={{ background: card.bg }}
-            >
-              {/* Card 7 ambient glow */}
-              {card.glow && (
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 30% 50%, rgba(232,98,42,0.06) 0%, transparent 70%)",
-                  }}
-                  aria-hidden="true"
-                />
-              )}
-
-              {/* Accent line — scaleX animated by GSAP, width extends on hover */}
-              <div
-                data-accent-line
-                className={`h-0.5 ${card.accent} mb-6 transition-[width] duration-300 ease-out`}
-                style={{ width: "3rem", transformOrigin: "left center" }}
-              />
-
-              {/* Benefit number watermark */}
-              <span
-                data-benefit-num={parseInt(card.num)}
-                className="absolute bottom-4 right-6 font-serif text-8xl font-bold leading-none text-orange-500/20 select-none pointer-events-none"
-                aria-hidden="true"
-              >
-                {card.num}
-              </span>
-
-              {/* Headline */}
-              <h3 className={`font-serif font-bold ${card.headlineSize} text-white leading-tight`}>
-                {card.headline}
-              </h3>
-
-              {/* Body */}
-              <p className={`text-zinc-400 text-sm leading-relaxed mt-3 ${card.bodyWidth}`}>
-                {card.body}
-              </p>
-
-              {/* Ingredient tags */}
-              <div className="flex flex-wrap gap-3 mt-5">
-                {card.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs text-orange-400/60 group-hover:text-orange-400 uppercase tracking-wider transition-colors duration-300"
-                  >
-                    {tag}
+          {/* Right — benefits list + footer */}
+          <div>
+            <ul>
+              {items.map((item, i) => (
+                <li
+                  key={item.name}
+                  data-benefit-item
+                  className={`flex gap-4 py-6 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
+                >
+                  <span className="text-orange-500 text-lg font-bold mt-0.5 shrink-0 select-none" aria-hidden="true">
+                    *
                   </span>
-                ))}
+                  <div>
+                    <p className="font-serif font-bold text-lg text-zinc-900 leading-snug">
+                      {item.name}
+                    </p>
+                    <p className="text-zinc-500 text-sm leading-relaxed mt-1">{item.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Footer: button + closing quote */}
+            <div data-benefits-footer className="mt-8">
+              <Link
+                to="/journal"
+                className="inline-flex items-center border border-zinc-300 text-zinc-700 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors"
+              >
+                See the science →
+              </Link>
+              <div className="mt-12 pt-8 border-t border-zinc-100">
+                <p className="font-serif italic text-2xl text-zinc-400 leading-relaxed">
+                  "This is what it means to Flourish."
+                </p>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-zinc-400 text-sm">
-            Every benefit traces back to the same source, a healthier gut.
-          </p>
-          <a
-            href="#waitlist"
-            className="mt-6 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
-          >
-            Start your daily ritual
-          </a>
         </div>
       </div>
     </section>
@@ -304,23 +211,34 @@ function Benefits() {
 }
 
 function Comparison() {
-  type CompCell = false | string;
+  type CompCell = false | true | string;
 
   const rows: { feature: string; probiotic: CompCell; greens: CompCell; acv: CompCell }[] = [
-    { feature: "Organic ingredients",                           probiotic: false,           greens: "Sometimes",     acv: false },
-    { feature: "Anti-inflammatory support",                     probiotic: false,           greens: "Sometimes",     acv: false },
-    { feature: "Blood sugar support",                           probiotic: false,           greens: false,           acv: "Partially" },
-    { feature: "No emulsifiers or preservatives",               probiotic: "Often added",   greens: "Varies",        acv: "Varies" },
-    { feature: "Multi-benefit formula (gut, skin, energy, mood)", probiotic: false,         greens: "Partially",     acv: false },
-    { feature: "8 simple recognisable ingredients",             probiotic: false,           greens: "Often 50-75+",  acv: "3-5 ingredients" },
-    { feature: "Natural sweetener only (zero sugar)",           probiotic: "Often sugar",   greens: "Varies",        acv: "Often sharp" },
-    { feature: "Made in the UK",                                probiotic: false,           greens: false,           acv: false },
+    { feature: "Organic ingredients",                                    probiotic: false,         greens: "Sometimes",    acv: false },
+    { feature: "Anti-inflammatory support",                              probiotic: false,         greens: "Sometimes",    acv: false },
+    { feature: "Blood sugar support",                                    probiotic: false,         greens: false,          acv: "Partially" },
+    { feature: "No emulsifiers or preservatives",                        probiotic: "Often added", greens: "Varies",       acv: "Varies" },
+    { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)", probiotic: false,      greens: "Partially",    acv: false },
+    { feature: "8 simple recognisable ingredients",                      probiotic: false,         greens: "Often 50-75+", acv: "3-5 ingredients" },
+    { feature: "Natural sweetener only (zero sugar)",                    probiotic: "Often sugar", greens: "Varies",       acv: "Often sharp" },
+    { feature: "Affordable, from £1/day (subscription)",                 probiotic: true,          greens: "Often £2-3+",  acv: true },
   ];
 
-  const compCell = (v: CompCell) =>
-    v === false
-      ? <span className="text-zinc-300 text-lg select-none" aria-label="No">—</span>
-      : <span className="text-zinc-400 text-xs italic">{v}</span>;
+  const compCell = (v: CompCell) => {
+    if (v === false) return (
+      <div className="flex justify-center">
+        <X className="w-5 h-5 text-zinc-300" strokeWidth={1.5} aria-label="No" />
+      </div>
+    );
+    if (v === true) return (
+      <div className="flex justify-center">
+        <div className="w-7 h-7 bg-zinc-200 rounded-full flex items-center justify-center">
+          <Check className="w-4 h-4 text-zinc-400" strokeWidth={2.5} aria-label="Yes" />
+        </div>
+      </div>
+    );
+    return <span className="text-zinc-400 text-xs italic">{v}</span>;
+  };
 
   return (
     <section id="comparison" className="py-24 lg:py-40 bg-[var(--color-cream)]">
@@ -329,7 +247,7 @@ function Comparison() {
         {/* Top copy */}
         <div data-comparison-copy className="text-center">
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
-            One drink. Eight ingredients.<br />Everything your gut needs.
+            Simple ingredients,<br />backed by science.
           </h2>
           <p className="text-zinc-500 mt-4 max-w-xl mx-auto leading-relaxed">
             Most gut health drinks do one thing well. Flourish was built to do everything, simply, organically, and affordably.
@@ -796,49 +714,57 @@ function Index() {
         });
       });
 
-      // ── 4. Benefits copy: fade up on scroll ──────────────────────────────────
-      const benefitsCopyEl = (q("[data-benefits-copy]") as HTMLElement[])[0];
-      if (benefitsCopyEl) {
+      // ── 4. Benefits heading: fade up on scroll ───────────────────────────────
+      const benefitsHeadingEl = (q("[data-benefits-heading]") as HTMLElement[])[0];
+      if (benefitsHeadingEl) {
         gsap.fromTo(
-          benefitsCopyEl,
+          benefitsHeadingEl,
           { y: 30, opacity: 0 },
           {
             y: 0,
             opacity: 1,
             duration: 0.6,
             ease: EASE,
-            scrollTrigger: { trigger: benefitsCopyEl, start: "top 80%", once: true },
+            scrollTrigger: { trigger: benefitsHeadingEl, start: "top 75%", once: true },
           },
         );
       }
 
-      // ── 5. Benefit cards + accent lines stagger in ───────────────────────────
-      const benefitCardEls = q("[data-benefit-card]") as HTMLElement[];
-      const accentLineEls = q("[data-accent-line]") as HTMLElement[];
-      if (benefitCardEls.length) {
-        gsap.set(benefitCardEls, { y: 50, opacity: 0 });
-        gsap.set(accentLineEls, { scaleX: 0, transformOrigin: "left center" });
-        ScrollTrigger.batch(benefitCardEls, {
+      // ── 5. Benefit list items: stagger in as user scrolls ────────────────────
+      const benefitItemEls = q("[data-benefit-item]") as HTMLElement[];
+      if (benefitItemEls.length) {
+        gsap.set(benefitItemEls, { y: 20, opacity: 0 });
+        ScrollTrigger.batch(benefitItemEls, {
           onEnter: (els) => {
             gsap.to(els, {
               y: 0,
               opacity: 1,
-              duration: 0.55,
+              duration: 0.45,
               stagger: 0.08,
               ease: EASE,
               overwrite: true,
-            });
-            gsap.to(accentLineEls, {
-              scaleX: 1,
-              duration: 0.4,
-              stagger: 0.08,
-              ease: EASE,
-              delay: 0.1,
             });
           },
           start: "top 85%",
           once: true,
         });
+      }
+
+      // ── 6. Benefits footer: fade in last ─────────────────────────────────────
+      const benefitsFooterEl = (q("[data-benefits-footer]") as HTMLElement[])[0];
+      if (benefitsFooterEl) {
+        gsap.fromTo(
+          benefitsFooterEl,
+          { y: 15, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: EASE,
+            delay: 0.1,
+            scrollTrigger: { trigger: benefitsFooterEl, start: "top 85%", once: true },
+          },
+        );
       }
 
       // ── 6. Pricing section: fade up on scroll ───────────────────────────────
@@ -893,26 +819,6 @@ function Index() {
         });
       }
 
-      // ── 9. Benefit numbers: count up from 00 to their value ─────────────────
-      (q("[data-benefit-num]") as HTMLElement[]).forEach((el) => {
-        const target = parseInt(el.dataset.benefitNum ?? "1");
-        const obj = { val: 0 };
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 90%",
-          once: true,
-          onEnter: () => {
-            gsap.to(obj, {
-              val: target,
-              duration: 0.4,
-              ease: "power2.out",
-              onUpdate: () => {
-                el.textContent = String(Math.round(obj.val)).padStart(2, "0");
-              },
-            });
-          },
-        });
-      });
     },
     { scope: mainRef },
   );

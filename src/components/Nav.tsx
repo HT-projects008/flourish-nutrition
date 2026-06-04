@@ -11,7 +11,7 @@ export default function Nav() {
             to="/journal"
             className="hidden lg:inline text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
           >
-            Journal
+            Science
           </Link>
           <Link
             to="/"

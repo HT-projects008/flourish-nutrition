@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 
 const footerLinks = [
-  { label: "Journal", href: "/journal" },
+  { label: "Science", href: "/journal" },
   { label: "About", href: "/#waitlist" },
 ];
 

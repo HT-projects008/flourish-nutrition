@@ -113,10 +113,10 @@ function JournalListing() {
         <section className="py-10 px-6 lg:px-10 text-center">
           <Reveal>
             <p className="text-orange-500 text-sm font-semibold uppercase tracking-widest mb-6">
-              Flourish Journal
+              Flourish Science
             </p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
-              Ingredients for a better life.
+              The science behind every ingredient.
             </h2>
             <p className="mt-6 text-lg text-zinc-600 leading-relaxed max-w-xl mx-auto">
               Science-backed reading on gut health, nutrition, and the ingredients behind the Flourish formula.
