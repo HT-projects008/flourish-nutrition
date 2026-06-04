@@ -353,8 +353,6 @@ export function MicrobiomeCanvas() {
       ctx.clearRect(0, 0, cw, ch);
       frame++;
 
-      const isDesktop = cw >= 768;
-
       for (const p of particles) {
         // Mouse repulsion within 90px
         const dx = p.x - mx;
@@ -406,8 +404,8 @@ export function MicrobiomeCanvas() {
         else                               drawAkkermansia(ctx, p, frame);
         ctx.restore();
 
-        // Draw floating label with white pill background — desktop only
-        if (p.isLabel && isDesktop) {
+        // Draw floating label with white pill background — all screen sizes
+        if (p.isLabel) {
           const [r, g, b] = p.color;
           // Compute x offset clear of the particle's visual extent
           let lx = p.x + 12;
@@ -418,7 +416,7 @@ export function MicrobiomeCanvas() {
           else if (p.type === "akkermansia") lx = p.x + p.akkRadiusX * 1.2 * p.layerScale + 4;
 
           ctx.save();
-          ctx.font = "500 10px Inter, sans-serif";
+          ctx.font = cw < 768 ? "500 8px Inter, sans-serif" : "500 10px Inter, sans-serif";
           const textWidth = ctx.measureText(p.labelName).width;
           const padding = 4;
           const pillX = lx - 2;

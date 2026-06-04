@@ -87,14 +87,12 @@ function Hero() {
               Premium gut health, daily
             </span>
 
-            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-foreground leading-tight tracking-[-0.03em] text-left">
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.03em] text-left">
               <HeroWord spaceAfter>Feel</HeroWord>
               <HeroWord>lighter.</HeroWord>
               <br />
-              <span className="text-primary">
-                <HeroWord spaceAfter>Every</HeroWord>
-                <HeroWord>day.</HeroWord>
-              </span>
+              <HeroWord spaceAfter>Every</HeroWord>
+              <HeroWord>day.</HeroWord>
             </h1>
 
             <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
@@ -144,7 +142,7 @@ function Benefits() {
   ];
 
   return (
-    <section id="benefits" className="py-24 lg:py-40 bg-white">
+    <section id="benefits" className="py-24 lg:py-40 bg-[var(--color-cream)]">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
@@ -184,26 +182,19 @@ function Benefits() {
               ))}
             </ul>
 
-            {/* Footer: science link, CTA, closing quote */}
+            {/* Footer: closing quote + science link */}
             <div data-benefits-footer className="mt-8">
-              <Link
-                to="/journal"
-                className="inline-flex items-center border border-zinc-300 text-zinc-700 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors"
-              >
-                See the science →
-              </Link>
-              <p className="mt-6 text-zinc-500 text-sm">Ready to experience the difference?</p>
-              <a
-                href="#waitlist"
-                className="mt-3 inline-flex bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2.5 text-sm font-medium transition-colors"
-              >
-                Join the Waitlist
-              </a>
               <div className="mt-12 pt-8 border-t border-zinc-100">
                 <p className="font-serif italic text-2xl text-zinc-400 leading-relaxed">
                   This is what it means to Flourish.
                 </p>
               </div>
+              <Link
+                to="/journal"
+                className="mt-6 inline-flex border border-zinc-300 text-zinc-600 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors cursor-pointer"
+              >
+                See more benefits in Science →
+              </Link>
             </div>
           </div>
 
@@ -244,25 +235,25 @@ function Comparison() {
   };
 
   return (
-    <section id="comparison" className="py-24 lg:py-40 bg-[#1a1a1a]">
+    <section id="comparison" className="py-24 lg:py-40 bg-orange-50">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
 
         {/* Top copy */}
         <div data-comparison-copy className="text-center">
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-tight">
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
             Simple ingredients,<br />backed by science.
           </h2>
-          <p className="text-zinc-400 mt-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-zinc-600 mt-4 max-w-xl mx-auto leading-relaxed">
             Most gut health drinks do one thing well. Flourish was built to do everything, simply, organically, and affordably.
           </p>
         </div>
 
         {/* Table */}
-        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-700 relative">
+        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-200 relative">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse">
               <thead>
-                <tr className="bg-[#0f0f0f]">
+                <tr className="bg-zinc-900">
                   <th className="pl-6 pr-4 py-4 text-left w-[30%]" scope="col" />
 
                   {/* Flourish column — orange header */}
@@ -292,9 +283,9 @@ function Comparison() {
                   <tr
                     key={row.feature}
                     data-comparison-row
-                    className={`border-b border-zinc-800 last:border-b-0 ${i % 2 === 0 ? "bg-[#242424]" : "bg-[#1f1f1f]"}`}
+                    className={`border-b border-zinc-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/40"}`}
                   >
-                    <td className="pl-6 pr-4 py-4 text-zinc-300 text-sm font-medium align-middle">
+                    <td className="pl-6 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
                       {row.feature}
                     </td>
 
@@ -319,13 +310,13 @@ function Comparison() {
 
           {/* Mobile scroll fade — dark bg */}
           <div
-            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#1a1a1a] to-transparent pointer-events-none lg:hidden"
+            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-orange-50 to-transparent pointer-events-none lg:hidden"
             aria-hidden="true"
           />
         </div>
 
         {/* Legal disclaimer */}
-        <p className="text-zinc-600 text-xs mt-4 text-center italic">
+        <p className="text-zinc-400 text-xs mt-4 text-center italic">
           Comparison based on commonly available products in each category. Category characteristics are generalised, individual products may vary. Brand names referenced are category examples only.
         </p>
 
@@ -438,7 +429,7 @@ function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    <section id="pricing" className="py-24 lg:py-40 bg-white">
+    <section id="pricing" className="py-24 lg:py-40 bg-orange-50">
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
         {/* Top copy */}

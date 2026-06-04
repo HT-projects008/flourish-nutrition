@@ -44,30 +44,13 @@ function JournalPage() {
   return <JournalListing />;
 }
 
-const FLOAT_PARTICLES = [
-  { top: "15%", left: "20%", size: "w-2 h-2",     opacity: 0.25, duration: "5s",   delay: "0s"   },
-  { top: "30%", left: "60%", size: "w-1.5 h-1.5", opacity: 0.20, duration: "7s",   delay: "1.5s" },
-  { top: "45%", left: "35%", size: "w-2.5 h-2.5", opacity: 0.30, duration: "4.5s", delay: "0.8s" },
-  { top: "60%", left: "75%", size: "w-2 h-2",     opacity: 0.15, duration: "6s",   delay: "2s"   },
-  { top: "75%", left: "25%", size: "w-1.5 h-1.5", opacity: 0.25, duration: "8s",   delay: "0.3s" },
-  { top: "85%", left: "55%", size: "w-2 h-2",     opacity: 0.20, duration: "3.5s", delay: "3s"   },
-  { top: "20%", left: "80%", size: "w-2.5 h-2.5", opacity: 0.35, duration: "6.5s", delay: "1s"   },
-  { top: "50%", left: "15%", size: "w-1.5 h-1.5", opacity: 0.20, duration: "5.5s", delay: "4s"   },
-  { top: "70%", left: "45%", size: "w-2 h-2",     opacity: 0.25, duration: "4s",   delay: "2.5s" },
-  { top: "40%", left: "65%", size: "w-1.5 h-1.5", opacity: 0.30, duration: "7.5s", delay: "0.5s" },
-  { top: "90%", left: "30%", size: "w-2 h-2",     opacity: 0.15, duration: "5s",   delay: "3.5s" },
-  { top: "10%", left: "50%", size: "w-2.5 h-2.5", opacity: 0.35, duration: "6s",   delay: "1.8s" },
-];
 
 function JournalListing() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.4;
-    }
-  }, []);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -76,21 +59,28 @@ function JournalListing() {
     const handleScroll = () => {
       if (!video.duration) return;
 
-      const scrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = Math.min(scrollY / (maxScroll * 0.3), 1);
+      const currentScrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
+      const scrollProgress = Math.min(currentScrollY / heroHeight, 1);
 
-      if (scrollY > 10) {
-        video.pause();
-        video.currentTime = scrollProgress * video.duration;
-      } else {
-        video.play();
-        video.playbackRate = 0.4;
+      video.currentTime = scrollProgress * video.duration;
+
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
       }
+
+      lastScrollY.current = currentScrollY;
     };
 
+    video.currentTime = 0;
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
   }, []);
 
   const handleScrollDown = () => {
@@ -146,8 +136,6 @@ function JournalListing() {
               ref={videoRef}
               src="/assets/science-hero.mp4"
               className="science-hero-video"
-              autoPlay
-              loop
               muted
               playsInline
               preload="auto"
@@ -158,12 +146,12 @@ function JournalListing() {
               }}
               style={{
                 position: "absolute",
-                width: "110%",
-                height: "110%",
-                top: "-5%",
-                left: "-5%",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
                 objectFit: "cover",
-                objectPosition: "center",
+                objectPosition: "center center",
               }}
             />
             {/* Dark overlay for text legibility */}
@@ -182,22 +170,6 @@ function JournalListing() {
             style={{ backgroundImage: GRAIN_SVG, opacity: 0.08 }}
           />
 
-          {/* Floating ambient particles */}
-          <div className="absolute inset-0 pointer-events-none z-[2]" aria-hidden="true">
-            {FLOAT_PARTICLES.map((pt, i) => (
-              <span
-                key={i}
-                className={`float-particle absolute ${pt.size} rounded-full bg-white`}
-                style={{
-                  top: pt.top,
-                  left: pt.left,
-                  ["--start-opacity" as string]: pt.opacity,
-                  animationDuration: pt.duration,
-                  animationDelay: pt.delay,
-                }}
-              />
-            ))}
-          </div>
 
           {/* Hero text — above all background layers */}
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">

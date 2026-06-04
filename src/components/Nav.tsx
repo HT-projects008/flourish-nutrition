@@ -24,21 +24,37 @@ export default function Nav() {
       <header className="fixed top-0 inset-x-0 z-50 h-16 bg-white/95 backdrop-blur-sm border-b border-zinc-100">
         <div className="relative h-full mx-auto max-w-7xl px-6 flex items-center justify-between">
 
-          {/* LEFT — hamburger + desktop Science link */}
+          {/* LEFT — desktop: text links | mobile: hamburger */}
           <div className="flex items-center gap-5">
+            {/* Desktop nav links */}
+            <div className="hidden lg:flex items-center gap-8">
+              <a
+                href="/#flavours"
+                className="text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                Shop
+              </a>
+              <Link
+                to="/journal"
+                className="text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                Science
+              </Link>
+              <a
+                href="/#waitlist"
+                className="text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                About
+              </a>
+            </div>
+            {/* Mobile hamburger */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="flex items-center justify-center -ml-1 text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer"
+              className="lg:hidden flex items-center justify-center -ml-1 text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer"
               aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <Link
-              to="/journal"
-              className="hidden lg:inline text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
-            >
-              Science
-            </Link>
           </div>
 
           {/* CENTRE — wordmark (absolutely centred) */}
