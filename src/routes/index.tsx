@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Star } from "lucide-react";
+import { Star, Check } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -298,6 +298,129 @@ function Benefits() {
             Start your daily ritual
           </a>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Comparison() {
+  type CompCell = false | string;
+
+  const rows: { feature: string; probiotic: CompCell; greens: CompCell; acv: CompCell }[] = [
+    { feature: "Organic ingredients",                           probiotic: false,           greens: "Sometimes",     acv: false },
+    { feature: "Anti-inflammatory support",                     probiotic: false,           greens: "Sometimes",     acv: false },
+    { feature: "Blood sugar support",                           probiotic: false,           greens: false,           acv: "Partially" },
+    { feature: "No emulsifiers or preservatives",               probiotic: "Often added",   greens: "Varies",        acv: "Varies" },
+    { feature: "Multi-benefit formula (gut, skin, energy, mood)", probiotic: false,         greens: "Partially",     acv: false },
+    { feature: "8 simple recognisable ingredients",             probiotic: false,           greens: "Often 50-75+",  acv: "3-5 ingredients" },
+    { feature: "Natural sweetener only (zero sugar)",           probiotic: "Often sugar",   greens: "Varies",        acv: "Often sharp" },
+    { feature: "Made in the UK",                                probiotic: false,           greens: false,           acv: false },
+  ];
+
+  const compCell = (v: CompCell) =>
+    v === false
+      ? <span className="text-zinc-300 text-lg select-none" aria-label="No">—</span>
+      : <span className="text-zinc-400 text-xs italic">{v}</span>;
+
+  return (
+    <section id="comparison" className="py-24 lg:py-40 bg-[var(--color-cream)]">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10">
+
+        {/* Top copy */}
+        <div data-comparison-copy className="text-center">
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
+            One drink. Eight ingredients.<br />Everything your gut needs.
+          </h2>
+          <p className="text-zinc-500 mt-4 max-w-xl mx-auto leading-relaxed">
+            Most gut health drinks do one thing well. Flourish was built to do everything, simply, organically, and affordably.
+          </p>
+        </div>
+
+        {/* Table */}
+        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-200 relative">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse">
+              <thead>
+                <tr className="bg-zinc-900">
+                  {/* Feature column */}
+                  <th className="pl-6 pr-4 py-4 text-left w-[30%]" scope="col" />
+
+                  {/* Flourish column */}
+                  <th className="bg-orange-500 py-4 text-center w-[17.5%]" scope="col">
+                    <div className="flex flex-col items-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white mb-1" aria-hidden="true" />
+                      <span className="font-serif font-bold text-white text-base">Flourish</span>
+                    </div>
+                  </th>
+
+                  {/* Competitor columns */}
+                  {[
+                    { label: "Probiotic Drinks", sub: "e.g. Yakult, Actimel" },
+                    { label: "Greens Powders",   sub: "e.g. AG1, Bloom, Huel" },
+                    { label: "ACV Shots",         sub: "e.g. Bragg, H&B" },
+                  ].map((col) => (
+                    <th key={col.label} className="py-4 px-2 text-center w-[17.5%]" scope="col">
+                      <p className="text-zinc-400 text-sm font-medium">{col.label}</p>
+                      <p className="text-zinc-500 text-xs mt-0.5 font-normal">{col.sub}</p>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {rows.map((row, i) => (
+                  <tr
+                    key={row.feature}
+                    data-comparison-row
+                    className={`border-b border-zinc-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-zinc-50"}`}
+                  >
+                    {/* Feature label */}
+                    <td className="pl-6 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
+                      {row.feature}
+                    </td>
+
+                    {/* Flourish check — always ✓, orange, prominent */}
+                    <td className="bg-orange-50/50 py-4 text-center align-middle">
+                      <div className="flex items-center justify-center">
+                        <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
+                          <Check className="w-4 h-4 text-white" strokeWidth={2.5} aria-label="Yes" />
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Competitors */}
+                    <td className="py-4 text-center align-middle">{compCell(row.probiotic)}</td>
+                    <td className="py-4 text-center align-middle">{compCell(row.greens)}</td>
+                    <td className="py-4 text-center align-middle">{compCell(row.acv)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile horizontal scroll hint */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[var(--color-cream)] to-transparent pointer-events-none lg:hidden"
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Legal disclaimer */}
+        <p className="text-zinc-400 text-xs mt-4 text-center italic">
+          Comparison based on commonly available products in each category. Category characteristics are generalised, individual products may vary. Brand names referenced are category examples only.
+        </p>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <p className="text-zinc-500 text-sm">Ready to experience the difference?</p>
+          <a
+            href="#waitlist"
+            className="mt-6 inline-flex rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-[filter,transform] duration-150 hover:brightness-95 active:scale-[0.97]"
+          >
+            Join the Waitlist
+          </a>
+        </div>
+
       </div>
     </section>
   );
@@ -734,7 +857,43 @@ function Index() {
         );
       }
 
-      // ── 7. Benefit numbers: count up from 00 to their value ─────────────────
+      // ── 7. Comparison copy: fade up on scroll ────────────────────────────────
+      const comparisonCopyEl = (q("[data-comparison-copy]") as HTMLElement[])[0];
+      if (comparisonCopyEl) {
+        gsap.fromTo(
+          comparisonCopyEl,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: EASE,
+            scrollTrigger: { trigger: comparisonCopyEl, start: "top 80%", once: true },
+          },
+        );
+      }
+
+      // ── 8. Comparison rows: stagger in on scroll ──────────────────────────────
+      const comparisonRows = q("[data-comparison-row]") as HTMLElement[];
+      if (comparisonRows.length) {
+        gsap.set(comparisonRows, { y: 20, opacity: 0 });
+        ScrollTrigger.batch(comparisonRows, {
+          onEnter: (els) => {
+            gsap.to(els, {
+              y: 0,
+              opacity: 1,
+              duration: 0.4,
+              stagger: 0.04,
+              ease: EASE,
+              overwrite: true,
+            });
+          },
+          start: "top 85%",
+          once: true,
+        });
+      }
+
+      // ── 9. Benefit numbers: count up from 00 to their value ─────────────────
       (q("[data-benefit-num]") as HTMLElement[]).forEach((el) => {
         const target = parseInt(el.dataset.benefitNum ?? "1");
         const obj = { val: 0 };
@@ -765,6 +924,7 @@ function Index() {
         <Hero />
         <Marquee />
         <Benefits />
+        <Comparison />
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
