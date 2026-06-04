@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -61,6 +61,37 @@ const FLOAT_PARTICLES = [
 
 function JournalListing() {
   const [activeCategory, setActiveCategory] = useState("All Articles");
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.4;
+    }
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleScroll = () => {
+      if (!video.duration) return;
+
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = Math.min(scrollY / (maxScroll * 0.3), 1);
+
+      if (scrollY > 10) {
+        video.pause();
+        video.currentTime = scrollProgress * video.duration;
+      } else {
+        video.play();
+        video.playbackRate = 0.4;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleScrollDown = () => {
     const articlesSection = document.getElementById("articles");
@@ -106,16 +137,25 @@ function JournalListing() {
         {/* Hero — full viewport height */}
         <div className="relative min-h-screen overflow-hidden">
 
-          {/* Ken Burns background — gradient fallback if image not found */}
+          {/* Video background — gradient fallback if video not found */}
           <div
             className="absolute inset-0 z-0 overflow-hidden"
             style={{ background: "linear-gradient(135deg, #D4744A 0%, #E8B84B 50%, #C4445A 100%)" }}
           >
-            <img
-              src="/assets/science-hero.jpg"
-              alt=""
-              aria-hidden="true"
-              className="ken-burns-img"
+            <video
+              ref={videoRef}
+              src="/assets/science-hero.mp4"
+              className="science-hero-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              onError={() => {
+                if (videoRef.current) {
+                  videoRef.current.style.display = "none";
+                }
+              }}
               style={{
                 position: "absolute",
                 width: "110%",
