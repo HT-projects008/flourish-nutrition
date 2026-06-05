@@ -4,7 +4,6 @@ import { Reveal } from "./Reveal";
 const footerLinks = [
   { label: "Science", href: "/journal" },
   { label: "About", href: "/#waitlist" },
-  { label: "Contact", href: "mailto:hello@flourish.com" },
 ];
 
 const year = new Date().getFullYear();
@@ -28,6 +27,12 @@ export default function Footer() {
                   {l.label}
                 </a>
               ))}
+              <a
+                href="mailto:hello@flourishdrink.co.uk"
+                className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                Contact
+              </a>
             </nav>
           </div>
         </Reveal>

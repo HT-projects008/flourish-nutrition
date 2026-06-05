@@ -7,7 +7,6 @@ import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
-import { ContactForm } from "../components/ContactForm";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -96,9 +95,17 @@ function Hero() {
               <HeroWord>day.</HeroWord>
             </h1>
 
-            <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
-              8 organic ingredients, backed by science. Helping you feel and look your best. No big brand nasties.
-            </p>
+            <div className="mt-4 text-left space-y-1">
+              <p className="text-lg lg:text-xl text-muted-foreground leading-snug">
+                8 organic ingredients, backed by science.
+              </p>
+              <p className="text-lg lg:text-xl text-muted-foreground leading-snug">
+                Helping you feel and look your best.
+              </p>
+              <p className="text-lg lg:text-xl font-medium text-zinc-700 leading-snug">
+                No big brand nasties.
+              </p>
+            </div>
             <div className="mt-6 max-w-md">
               <WaitlistForm source="homepage" />
             </div>
@@ -144,19 +151,54 @@ function Benefits() {
 
   return (
     <section id="benefits" className="relative overflow-hidden py-16 lg:py-24 bg-[var(--color-cream)]">
-      {/* Decorative bacteria silhouettes — desktop only */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: -100, top: -80, width: 400, height: 400, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
-        <svg width="400" height="400" viewBox="0 0 400 400" style={{ opacity: 0.04 }}>
-          <circle cx="200" cy="200" r="200" fill="#E8622A" stroke="#E8622A" strokeWidth="8" />
-          <circle cx="200" cy="200" r="185" fill="none" stroke="#E8622A" strokeWidth="3" opacity="0.5" />
+      {/* Decorative bacteria silhouettes — desktop only, scientific illustration backdrop */}
+
+      {/* 1 — Lactobacillus: large capsule, top-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: -60, top: 40, width: 320, height: 128, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-15deg)' }} aria-hidden="true">
+        <svg width="320" height="128" viewBox="0 0 200 80">
+          <path d="M 40,5 Q 5,5 5,40 Q 5,75 40,75 L 160,75 Q 195,75 195,40 Q 195,5 160,5 Z"
+            stroke="#E8622A" strokeWidth="3" strokeDasharray="8 4" fill="rgba(232,98,42,0.02)" opacity="0.35" />
+          <path d="M 40,18 Q 160,15 160,18"
+            stroke="#E8622A" strokeWidth="1.5" strokeDasharray="5 6" fill="none" opacity="0.2" />
         </svg>
       </div>
-      <div className="hidden lg:block" style={{ position: 'absolute', left: -60, bottom: 40, width: 220, height: 300, pointerEvents: 'none', zIndex: 0, transform: 'rotate(15deg)' }} aria-hidden="true">
-        <svg width="220" height="300" viewBox="0 0 220 300" style={{ opacity: 0.04 }}>
-          {/* Y-shape: stem + two branches */}
-          <line x1="110" y1="300" x2="110" y2="160" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
-          <line x1="110" y1="160" x2="40" y2="60" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
-          <line x1="110" y1="160" x2="180" y2="60" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
+
+      {/* 2 — Bifidobacterium: Y-shape, bottom-left */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: -40, bottom: 60, width: 120, height: 200, pointerEvents: 'none', zIndex: 0, transform: 'rotate(20deg)' }} aria-hidden="true">
+        <svg width="120" height="200" viewBox="0 0 120 200">
+          <path d="M 60,200 L 60,100 M 60,100 L 10,20 M 60,100 L 110,20"
+            stroke="#E8622A" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="12 5" fill="none" opacity="0.3" />
+        </svg>
+      </div>
+
+      {/* 3 — Akkermansia: egg oval, top-left */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: 80, top: -40, width: 140, height: 196, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-10deg)' }} aria-hidden="true">
+        <svg width="140" height="196" viewBox="0 0 100 140">
+          <path d="M 50,5 C 90,5 95,50 95,70 C 95,110 75,135 50,135 C 25,135 5,110 5,70 C 5,50 10,5 50,5 Z"
+            stroke="#E8622A" strokeWidth="3" strokeDasharray="10 5" fill="rgba(232,98,42,0.02)" opacity="0.3" />
+          <path d="M 50,20 C 78,20 80,50 80,70 C 80,100 68,120 50,120 C 32,120 20,100 20,70 C 20,50 22,20 50,20 Z"
+            stroke="#E8622A" strokeWidth="1.5" strokeDasharray="6 8" fill="none" opacity="0.15" />
+        </svg>
+      </div>
+
+      {/* 4 — Faecalibacterium: curved rod, centre-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: 40, top: '45%', width: 280, height: 112, pointerEvents: 'none', zIndex: 0, transform: 'rotate(30deg)' }} aria-hidden="true">
+        <svg width="280" height="112" viewBox="0 0 200 80">
+          <path d="M 10,40 C 50,10 150,70 190,40"
+            stroke="#E8622A" strokeWidth="8" strokeLinecap="round" strokeDasharray="15 6" fill="none" opacity="0.28" />
+          <path d="M 10,52 C 50,22 150,82 190,52"
+            stroke="#E8622A" strokeWidth="4" strokeLinecap="round" strokeDasharray="10 8" fill="none" opacity="0.15" />
+        </svg>
+      </div>
+
+      {/* 5 — Cocci: concentric rings, bottom-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: 60, bottom: -60, width: 300, height: 300, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <svg width="300" height="300" viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="140" stroke="#E8622A" strokeWidth="3" strokeDasharray="16 8" fill="none" opacity="0.25" />
+          <circle cx="150" cy="150" r="110" stroke="#E8622A" strokeWidth="2" strokeDasharray="10 10" fill="none" opacity="0.15" />
+          <circle cx="130" cy="140" r="8" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
+          <circle cx="155" cy="160" r="6" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
+          <circle cx="170" cy="138" r="10" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
         </svg>
       </div>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
@@ -687,26 +729,6 @@ function FinalCTA() {
   );
 }
 
-function Contact() {
-  return (
-    <section id="contact" className="py-16 lg:py-24 bg-[var(--color-cream)]">
-      <div className="max-w-2xl mx-auto px-6 lg:px-10">
-        <Reveal>
-          <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● GET IN TOUCH
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10">
-            Say hello.
-          </h2>
-          <ContactForm />
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 function Index() {
   const mainRef = useRef<HTMLElement>(null);
 
@@ -880,7 +902,6 @@ function Index() {
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
-        <Contact />
       </main>
       <Footer />
     </div>
