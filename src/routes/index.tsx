@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
-import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
 import { ContactForm } from "../components/ContactForm";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -46,6 +45,180 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// ── Botanical background ─────────────────────────────────────────────────────
+
+type FlowerSize = 'lg' | 'md' | 'sm';
+const FLOWER_DATA: Array<{ l: number; s: FlowerSize; hide: boolean }> = [
+  { l: 5,  s: 'lg', hide: false },
+  { l: 18, s: 'md', hide: true  },
+  { l: 32, s: 'sm', hide: false },
+  { l: 48, s: 'lg', hide: true  },
+  { l: 62, s: 'md', hide: false },
+  { l: 75, s: 'sm', hide: true  },
+  { l: 87, s: 'lg', hide: false },
+  { l: 94, s: 'md', hide: true  },
+];
+const FLOWER_DIM: Record<FlowerSize, { w: number; h: number; cx: number; sw: number; bcy: number; pr: number; px: number; cr: number }> = {
+  lg: { w: 80, h: 220, cx: 40, sw: 2.5, bcy: 20, pr: 8,  px: 5,  cr: 4   },
+  md: { w: 70, h: 160, cx: 35, sw: 2.0, bcy: 16, pr: 6,  px: 4,  cr: 3   },
+  sm: { w: 60, h: 110, cx: 30, sw: 1.5, bcy: 12, pr: 4,  px: 3,  cr: 2.5 },
+};
+
+function BotanicalBackground() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
+    const targetOpacity = isMobile ? 0.3 : 0.45;
+    const flowers = Array.from(el.querySelectorAll<HTMLElement>('.bf'));
+
+    const showFinal = () => {
+      flowers.forEach((fl, i) => {
+        const stem = fl.querySelector<SVGPathElement>('.bs');
+        if (stem) gsap.set(stem, { strokeDasharray: stem.getTotalLength(), strokeDashoffset: 0 });
+        gsap.set(fl.querySelectorAll('.bl'), { opacity: 1 });
+        const bloom = fl.querySelector<SVGGElement>('.bb');
+        const d = FLOWER_DIM[FLOWER_DATA[i].s];
+        if (bloom) gsap.set(bloom, { scale: 1, opacity: 1, svgOrigin: `${d.cx} ${d.bcy}` });
+      });
+      gsap.set(el, { opacity: targetOpacity });
+    };
+
+    if (prefersReduced) { showFinal(); return; }
+
+    let swayTweens: gsap.core.Tween[] = [];
+    let delayedCall: ReturnType<typeof gsap.delayedCall> | null = null;
+
+    const cycle = () => {
+      swayTweens.forEach(t => t.kill()); swayTweens = [];
+      if (delayedCall) { delayedCall.kill(); delayedCall = null; }
+
+      flowers.forEach((fl, i) => {
+        const stem = fl.querySelector<SVGPathElement>('.bs');
+        if (stem) { const len = stem.getTotalLength(); gsap.set(stem, { strokeDasharray: len, strokeDashoffset: len }); }
+        gsap.set(fl.querySelectorAll('.bl'), { opacity: 0 });
+        const bloom = fl.querySelector<SVGGElement>('.bb');
+        const d = FLOWER_DIM[FLOWER_DATA[i].s];
+        if (bloom) gsap.set(bloom, { scale: 0.2, opacity: 0, svgOrigin: `${d.cx} ${d.bcy}` });
+        gsap.set(fl, { rotation: 0 });
+      });
+      gsap.set(el, { opacity: targetOpacity });
+
+      const master = gsap.timeline();
+
+      flowers.forEach((fl, i) => {
+        const stem = fl.querySelector<SVGPathElement>('.bs');
+        if (!stem) return;
+        const len = stem.getTotalLength();
+        const d = FLOWER_DIM[FLOWER_DATA[i].s];
+        const bloom = fl.querySelector<SVGGElement>('.bb');
+
+        const tl = gsap.timeline();
+        // Stem draws on
+        tl.fromTo(stem, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' });
+        // Leaves fade in at ~40% of stem growth
+        tl.to(fl.querySelectorAll('.bl'), { opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.07 }, '-=0.72');
+        // Bloom opens after stem complete
+        if (bloom) {
+          tl.fromTo(bloom,
+            { scale: 0.2, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.7)', svgOrigin: `${d.cx} ${d.bcy}` },
+            '-=0.15'
+          );
+        }
+        master.add(tl, i * 0.15);
+      });
+
+      const allGrownAt = (flowers.length - 1) * 0.15 + 1.2 + 0.8;
+      master.call(() => {
+        flowers.forEach((fl, i) => {
+          swayTweens.push(gsap.to(fl, {
+            rotation: i % 2 === 0 ? 1.5 : -1.5,
+            duration: 2.5 + i * 0.12,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            transformOrigin: 'center bottom',
+          }));
+        });
+        delayedCall = gsap.delayedCall(8, () => {
+          gsap.to(el, {
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power2.inOut',
+            onComplete: () => gsap.delayedCall(0.1, cycle),
+          });
+        });
+      }, [], allGrownAt);
+    };
+
+    cycle();
+  }, { scope: containerRef });
+
+  return (
+    <div
+      ref={containerRef}
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+      aria-hidden="true"
+      style={{ zIndex: 0, opacity: 0 }}
+    >
+      {FLOWER_DATA.map((f, i) => {
+        const d = FLOWER_DIM[f.s];
+        const { w, h, cx, sw, bcy, pr, px, cr } = d;
+        const ls = w * 0.5;
+        const lyLow  = h * 0.70;
+        const lyHigh = h * 0.40;
+        const stemD  = `M ${cx},${h} C ${cx - 2},${h * 0.75} ${cx + 2},${h * 0.45} ${cx},0`;
+
+        return (
+          <div
+            key={i}
+            className={`bf absolute bottom-0${f.hide ? ' hidden md:block' : ''}`}
+            style={{ left: `${f.l}%`, transform: 'translateX(-50%)', width: w, height: h }}
+          >
+            <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ overflow: 'visible' }}>
+              {/* Stem */}
+              <path className="bs" d={stemD} stroke="#E8622A" strokeWidth={sw} strokeLinecap="round" fill="none" />
+
+              {/* Lower left leaf */}
+              <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
+                <path d={`M 0,0 C ${-ls},-14 ${-ls - 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+              </g>
+              {/* Lower right leaf */}
+              <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
+                <path d={`M 0,0 C ${ls},-14 ${ls + 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+              </g>
+              {/* Upper left leaf */}
+              <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
+                <path d={`M 0,0 C ${-ls},-12 ${-ls - 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+              </g>
+              {/* Upper right leaf */}
+              <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
+                <path d={`M 0,0 C ${ls},-12 ${ls + 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+              </g>
+
+              {/* Bloom — centered at (cx, bcy), no SVG transform so GSAP has clean control */}
+              <g className="bb" style={{ opacity: 0 }}>
+                {[0, 60, 120, 180, 240, 300].map(angle => (
+                  <ellipse key={angle} cx={cx} cy={bcy - pr} rx={px} ry={pr}
+                    fill="rgba(232,98,42,0.2)" stroke="#E8622A" strokeWidth="1.2"
+                    transform={`rotate(${angle}, ${cx}, ${bcy})`}
+                  />
+                ))}
+                <circle cx={cx} cy={bcy} r={cr} fill="#E8622A" opacity="0.6" />
+              </g>
+            </svg>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // Overflow-hidden word mask for hero headline — inner span translates up via GSAP on load
 function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
   return (
@@ -65,7 +238,7 @@ function Hero() {
       className="relative min-h-[65vh] lg:min-h-[70vh] pt-32 lg:pt-44 pb-0 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
-      <MicrobiomeCanvas />
+      <BotanicalBackground />
       {/* Warm orange gradient fade — visually connects cream hero to dark marquee below */}
       <div
         style={{
@@ -113,9 +286,6 @@ function Hero() {
             <p className="mt-4 text-xs text-muted-foreground">
               Join 500+ people already waiting · Early access gets 20% off
             </p>
-            <p className="mt-3 text-xs text-zinc-500 italic">
-              Animation represents Lactobacillus, Bifidobacterium, Faecalibacterium, Akkermansia, and Streptococcus — gut bacteria supported by the Flourish formula.
-            </p>
           </Reveal>
         </div>
       </div>
@@ -152,54 +322,65 @@ function Benefits() {
 
   return (
     <section id="benefits" className="relative overflow-hidden py-16 lg:py-24 bg-[var(--color-cream)]">
-      {/* Decorative bacteria silhouettes — desktop only, scientific illustration backdrop */}
+      {/* Decorative botanical silhouettes — desktop only */}
 
-      {/* 1 — Lactobacillus: large capsule, top-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: -60, top: 40, width: 320, height: 128, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-15deg)' }} aria-hidden="true">
-        <svg width="320" height="128" viewBox="0 0 200 80">
-          <path d="M 40,5 Q 5,5 5,40 Q 5,75 40,75 L 160,75 Q 195,75 195,40 Q 195,5 160,5 Z"
-            stroke="#E8622A" strokeWidth="3" strokeDasharray="8 4" fill="rgba(232,98,42,0.02)" opacity="0.35" />
-          <path d="M 40,18 Q 160,15 160,18"
-            stroke="#E8622A" strokeWidth="1.5" strokeDasharray="5 6" fill="none" opacity="0.2" />
-        </svg>
-      </div>
-
-      {/* 2 — Bifidobacterium: Y-shape, bottom-left */}
-      <div className="hidden lg:block" style={{ position: 'absolute', left: -40, bottom: 60, width: 120, height: 200, pointerEvents: 'none', zIndex: 0, transform: 'rotate(20deg)' }} aria-hidden="true">
-        <svg width="120" height="200" viewBox="0 0 120 200">
-          <path d="M 60,200 L 60,100 M 60,100 L 10,20 M 60,100 L 110,20"
-            stroke="#E8622A" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="12 5" fill="none" opacity="0.3" />
-        </svg>
-      </div>
-
-      {/* 3 — Akkermansia: egg oval, top-left */}
-      <div className="hidden lg:block" style={{ position: 'absolute', left: 80, top: -40, width: 140, height: 196, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-10deg)' }} aria-hidden="true">
-        <svg width="140" height="196" viewBox="0 0 100 140">
-          <path d="M 50,5 C 90,5 95,50 95,70 C 95,110 75,135 50,135 C 25,135 5,110 5,70 C 5,50 10,5 50,5 Z"
-            stroke="#E8622A" strokeWidth="3" strokeDasharray="10 5" fill="rgba(232,98,42,0.02)" opacity="0.3" />
-          <path d="M 50,20 C 78,20 80,50 80,70 C 80,100 68,120 50,120 C 32,120 20,100 20,70 C 20,50 22,20 50,20 Z"
-            stroke="#E8622A" strokeWidth="1.5" strokeDasharray="6 8" fill="none" opacity="0.15" />
-        </svg>
-      </div>
-
-      {/* 4 — Faecalibacterium: curved rod, centre-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: 40, top: '45%', width: 280, height: 112, pointerEvents: 'none', zIndex: 0, transform: 'rotate(30deg)' }} aria-hidden="true">
-        <svg width="280" height="112" viewBox="0 0 200 80">
-          <path d="M 10,40 C 50,10 150,70 190,40"
-            stroke="#E8622A" strokeWidth="8" strokeLinecap="round" strokeDasharray="15 6" fill="none" opacity="0.28" />
-          <path d="M 10,52 C 50,22 150,82 190,52"
-            stroke="#E8622A" strokeWidth="4" strokeLinecap="round" strokeDasharray="10 8" fill="none" opacity="0.15" />
-        </svg>
-      </div>
-
-      {/* 5 — Cocci: concentric rings, bottom-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: 60, bottom: -60, width: 300, height: 300, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+      {/* 1 — Large daisy, top-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: -80, top: -60, width: 300, height: 300, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
         <svg width="300" height="300" viewBox="0 0 300 300">
-          <circle cx="150" cy="150" r="140" stroke="#E8622A" strokeWidth="3" strokeDasharray="16 8" fill="none" opacity="0.25" />
-          <circle cx="150" cy="150" r="110" stroke="#E8622A" strokeWidth="2" strokeDasharray="10 10" fill="none" opacity="0.15" />
-          <circle cx="130" cy="140" r="8" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
-          <circle cx="155" cy="160" r="6" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
-          <circle cx="170" cy="138" r="10" fill="rgba(232,98,42,0.08)" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.3" />
+          {[0,45,90,135,180,225,270,315].map(a => (
+            <ellipse key={a} cx="150" cy="90" rx="18" ry="50" fill="none" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="8 4" opacity="0.07" transform={`rotate(${a},150,150)`} />
+          ))}
+          <circle cx="150" cy="150" r="18" fill="none" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="6 4" opacity="0.07" />
+          <line x1="150" y1="200" x2="150" y2="290" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="8 4" strokeLinecap="round" opacity="0.07" />
+        </svg>
+      </div>
+
+      {/* 2 — Botanical branch with leaves, bottom-left */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: -50, bottom: 40, width: 200, height: 300, pointerEvents: 'none', zIndex: 0, transform: 'rotate(25deg)' }} aria-hidden="true">
+        <svg width="200" height="300" viewBox="0 0 200 300">
+          <path d="M 100,300 C 90,230 110,180 95,120 C 80,60 100,20 100,0" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" strokeLinecap="round" opacity="0.06" />
+          <path d="M 98,240 C 58,225 43,255 98,248" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+          <path d="M 98,240 C 138,225 153,255 98,248" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+          <path d="M 96,175 C 56,160 41,190 96,183" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+          <path d="M 96,175 C 136,160 151,190 96,183" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+          <path d="M 97,110 C 61,95 47,125 97,118" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+          <path d="M 97,110 C 133,95 148,125 97,118" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
+        </svg>
+      </div>
+
+      {/* 3 — Seed pod / bud, top-left */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: 60, top: -40, width: 150, height: 200, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <svg width="150" height="200" viewBox="0 0 150 200">
+          <path d="M 75,200 L 75,140" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 6" fill="none" strokeLinecap="round" opacity="0.07" />
+          <path d="M 75,30 C 110,30 120,75 120,100 C 120,130 100,140 75,140 C 50,140 30,130 30,100 C 30,75 40,30 75,30 Z" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 6" fill="rgba(232,98,42,0.02)" opacity="0.07" />
+          <path d="M 75,140 C 52,132 42,152 75,145" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="4 5" fill="none" opacity="0.07" />
+          <path d="M 75,140 C 98,132 108,152 75,145" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="4 5" fill="none" opacity="0.07" />
+        </svg>
+      </div>
+
+      {/* 4 — Tall wildflower, centre-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: 30, top: '40%', width: 100, height: 350, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-10deg)' }} aria-hidden="true">
+        <svg width="100" height="350" viewBox="0 0 100 350">
+          <path d="M 50,350 C 48,280 52,210 50,0" stroke="#E8622A" strokeWidth="2" strokeDasharray="10 5" fill="none" strokeLinecap="round" opacity="0.06" />
+          <path d="M 50,200 C 18,185 12,212 50,205" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 5" fill="none" opacity="0.06" />
+          <path d="M 50,200 C 82,185 88,212 50,205" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 5" fill="none" opacity="0.06" />
+          {[0,60,120,180,240,300].map(a => (
+            <ellipse key={a} cx="50" cy="17" rx="7" ry="13" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 5" opacity="0.06" transform={`rotate(${a},50,30)`} />
+          ))}
+          <circle cx="50" cy="30" r="5" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.06" />
+        </svg>
+      </div>
+
+      {/* 5 — Circular flower mandala, bottom-right */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: -60, bottom: -80, width: 280, height: 280, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <svg width="280" height="280" viewBox="0 0 280 280">
+          {[0,45,90,135,180,225,270,315].map(a => (
+            <ellipse key={a} cx="140" cy="72" rx="20" ry="55" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 6" opacity="0.07" transform={`rotate(${a},140,140)`} />
+          ))}
+          <circle cx="140" cy="140" r="17" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 6" opacity="0.07" />
+          {[0,45,90,135,180,225,270,315].map(a => (
+            <ellipse key={a} cx="140" cy="100" rx="8" ry="28" fill="none" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="6 6" opacity="0.05" transform={`rotate(${a},140,140)`} />
+          ))}
         </svg>
       </div>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
