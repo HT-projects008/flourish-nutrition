@@ -84,7 +84,7 @@ function Hero() {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-6">
               <span className="size-1.5 rounded-full bg-primary" />
-              8 simple ingredients, backed by science.
+              Premium gut health, daily
             </span>
 
             <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.02em] text-left">
@@ -96,7 +96,7 @@ function Hero() {
             </h1>
 
             <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
-              The daily gut health ritual that reduces bloating, supports digestion, helping you feel and look your best.
+              8 organically sourced ingredients, backed by science. Helping you feel and look your best.
             </p>
             <div className="mt-6 max-w-md">
               <WaitlistForm source="homepage" />
@@ -239,7 +239,7 @@ function Comparison() {
   };
 
   return (
-    <section id="comparison" className="py-16 lg:py-24 bg-orange-50" style={{ backgroundColor: '#FFF7ED' }}>
+    <section id="comparison" className="py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0' }}>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
 
         {/* Top copy */}
@@ -443,7 +443,7 @@ function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    <section id="pricing" className="py-16 lg:py-24 bg-orange-50" style={{ backgroundColor: '#FFF7ED' }}>
+    <section id="pricing" className="py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0' }}>
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
         {/* Top copy */}
