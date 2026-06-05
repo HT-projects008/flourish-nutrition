@@ -57,7 +57,8 @@ interface Particle {
 
 // Boundary constants: keep particles within visible hero area
 const NAV_HEIGHT = 72;
-const MARQUEE_BUFFER = 60;
+const MARQUEE_BUFFER = 80;
+const SIDE_BUFFER = 20;
 
 function rand(min: number, max: number) {
   return min + Math.random() * (max - min);
@@ -80,8 +81,10 @@ function mkParticle(cw: number, ch: number): Particle {
   else if (lr < 0.75) { layerScale = 0.8; layerOpacity = 0.65; layerSpeed = 0.60; }
   else                 { layerScale = 1.0; layerOpacity = 0.90; layerSpeed = 1.00; }
 
-  const bvx = rand(-0.09, 0.09);
-  const bvy = rand(-0.12, 0.05);
+  const angle = Math.random() * Math.PI * 2;
+  const speed = 0.3 + Math.random() * 0.9;
+  const bvx = Math.cos(angle) * speed;
+  const bvy = Math.sin(angle) * speed;
 
   let strokeW = 1;
   if (type === "spirilli")    strokeW = rand(1.5, 3.0);
@@ -308,13 +311,13 @@ export function MicrobiomeCanvas() {
     canvas.width = cw;
     canvas.height = ch;
 
-    const targetCount = () => (window.innerWidth < 768 ? 80 : 140);
+    const targetCount = () => (window.innerWidth < 768 ? 120 : 200);
 
     const makeParticles = () => {
       const bTop = NAV_HEIGHT;
       const bBottom = ch - MARQUEE_BUFFER;
-      const bLeft = 8;
-      const bRight = cw - 8;
+      const bLeft = SIDE_BUFFER;
+      const bRight = cw - SIDE_BUFFER;
       const ps = Array.from({ length: targetCount() }, () => {
         const p = mkParticle(cw, ch);
         // Constrain initial spawn within visible bounds
@@ -353,6 +356,14 @@ export function MicrobiomeCanvas() {
       ctx.clearRect(0, 0, cw, ch);
       frame++;
 
+      // Orange gradient overlay at bottom — drawn beneath particles
+      const grad = ctx.createLinearGradient(0, ch * 0.6, 0, ch);
+      grad.addColorStop(0, 'rgba(232, 98, 42, 0)');
+      grad.addColorStop(0.6, 'rgba(232, 98, 42, 0.06)');
+      grad.addColorStop(1, 'rgba(232, 98, 42, 0.18)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, cw, ch);
+
       for (const p of particles) {
         // Mouse repulsion within 90px
         const dx = p.x - mx;
@@ -369,7 +380,7 @@ export function MicrobiomeCanvas() {
         p.vy += (p.baseVy - p.vy) * 0.02;
 
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (spd > 1.0) { p.vx = (p.vx / spd) * 1.0; p.vy = (p.vy / spd) * 1.0; }
+        if (spd > 1.2) { p.vx = (p.vx / spd) * 1.2; p.vy = (p.vy / spd) * 1.2; }
 
         p.x += p.vx * p.layerSpeed;
         p.y += p.vy * p.layerSpeed;
@@ -378,8 +389,8 @@ export function MicrobiomeCanvas() {
         // Wall bouncing — constrained to visible hero area between nav and marquee
         const bTop = NAV_HEIGHT;
         const bBottom = ch - MARQUEE_BUFFER;
-        const bLeft = 8;
-        const bRight = cw - 8;
+        const bLeft = SIDE_BUFFER;
+        const bRight = cw - SIDE_BUFFER;
         const pr = p.radius; // approximation for all particle types
 
         if (p.y - pr < bTop)    { p.y = bTop + pr;    p.vy =  Math.abs(p.vy) * 0.85; }
@@ -388,11 +399,11 @@ export function MicrobiomeCanvas() {
         if (p.x + pr > bRight)  { p.x = bRight - pr;  p.vx = -Math.abs(p.vx) * 0.85; }
 
         // Velocity cap + gentle drift to prevent particles from stopping
-        const MAX_SPEED = 0.8;
+        const MAX_SPEED = 1.2;
         p.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vx));
         p.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vy));
-        p.vx += (Math.random() - 0.5) * 0.018;
-        p.vy += (Math.random() - 0.5) * 0.018;
+        p.vx += (Math.random() - 0.5) * 0.025;
+        p.vy += (Math.random() - 0.5) * 0.025;
 
         ctx.save();
         ctx.translate(p.x, p.y);

@@ -61,7 +61,7 @@ function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[85vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
+      className="relative min-h-[75vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
@@ -79,12 +79,12 @@ function Hero() {
         }}
         aria-hidden="true"
       />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[85vh]">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[75vh]">
         <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-6">
               <span className="size-1.5 rounded-full bg-primary" />
-              Premium gut health, daily
+              8 simple ingredients, backed by science.
             </span>
 
             <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.03em] text-left">
@@ -142,9 +142,9 @@ function Benefits() {
   ];
 
   return (
-    <section id="benefits" className="py-24 lg:py-40 bg-[var(--color-cream)]">
+    <section id="benefits" className="py-16 lg:py-28 bg-[var(--color-cream)]">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
 
           {/* Left — sticky heading */}
           <div data-benefits-heading className="lg:sticky lg:top-32 lg:self-start">
@@ -152,9 +152,6 @@ function Benefits() {
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight mt-4">
               Seven reasons to make this your daily ritual.
             </h2>
-            <p className="text-zinc-500 text-sm leading-relaxed mt-6 max-w-xs">
-              8 simple ingredients, backed by science. Every benefit is a direct result of what's inside every serve.
-            </p>
           </div>
 
           {/* Right — numbered benefits list + footer */}
@@ -164,7 +161,7 @@ function Benefits() {
                 <li
                   key={item.name}
                   data-benefit-item
-                  className={`flex items-start py-6 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
+                  className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
                 >
                   <span
                     className="font-mono text-xs text-orange-400 font-medium mr-4 mt-1 shrink-0 w-6 text-right select-none"
@@ -240,6 +237,11 @@ function Comparison() {
 
         {/* Top copy */}
         <div data-comparison-copy className="text-center">
+          <div className="mb-4 flex justify-center">
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● WHY FLOURISH IS BETTER
+            </span>
+          </div>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
             Simple ingredients,<br />backed by science.
           </h2>
@@ -249,7 +251,7 @@ function Comparison() {
         </div>
 
         {/* Table */}
-        <div className="mt-16 rounded-2xl overflow-hidden border border-zinc-200 relative">
+        <div className="mt-16 rounded-2xl overflow-hidden border border-orange-200 relative">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse">
               <thead>
@@ -283,7 +285,7 @@ function Comparison() {
                   <tr
                     key={row.feature}
                     data-comparison-row
-                    className={`border-b border-zinc-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/40"}`}
+                    className={`border-b border-orange-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/60"}`}
                   >
                     <td className="pl-6 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
                       {row.feature}
@@ -316,7 +318,7 @@ function Comparison() {
         </div>
 
         {/* Legal disclaimer */}
-        <p className="text-zinc-400 text-xs mt-4 text-center italic">
+        <p className="text-zinc-500 text-xs mt-4 text-center italic">
           Comparison based on commonly available products in each category. Category characteristics are generalised, individual products may vary. Brand names referenced are category examples only.
         </p>
 
@@ -363,6 +365,11 @@ function Flavours() {
     <section id="flavours" className="py-28 lg:py-40 bg-[var(--color-cream)]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl mx-auto text-center mb-16">
+          <div className="mb-4 flex justify-center">
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● THE FLAVOURS
+            </span>
+          </div>
           <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
             One precise daily blend. 3 flavours.
           </h2>
