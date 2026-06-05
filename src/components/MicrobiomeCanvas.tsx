@@ -32,6 +32,7 @@ interface Particle {
   layerScale: number;
   layerOpacity: number;
   layerSpeed: number;
+  baseSpeed: number;
   // Label (one representative per type, desktop only)
   isLabel: boolean;
   labelName: string;
@@ -57,7 +58,7 @@ interface Particle {
 
 // Boundary constants: keep particles within visible hero area
 const NAV_HEIGHT = 72;
-const MARQUEE_BUFFER = 80;
+const MARQUEE_BUFFER = 20;
 const SIDE_BUFFER = 20;
 
 function rand(min: number, max: number) {
@@ -97,7 +98,7 @@ function mkParticle(cw: number, ch: number): Particle {
     rotation: rand(0, Math.PI * 2),
     rotationSpeed: rand(-0.003, 0.003),
     color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-    layerScale, layerOpacity, layerSpeed,
+    layerScale, layerOpacity, layerSpeed, baseSpeed: speed,
     // Label fields — populated by labelParticles() after array is built
     isLabel: false,
     labelName: LABEL_NAMES[type],
@@ -376,34 +377,27 @@ export function MicrobiomeCanvas() {
           p.vy += (dy / dist) * force;
         }
 
-        p.vx += (p.baseVx - p.vx) * 0.02;
-        p.vy += (p.baseVy - p.vy) * 0.02;
-
-        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (spd > 1.2) { p.vx = (p.vx / spd) * 1.2; p.vy = (p.vy / spd) * 1.2; }
-
         p.x += p.vx * p.layerSpeed;
         p.y += p.vy * p.layerSpeed;
         p.rotation += p.rotationSpeed;
 
-        // Wall bouncing — constrained to visible hero area between nav and marquee
+        // True elastic wall bouncing — Math.abs() forces velocity away from whichever wall was hit
         const bTop = NAV_HEIGHT;
         const bBottom = ch - MARQUEE_BUFFER;
         const bLeft = SIDE_BUFFER;
         const bRight = cw - SIDE_BUFFER;
-        const pr = p.radius; // approximation for all particle types
+        const r = p.radius * p.layerScale;
 
-        if (p.y - pr < bTop)    { p.y = bTop + pr;    p.vy =  Math.abs(p.vy) * 0.85; }
-        if (p.y + pr > bBottom) { p.y = bBottom - pr;  p.vy = -Math.abs(p.vy) * 0.85; }
-        if (p.x - pr < bLeft)   { p.x = bLeft + pr;   p.vx =  Math.abs(p.vx) * 0.85; }
-        if (p.x + pr > bRight)  { p.x = bRight - pr;  p.vx = -Math.abs(p.vx) * 0.85; }
+        if (p.x - r < bLeft)   { p.x = bLeft + r;    p.vx =  Math.abs(p.vx); }
+        if (p.x + r > bRight)  { p.x = bRight - r;   p.vx = -Math.abs(p.vx); }
+        if (p.y - r < bTop)    { p.y = bTop + r;      p.vy =  Math.abs(p.vy); }
+        if (p.y + r > bBottom) { p.y = bBottom - r;   p.vy = -Math.abs(p.vy); }
 
-        // Velocity cap + gentle drift to prevent particles from stopping
-        const MAX_SPEED = 1.2;
-        p.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vx));
-        p.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, p.vy));
-        p.vx += (Math.random() - 0.5) * 0.025;
-        p.vy += (Math.random() - 0.5) * 0.025;
+        // Speed normalisation — gently nudge each particle toward its initialised base speed
+        const currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const speedDiff = p.baseSpeed - currentSpeed;
+        p.vx += (p.vx / (currentSpeed || 1)) * speedDiff * 0.02;
+        p.vy += (p.vy / (currentSpeed || 1)) * speedDiff * 0.02;
 
         ctx.save();
         ctx.translate(p.x, p.y);

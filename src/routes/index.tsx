@@ -61,7 +61,7 @@ function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[75vh] pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-[var(--color-cream)]"
+      className="relative min-h-[65vh] lg:min-h-[70vh] pt-32 lg:pt-44 pb-0 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <MicrobiomeCanvas />
@@ -79,7 +79,7 @@ function Hero() {
         }}
         aria-hidden="true"
       />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[75vh]">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[65vh] lg:min-h-[70vh]">
         <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-6">
@@ -87,7 +87,7 @@ function Hero() {
               8 simple ingredients, backed by science.
             </span>
 
-            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.03em] text-left">
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.02em] text-left">
               <HeroWord spaceAfter>Feel</HeroWord>
               <HeroWord>lighter.</HeroWord>
               <br />
@@ -120,7 +120,7 @@ function Marquee() {
     <section aria-hidden="true" className="bg-[#1a1a1a] text-white overflow-hidden py-5">
       <div className="flex animate-marquee whitespace-nowrap">
         {track.map((item, i) => (
-          <span key={i} className="flex items-center gap-8 px-8 text-sm tracking-wide uppercase font-medium">
+          <span key={i} className="flex items-center gap-8 px-8 text-xs tracking-widest uppercase font-medium">
             {item}
             <span className="text-primary">●</span>
           </span>
@@ -142,13 +142,17 @@ function Benefits() {
   ];
 
   return (
-    <section id="benefits" className="py-16 lg:py-28 bg-[var(--color-cream)]">
+    <section id="benefits" className="py-16 lg:py-24 bg-[var(--color-cream)]">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
 
           {/* Left — sticky heading */}
           <div data-benefits-heading className="lg:sticky lg:top-32 lg:self-start">
-            <p className="text-sm font-medium text-primary">● WHAT FLOURISH DOES</p>
+            <div className="flex justify-center mb-6">
+              <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+                ● WHAT FLOURISH DOES
+              </span>
+            </div>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight mt-4">
               Seven reasons to make this your daily ritual.
             </h2>
@@ -164,13 +168,13 @@ function Benefits() {
                   className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
                 >
                   <span
-                    className="font-mono text-xs text-orange-400 font-medium mr-4 mt-1 shrink-0 w-6 text-right select-none"
+                    className="font-mono text-xs text-orange-400 font-medium mr-4 mt-1 shrink-0 w-7 text-right select-none"
                     aria-hidden="true"
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <p className="font-serif font-bold text-lg text-zinc-900 leading-snug">
+                    <p className="font-serif font-semibold text-base text-zinc-900 leading-snug">
                       {item.name}
                     </p>
                     <p className="text-zinc-500 text-sm leading-relaxed mt-1">{item.desc}</p>
@@ -179,18 +183,21 @@ function Benefits() {
               ))}
             </ul>
 
-            {/* Footer: closing quote + science link */}
+            {/* Footer: closing quote + context line + science link */}
             <div data-benefits-footer className="mt-8">
               <div className="mt-12 pt-8 border-t border-zinc-100">
                 <p className="font-serif italic text-2xl text-zinc-400 leading-relaxed">
                   This is what it means to Flourish.
                 </p>
               </div>
+              <p className="text-zinc-500 text-sm mt-8 mb-4">
+                Just some of the improvements a sachet a day does for you.
+              </p>
               <Link
                 to="/journal"
-                className="mt-6 inline-flex border border-zinc-300 text-zinc-600 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors cursor-pointer"
+                className="inline-flex border border-zinc-300 text-zinc-600 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors cursor-pointer"
               >
-                See more benefits in Science →
+                See the other benefits →
               </Link>
             </div>
           </div>
@@ -232,12 +239,12 @@ function Comparison() {
   };
 
   return (
-    <section id="comparison" className="py-24 lg:py-40 bg-orange-50">
+    <section id="comparison" className="py-16 lg:py-24 bg-orange-50" style={{ backgroundColor: '#FFF7ED' }}>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
 
         {/* Top copy */}
         <div data-comparison-copy className="text-center">
-          <div className="mb-4 flex justify-center">
+          <div className="mb-6 flex justify-center">
             <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
               ● WHY FLOURISH IS BETTER
             </span>
@@ -287,7 +294,7 @@ function Comparison() {
                     data-comparison-row
                     className={`border-b border-orange-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/60"}`}
                   >
-                    <td className="pl-6 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
+                    <td className="pl-5 pr-4 py-3 text-zinc-700 text-sm font-medium align-middle">
                       {row.feature}
                     </td>
 
@@ -362,10 +369,10 @@ function Flavours() {
   ];
 
   return (
-    <section id="flavours" className="py-28 lg:py-40 bg-[var(--color-cream)]">
+    <section id="flavours" className="py-16 lg:py-24 bg-[var(--color-cream)]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl mx-auto text-center mb-16">
-          <div className="mb-4 flex justify-center">
+          <div className="mb-6 flex justify-center">
             <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
               ● THE FLAVOURS
             </span>
@@ -384,12 +391,12 @@ function Flavours() {
             <div
               key={f.id}
               data-flavour-card
-              className="min-h-[520px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
+              className="min-h-[400px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
               {/* Number watermark — consistent across all three cards */}
               <span
-                className="absolute bottom-4 right-6 font-serif text-8xl font-bold leading-none select-none pointer-events-none text-white opacity-20"
+                className="absolute bottom-4 right-6 font-serif text-7xl font-bold leading-none select-none pointer-events-none text-white opacity-20"
                 aria-hidden="true"
               >
                 {f.id}
@@ -398,7 +405,7 @@ function Flavours() {
               <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
                 {f.label}
               </p>
-              <h3 className={`font-serif text-3xl font-bold mb-6 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
+              <h3 className={`font-serif text-2xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
                 {f.name}
               </h3>
               <p className={`text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
@@ -436,12 +443,16 @@ function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    <section id="pricing" className="py-24 lg:py-40 bg-orange-50">
+    <section id="pricing" className="py-16 lg:py-24 bg-orange-50" style={{ backgroundColor: '#FFF7ED' }}>
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
         {/* Top copy */}
         <Reveal>
-          <p className="text-sm font-medium text-primary">● PRICING</p>
+          <div className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● PRICING
+            </span>
+          </div>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 mt-4 leading-tight">
             Start your ritual.<br />No commitment needed.
           </h2>
@@ -486,11 +497,11 @@ function PricingTeaser() {
                 One-off
               </p>
               <div className="flex items-baseline gap-2 mt-4">
-                <p className="text-5xl font-bold text-zinc-900">£27.99</p>
+                <p className="text-4xl font-bold text-zinc-900">£27.99</p>
                 <p className="text-zinc-400 text-sm line-through">£34.99</p>
               </div>
               <p className="text-zinc-400 text-sm mt-1">per month</p>
-              <span className="mt-3 inline-block bg-orange-50 text-orange-600 text-xs rounded-full px-3 py-1">
+              <span className="mt-3 inline-block bg-orange-100 text-orange-600 text-xs rounded-full px-3 py-1">
                 Early access rate — first 500 only
               </span>
               <ul className="mt-6 text-sm text-zinc-500 space-y-2">
@@ -508,7 +519,7 @@ function PricingTeaser() {
               </ul>
               <a
                 href="#waitlist"
-                className="mt-8 block w-full text-center border border-zinc-300 text-zinc-700 rounded-xl py-3 font-medium text-sm hover:border-zinc-400 transition-colors"
+                className="mt-8 block w-full text-center border border-zinc-300 text-zinc-700 rounded-full py-3 font-medium text-sm hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
                 Join Waitlist — One-off
               </a>
@@ -523,7 +534,7 @@ function PricingTeaser() {
                 Monthly subscription
               </p>
               <div className="flex items-baseline gap-2 mt-4">
-                <p className="text-5xl font-bold text-white">£23.99</p>
+                <p className="text-4xl font-bold text-white">£23.99</p>
                 <p className="text-zinc-500 text-sm line-through">£29.99</p>
               </div>
               <p className="text-zinc-400 text-sm mt-1">/month</p>
@@ -547,7 +558,7 @@ function PricingTeaser() {
               </ul>
               <a
                 href="#waitlist"
-                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-3 font-medium text-sm transition-colors"
+                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-full py-3 font-medium text-sm transition-colors"
               >
                 Join Waitlist — Subscribe
               </a>
@@ -562,7 +573,7 @@ function PricingTeaser() {
               <p className="text-orange-500 text-sm font-medium uppercase tracking-widest">
                 7-Day Trial
               </p>
-              <p className="text-6xl font-bold text-zinc-900 mt-4">£10</p>
+              <p className="text-4xl font-bold text-zinc-900 mt-4">£10</p>
               <p className="text-zinc-500 text-sm mt-2">7 sachets delivered to your door.</p>
               <ul className="mt-8 text-sm text-zinc-500 space-y-3 text-left max-w-xs mx-auto">
                 {[
@@ -583,7 +594,7 @@ function PricingTeaser() {
               </p>
               <a
                 href="#waitlist"
-                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-3 font-medium text-sm transition-colors"
+                className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-full py-3 font-medium text-sm transition-colors"
               >
                 Join Waitlist — Trial
               </a>
@@ -615,8 +626,8 @@ function FinalCTA() {
       <div className="mx-auto max-w-3xl px-6 lg:px-10 text-center">
         <Reveal>
           <div className="flex justify-center mb-6">
-            <span className="bg-orange-50 text-orange-600 text-xs rounded-full px-4 py-1.5">
-              🌿 Early access — limited spots
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● EARLY ACCESS
             </span>
           </div>
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[1.05] tracking-[-0.02em]">
