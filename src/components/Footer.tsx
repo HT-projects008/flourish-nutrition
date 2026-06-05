@@ -4,6 +4,7 @@ import { Reveal } from "./Reveal";
 const footerLinks = [
   { label: "Science", href: "/journal" },
   { label: "About", href: "/#waitlist" },
+  { label: "Contact", href: "mailto:hello@flourish.com" },
 ];
 
 const year = new Date().getFullYear();

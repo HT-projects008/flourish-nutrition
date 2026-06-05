@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
+import { ContactForm } from "../components/ContactForm";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -96,7 +97,7 @@ function Hero() {
             </h1>
 
             <p className="mt-4 text-lg lg:text-xl text-muted-foreground leading-relaxed text-left">
-              8 organically sourced ingredients, backed by science. Helping you feel and look your best.
+              8 organic ingredients, backed by science. Helping you feel and look your best. No big brand nasties.
             </p>
             <div className="mt-6 max-w-md">
               <WaitlistForm source="homepage" />
@@ -142,7 +143,22 @@ function Benefits() {
   ];
 
   return (
-    <section id="benefits" className="py-16 lg:py-24 bg-[var(--color-cream)]">
+    <section id="benefits" className="relative overflow-hidden py-16 lg:py-24 bg-[var(--color-cream)]">
+      {/* Decorative bacteria silhouettes — desktop only */}
+      <div className="hidden lg:block" style={{ position: 'absolute', right: -100, top: -80, width: 400, height: 400, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <svg width="400" height="400" viewBox="0 0 400 400" style={{ opacity: 0.04 }}>
+          <circle cx="200" cy="200" r="200" fill="#E8622A" stroke="#E8622A" strokeWidth="8" />
+          <circle cx="200" cy="200" r="185" fill="none" stroke="#E8622A" strokeWidth="3" opacity="0.5" />
+        </svg>
+      </div>
+      <div className="hidden lg:block" style={{ position: 'absolute', left: -60, bottom: 40, width: 220, height: 300, pointerEvents: 'none', zIndex: 0, transform: 'rotate(15deg)' }} aria-hidden="true">
+        <svg width="220" height="300" viewBox="0 0 220 300" style={{ opacity: 0.04 }}>
+          {/* Y-shape: stem + two branches */}
+          <line x1="110" y1="300" x2="110" y2="160" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
+          <line x1="110" y1="160" x2="40" y2="60" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
+          <line x1="110" y1="160" x2="180" y2="60" stroke="#E8622A" strokeWidth="20" strokeLinecap="round" />
+        </svg>
+      </div>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
 
@@ -239,7 +255,19 @@ function Comparison() {
   };
 
   return (
-    <section id="comparison" className="py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0' }}>
+    <section id="comparison" className="comparison-section relative overflow-hidden py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0', backgroundImage: 'none' }}>
+      {/* Decorative bacteria silhouettes — desktop only */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: -60, top: 60, width: 250, height: 250, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <svg width="250" height="250" viewBox="0 0 250 250" style={{ opacity: 0.04 }}>
+          <circle cx="125" cy="125" r="125" fill="#E8622A" stroke="#E8622A" strokeWidth="6" />
+          <circle cx="125" cy="125" r="114" fill="none" stroke="#E8622A" strokeWidth="2" opacity="0.5" />
+        </svg>
+      </div>
+      <div className="hidden lg:block" style={{ position: 'absolute', right: -80, top: '50%', width: 400, height: 120, pointerEvents: 'none', zIndex: 0, transform: 'translateY(-50%) rotate(-20deg)' }} aria-hidden="true">
+        <svg width="400" height="120" viewBox="0 0 400 120" style={{ opacity: 0.04 }}>
+          <rect x="0" y="0" width="400" height="120" rx="60" ry="60" fill="#E8622A" />
+        </svg>
+      </div>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
 
         {/* Top copy */}
@@ -443,7 +471,7 @@ function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    <section id="pricing" className="py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0' }}>
+    <section id="pricing" className="pricing-section py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0', backgroundImage: 'none' }}>
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
         {/* Top copy */}
@@ -659,6 +687,26 @@ function FinalCTA() {
   );
 }
 
+function Contact() {
+  return (
+    <section id="contact" className="py-16 lg:py-24 bg-[var(--color-cream)]">
+      <div className="max-w-2xl mx-auto px-6 lg:px-10">
+        <Reveal>
+          <div className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● GET IN TOUCH
+            </span>
+          </div>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10">
+            Say hello.
+          </h2>
+          <ContactForm />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   const mainRef = useRef<HTMLElement>(null);
 
@@ -832,6 +880,7 @@ function Index() {
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
+        <Contact />
       </main>
       <Footer />
     </div>

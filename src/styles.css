@@ -137,6 +137,14 @@
 }
 .animate-bounce-slow { animation: bounce-slow 3.5s ease-in-out infinite; }
 
+/* ─── Orange section backgrounds ───────────────────────────────────────── */
+.comparison-section {
+  background-color: #FFF3E0 !important;
+}
+.pricing-section {
+  background-color: #FFF3E0 !important;
+}
+
 /* ─── Science hero video background ────────────────────────────────────── */
 .science-hero-video {
   will-change: transform;
