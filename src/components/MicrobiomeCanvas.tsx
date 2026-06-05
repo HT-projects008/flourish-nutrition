@@ -14,11 +14,11 @@ type BacteriaType = "cocci" | "bacilli" | "spirilli" | "bifido" | "akkermansia";
 
 // Scientific label for each bacteria type shown as a floating annotation
 const LABEL_NAMES: Record<BacteriaType, string> = {
-  cocci:       "Lactobacillus",
-  bacilli:     "Bacteroidetes",
+  cocci:       "Akkermansia",
+  bacilli:     "Lactobacillus",
   spirilli:    "Faecalibacterium",
   bifido:      "Bifidobacterium",
-  akkermansia: "Akkermansia",
+  akkermansia: "Streptococcus",
 };
 
 interface Particle {

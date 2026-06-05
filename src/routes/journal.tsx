@@ -176,9 +176,6 @@ function JournalListing() {
             <h1 className="font-serif text-5xl lg:text-6xl font-bold text-white leading-tight">
               What it means to Flourish...
             </h1>
-            <p className="mt-3 text-white/80 text-sm">
-              Explore the science behind every ingredient.
-            </p>
             <button
               onClick={handleScrollDown}
               className="mt-6 cursor-pointer focus-visible:outline-none"

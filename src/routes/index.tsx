@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
 import { MicrobiomeCanvas } from "../components/MicrobiomeCanvas";
+import { ContactForm } from "../components/ContactForm";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -113,7 +114,7 @@ function Hero() {
               Join 500+ people already waiting · Early access gets 20% off
             </p>
             <p className="mt-3 text-xs text-zinc-500 italic">
-              Animation represents Lactobacillus, Bifidobacterium, Faecalibacterium, Bacteroidetes, and Akkermansia, gut bacteria supported by the Flourish formula.
+              Animation represents Lactobacillus, Bifidobacterium, Faecalibacterium, Akkermansia, and Streptococcus — gut bacteria supported by the Flourish formula.
             </p>
           </Reveal>
         </div>
@@ -729,6 +730,26 @@ function FinalCTA() {
   );
 }
 
+function Contact() {
+  return (
+    <section id="contact" className="py-16 lg:py-24 bg-[var(--color-cream)]">
+      <div className="max-w-2xl mx-auto px-6 lg:px-10">
+        <Reveal>
+          <div className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+              ● GET IN TOUCH
+            </span>
+          </div>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10">
+            Say hello.
+          </h2>
+          <ContactForm />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   const mainRef = useRef<HTMLElement>(null);
 
@@ -902,6 +923,7 @@ function Index() {
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
+        <Contact />
       </main>
       <Footer />
     </div>

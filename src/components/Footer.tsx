@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 
 const footerLinks = [
@@ -9,6 +9,9 @@ const footerLinks = [
 const year = new Date().getFullYear();
 
 export default function Footer() {
+  const location = useLocation();
+  const contactHref = location.pathname === "/" ? "#contact" : "/#contact";
+
   return (
     <footer className="bg-[oklch(0.18_0.015_60)] text-background/85">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16">
@@ -28,7 +31,7 @@ export default function Footer() {
                 </a>
               ))}
               <a
-                href="mailto:hello@flourishdrink.co.uk"
+                href={contactHref}
                 className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
               >
                 Contact
