@@ -459,187 +459,152 @@ function Benefits() {
 
 // ── Botanical ingredient illustrations ───────────────────────────────────────
 
-const SVG_PROPS = {
-  width: 48,
-  height: 48,
-  viewBox: "0 0 48 48",
-  fill: "none",
-  stroke: "#D4744A",
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-
 function IllustrationACV() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Outer apple */}
-      <circle cx="24" cy="28" r="14" stroke="#D4744A" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Indent at top */}
-      <path d="M18,16 Q24,12 30,16" strokeWidth="1.5" fill="none" />
-      {/* Stem */}
-      <path d="M24,14 Q26,9 24,7" strokeWidth="1.5" />
-      {/* Leaf */}
-      <path d="M24,10 Q30,7 28,12" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Core line */}
-      <line x1="24" y1="18" x2="24" y2="40" strokeWidth="1" strokeDasharray="2 2" />
-      {/* Seeds */}
-      <ellipse cx="21" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
-      <ellipse cx="27" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Apple Cider Vinegar illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M40,12 C28,12 18,20 16,32 C14,44 18,58 28,64 C34,68 40,68 40,68" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <path d="M40,12 C52,12 62,20 64,32 C66,44 62,58 52,64 C46,68 40,68 40,68" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.06)" />
+      <path d="M34,14 C36,10 40,8 44,14" stroke="#E8622A" strokeWidth="1.2" fill="none" />
+      <path d="M40,8 C41,4 44,2 43,6" stroke="#D4744A" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M43,5 C47,2 52,4 48,8 C46,9 43,8 43,5" stroke="#D4744A" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
+      <line x1="40" y1="12" x2="40" y2="68" stroke="#E8B84B" strokeWidth="1" strokeDasharray="3 2" />
+      <ellipse cx="40" cy="40" rx="5" ry="8" stroke="#E8B84B" strokeWidth="1" fill="rgba(232,98,42,0.05)" />
+      <ellipse cx="40" cy="35" rx="2" ry="3" fill="rgba(180,80,20,0.3)" stroke="none" />
+      <ellipse cx="40" cy="46" rx="2" ry="3" fill="rgba(180,80,20,0.3)" stroke="none" />
+      <path d="M24,30 C30,28 35,32 38,30" stroke="#E8622A" strokeWidth="0.8" strokeDasharray="2 2" fill="none" opacity="0.4" />
+      <path d="M24,42 C30,40 35,44 38,42" stroke="#E8622A" strokeWidth="0.8" strokeDasharray="2 2" fill="none" opacity="0.4" />
     </svg>
   );
 }
 
 function IllustrationLemon() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Wedge outline */}
-      <path d="M24,40 L8,14 A18,18 0 0,1 40,14 Z" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Segment lines */}
-      <line x1="24" y1="40" x2="24" y2="14" strokeWidth="1" />
-      <line x1="24" y1="40" x2="11" y2="19" strokeWidth="1" />
-      <line x1="24" y1="40" x2="37" y2="19" strokeWidth="1" />
-      {/* Juice cells */}
-      <circle cx="20" cy="30" r="1.2" fill="rgba(212,116,74,0.3)" stroke="none" />
-      <circle cx="28" cy="28" r="1" fill="rgba(212,116,74,0.3)" stroke="none" />
-      <circle cx="24" cy="24" r="1.2" fill="rgba(212,116,74,0.3)" stroke="none" />
-      <circle cx="17" cy="24" r="0.9" fill="rgba(212,116,74,0.3)" stroke="none" />
-      <circle cx="31" cy="24" r="0.9" fill="rgba(212,116,74,0.3)" stroke="none" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Lemon illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14,40 C14,24 24,12 40,10 C56,8 68,22 68,38 C68,54 58,68 42,70 C26,72 14,56 14,40 Z" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.06)" />
+      <path d="M14,40 C10,38 6,35 8,32 C10,29 14,34 14,40" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.08)" />
+      <path d="M68,38 C72,36 76,33 74,30 C72,27 68,32 68,38" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.08)" />
+      <path d="M20,40 C20,28 28,18 40,17 C52,16 60,26 60,38 C60,50 52,60 40,62 C28,64 20,52 20,40 Z" stroke="#E8B84B" strokeWidth="1" fill="none" opacity="0.6" />
+      <line x1="40" y1="17" x2="40" y2="62" stroke="#E8B84B" strokeWidth="0.8" opacity="0.5" />
+      <line x1="22" y1="28" x2="58" y2="52" stroke="#E8B84B" strokeWidth="0.8" opacity="0.5" />
+      <line x1="22" y1="52" x2="58" y2="28" stroke="#E8B84B" strokeWidth="0.8" opacity="0.5" />
+      <circle cx="32" cy="33" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="48" cy="33" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="32" cy="48" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="48" cy="48" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="40" cy="30" r="1.2" fill="rgba(232,98,42,0.25)" />
+      <circle cx="40" cy="52" r="1.2" fill="rgba(232,98,42,0.25)" />
     </svg>
   );
 }
 
 function IllustrationTurmeric() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Main root body */}
-      <path d="M14,34 Q12,26 16,20 Q20,14 26,16 Q34,18 32,28 Q30,36 24,38 Q18,40 14,34 Z"
-        strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Finger extensions */}
-      <path d="M30,20 Q38,16 36,10" strokeWidth="1.5" />
-      <path d="M32,28 Q40,28 40,22" strokeWidth="1.5" />
-      <path d="M16,28 Q8,30 8,24" strokeWidth="1.5" />
-      {/* Surface texture */}
-      <path d="M18,24 Q22,22 26,24" strokeWidth="1" strokeDasharray="2 2" />
-      <path d="M20,30 Q24,28 28,30" strokeWidth="1" strokeDasharray="2 2" />
-      {/* Leaf sprout */}
-      <path d="M22,16 Q20,10 24,8" strokeWidth="1.5" />
-      <path d="M23,11 Q28,8 26,14" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Turmeric illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16,48 C16,40 20,34 28,32 C36,30 44,32 50,36 C56,40 60,36 62,32" stroke="#E8622A" strokeWidth="2" fill="none" />
+      <path d="M16,52 C16,44 20,38 28,36 C36,34 44,36 50,40 C56,44 60,40 62,36" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.1)" opacity="0.6" />
+      <path d="M28,34 C26,28 24,20 28,16 C30,12 34,14 34,20 C34,26 32,30 28,34" stroke="#E8622A" strokeWidth="1.8" fill="rgba(232,98,42,0.1)" />
+      <path d="M40,33 C40,26 38,18 42,14 C44,10 48,12 47,18 C46,24 44,28 40,33" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <path d="M50,37 C52,30 54,24 56,22 C58,18 60,22 58,27 C56,32 53,35 50,37" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.07)" />
+      <line x1="22" y1="44" x2="26" y2="38" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1" opacity="0.5" />
+      <line x1="30" y1="44" x2="34" y2="38" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1" opacity="0.5" />
+      <line x1="38" y1="44" x2="42" y2="38" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1" opacity="0.5" />
+      <circle cx="56" cy="58" r="8" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="56" cy="58" r="4" stroke="#E8B84B" strokeWidth="0.8" fill="rgba(232,98,42,0.2)" />
     </svg>
   );
 }
 
 function IllustrationBlackPepper() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* S-curve stem */}
-      <path d="M16,40 C14,32 28,28 26,20 C24,12 16,10 18,6" strokeWidth="1.5" />
-      {/* Berries */}
-      <circle cx="28" cy="14" r="4" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
-      <circle cx="34" cy="22" r="3.5" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
-      <circle cx="30" cy="30" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
-      <circle cx="22" cy="26" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
-      {/* Leaves */}
-      <path d="M20,14 Q14,10 14,16" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
-      <path d="M22,22 Q16,20 17,26" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Black Pepper illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20,70 C22,58 24,46 30,36 C36,26 42,18 48,14" stroke="#D4744A" strokeWidth="1.5" fill="none" />
+      <path d="M34,42 C40,38 48,36 54,32" stroke="#D4744A" strokeWidth="1.2" fill="none" />
+      <circle cx="30" cy="50" r="6" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.15)" />
+      <circle cx="30" cy="50" r="2" fill="rgba(180,80,20,0.2)" stroke="none" />
+      <circle cx="38" cy="38" r="5" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      <circle cx="38" cy="38" r="1.8" fill="rgba(180,80,20,0.2)" stroke="none" />
+      <circle cx="50" cy="34" r="4.5" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.1)" />
+      <circle cx="46" cy="20" r="4" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.1)" />
+      <circle cx="26" cy="62" r="3.5" stroke="#E8622A" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M34,42 C30,36 26,32 28,26 C30,20 38,22 38,30 C38,36 36,40 34,42" stroke="#D4744A" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M34,42 C33,36 32,30 30,26" stroke="#D4744A" strokeWidth="0.7" strokeDasharray="2 1" fill="none" opacity="0.5" />
     </svg>
   );
 }
 
 function IllustrationCinnamon() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Outer oval */}
-      <ellipse cx="24" cy="26" rx="13" ry="16" strokeWidth="1.5" fill="rgba(212,116,74,0.06)" />
-      {/* Concentric spiral lines */}
-      <ellipse cx="24" cy="26" rx="9" ry="12" strokeWidth="1" strokeDasharray="3 2" />
-      <ellipse cx="24" cy="26" rx="5" ry="7" strokeWidth="1" strokeDasharray="2 2" />
-      <ellipse cx="24" cy="26" rx="2" ry="3" strokeWidth="1" />
-      {/* Edge texture */}
-      <path d="M11,18 Q9,22 11,28" strokeWidth="1.5" strokeDasharray="2 2" />
-      <path d="M37,18 Q39,22 37,28" strokeWidth="1.5" strokeDasharray="2 2" />
-      {/* Broken piece */}
-      <ellipse cx="38" cy="36" rx="5" ry="7" strokeWidth="1" fill="rgba(212,116,74,0.06)" transform="rotate(20,38,36)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Ceylon Cinnamon illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18,56 C14,48 14,36 18,26 C22,16 30,10 40,10 C50,10 58,16 62,26 C66,36 66,48 62,56 C58,66 50,70 40,70 C30,70 22,66 18,56" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.06)" />
+      <path d="M24,54 C20,46 20,36 24,28 C28,20 34,16 40,16 C46,16 52,20 56,28 C60,36 60,46 56,54 C52,62 46,64 40,64 C34,64 28,62 24,54" stroke="#D4744A" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M30,52 C26,44 26,38 30,32 C34,26 38,22 40,22 C42,22 46,26 50,32 C54,38 54,44 50,52 C46,58 42,60 40,60 C38,60 34,58 30,52" stroke="#D4744A" strokeWidth="1" fill="none" opacity="0.5" />
+      <ellipse cx="40" cy="40" rx="8" ry="10" stroke="#E8622A" strokeWidth="1" fill="rgba(180,80,20,0.08)" />
+      <path d="M20,30 C24,28 28,30 26,34" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 2" fill="none" opacity="0.4" />
+      <path d="M56,28 C60,30 62,34 58,36" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 2" fill="none" opacity="0.4" />
+      <path d="M18,48 C20,52 24,54 22,58" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 2" fill="none" opacity="0.4" />
+      <path d="M66,60 C68,56 72,54 70,60 C69,64 66,64 66,60" stroke="#E8622A" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
     </svg>
   );
 }
 
 function IllustrationPrebiotic() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Central point */}
-      <circle cx="24" cy="24" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.15)" />
-      {/* Main branches */}
-      <line x1="24" y1="21" x2="24" y2="8" strokeWidth="1.5" />
-      <line x1="21" y1="26" x2="10" y2="34" strokeWidth="1.5" />
-      <line x1="27" y1="26" x2="38" y2="34" strokeWidth="1.5" />
-      <line x1="22" y1="22" x2="12" y2="12" strokeWidth="1.5" />
-      <line x1="26" y1="22" x2="36" y2="12" strokeWidth="1.5" />
-      {/* Tips */}
-      <circle cx="24" cy="8" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
-      <circle cx="10" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
-      <circle cx="38" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
-      <circle cx="12" cy="12" r="2" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
-      <circle cx="36" cy="12" r="2" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
-      {/* Secondary mini branches */}
-      <line x1="24" y1="14" x2="20" y2="10" strokeWidth="1" />
-      <line x1="24" y1="14" x2="28" y2="10" strokeWidth="1" />
-      <circle cx="20" cy="10" r="1.5" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
-      <circle cx="28" cy="10" r="1.5" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Prebiotic Blend illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="40" cy="40" r="6" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.15)" />
+      <path d="M44,36 C50,28 56,20 60,14" stroke="#E8622A" strokeWidth="1.5" fill="none" />
+      <circle cx="60" cy="14" r="3" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.1)" />
+      <path d="M52,24 C56,20 62,20 64,24" stroke="#E8622A" strokeWidth="1" fill="none" />
+      <circle cx="64" cy="24" r="2" fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" />
+      <path d="M36,36 C30,28 24,20 20,14" stroke="#D4744A" strokeWidth="1.5" fill="none" />
+      <circle cx="20" cy="14" r="3" stroke="#D4744A" strokeWidth="1.2" fill="rgba(212,116,74,0.1)" />
+      <path d="M46,40 C54,38 62,36 68,34" stroke="#E8B84B" strokeWidth="1.2" fill="none" />
+      <circle cx="68" cy="34" r="2.5" stroke="#E8B84B" strokeWidth="1" fill="rgba(232,184,75,0.15)" />
+      <path d="M34,40 C26,42 18,44 12,46" stroke="#E8B84B" strokeWidth="1.2" fill="none" />
+      <circle cx="12" cy="46" r="2.5" stroke="#E8B84B" strokeWidth="1" fill="rgba(232,184,75,0.15)" />
+      <path d="M40,46 C40,54 38,62 36,70" stroke="#D4744A" strokeWidth="1.5" fill="none" />
+      <circle cx="36" cy="70" r="3" stroke="#D4744A" strokeWidth="1.2" fill="rgba(212,116,74,0.1)" />
+      <path d="M38,58 C44,60 50,62 52,68" stroke="#D4744A" strokeWidth="1" fill="none" />
+      <circle cx="52" cy="68" r="2" fill="rgba(212,116,74,0.12)" stroke="#D4744A" strokeWidth="1" />
+      <circle cx="30" cy="50" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="50" cy="28" r="1.5" fill="rgba(232,98,42,0.3)" />
+      <circle cx="46" cy="54" r="1.2" fill="rgba(232,184,75,0.35)" />
     </svg>
   );
 }
 
 function IllustrationGinger() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Main knobby root */}
-      <path d="M12,30 Q10,22 14,18 Q18,12 24,14 Q32,16 34,24 Q36,32 30,36 Q24,40 18,36 Q12,32 12,30 Z"
-        strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Knobby protrusions */}
-      <path d="M14,22 Q8,18 10,12" strokeWidth="1.5" />
-      <path d="M24,14 Q26,8 32,8" strokeWidth="1.5" />
-      <path d="M32,28 Q38,24 38,18" strokeWidth="1.5" />
-      <path d="M20,36 Q16,42 12,40" strokeWidth="1.5" />
-      {/* Surface texture */}
-      <path d="M18,22 Q22,20 26,22" strokeWidth="1" strokeDasharray="2 2" />
-      <path d="M16,28 Q20,26 24,28" strokeWidth="1" strokeDasharray="2 2" />
-      {/* Sprout */}
-      <path d="M24,14 Q22,8 24,6" strokeWidth="1.5" />
-      <path d="M23,9 Q28,7 27,12" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Ginger Extract illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12,46 C12,38 18,32 26,30 C34,28 46,30 54,28 C62,26 68,30 68,38 C68,46 62,50 54,52 C46,54 34,52 26,54 C18,56 12,54 12,46" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <path d="M22,30 C20,22 18,14 24,12 C28,10 32,14 30,22 C28,28 24,30 22,30" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.1)" />
+      <path d="M40,28 C40,20 38,12 44,10 C48,8 52,12 50,20 C48,26 44,28 40,28" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.1)" />
+      <path d="M66,38 C72,34 76,28 72,24 C68,20 64,26 66,34 C66,36 66,38 66,38" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.08)" />
+      <path d="M44,10 C44,6 46,2 44,4" stroke="#D4744A" strokeWidth="1.2" fill="none" />
+      <path d="M16,44 C20,42 24,44 22,48" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1.5" fill="none" opacity="0.45" />
+      <path d="M30,36 C34,34 38,36 36,40" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1.5" fill="none" opacity="0.45" />
+      <path d="M48,34 C52,32 56,34 54,38" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1.5" fill="none" opacity="0.45" />
+      <path d="M58,44 C62,42 66,44 64,48" stroke="#D4744A" strokeWidth="0.8" strokeDasharray="2 1.5" fill="none" opacity="0.45" />
+      <circle cx="20" cy="58" r="7" stroke="#E8622A" strokeWidth="1.2" fill="rgba(232,98,42,0.08)" />
+      <circle cx="20" cy="58" r="3.5" stroke="#E8B84B" strokeWidth="0.8" fill="rgba(232,98,42,0.12)" />
     </svg>
   );
 }
 
 function IllustrationMonkFruit() {
   return (
-    <svg {...SVG_PROPS}>
-      {/* Fruit body */}
-      <circle cx="24" cy="27" r="15" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
-      {/* Vertical ribs */}
-      {[0, 1, 2, 3, 4, 5, 6].map((n) => {
-        const angle = (n * 180) / 7 - 90;
-        const rad = (angle * Math.PI) / 180;
-        const sx = 24 + 15 * Math.cos(rad);
-        const sy = 27 + 15 * Math.sin(rad);
-        const ex = 24 + 15 * Math.cos((rad + Math.PI));
-        const ey = 27 + 15 * Math.sin((rad + Math.PI));
-        return (
-          <path
-            key={n}
-            d={`M${sx.toFixed(1)},${sy.toFixed(1)} Q24,${27 - 6} ${ex.toFixed(1)},${ey.toFixed(1)}`}
-            strokeWidth="0.8"
-            stroke="#D4744A"
-            fill="none"
-          />
-        );
-      })}
-      {/* Stem */}
-      <path d="M24,12 Q26,8 24,6" strokeWidth="1.5" />
-      {/* Leaf */}
-      <path d="M24,9 Q30,6 28,11" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
-      {/* Flower details at base */}
-      <path d="M19,40 Q24,44 29,40" strokeWidth="1" />
+    <svg viewBox="0 0 80 80" width="80" height="80" className="mx-auto mb-3" role="img" aria-label="Monk Fruit illustration" fill="none" xmlns="http://www.w3.org/2000/svg" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="40" cy="42" r="26" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.07)" />
+      <path d="M22,20 C18,30 18,50 22,62" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M30,16 C26,28 26,52 30,64" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M38,15 C36,28 36,52 38,65" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M42,15 C44,28 44,52 42,65" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M50,16 C54,28 54,52 50,64" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M58,20 C62,30 62,50 58,62" stroke="#D4744A" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M40,16 C40,10 42,6 40,8" stroke="#D4744A" strokeWidth="1.5" fill="none" />
+      <path d="M36,16 C34,12 36,8 40,10" stroke="#D4744A" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
+      <path d="M44,16 C46,12 44,8 40,10" stroke="#D4744A" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
+      <circle cx="40" cy="66" r="2" stroke="#E8B84B" strokeWidth="0.8" fill="rgba(232,184,75,0.15)" />
+      <path d="M36,68 C38,66 42,66 44,68" stroke="#E8B84B" strokeWidth="0.8" fill="none" opacity="0.6" />
     </svg>
   );
 }
@@ -680,9 +645,7 @@ function Ingredients() {
                 data-ingredient-card
                 className="bg-orange-50 rounded-2xl p-6 text-center border border-orange-100/80 hover:bg-orange-100/60 transition-colors duration-200 cursor-default"
               >
-                <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <Illustration />
-                </div>
+                <Illustration />
                 <p className="text-xs font-semibold text-zinc-900 uppercase tracking-wider">
                   {card.name}
                 </p>
