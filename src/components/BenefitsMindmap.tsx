@@ -116,7 +116,7 @@ export function BenefitsMindmap() {
     const grad = defs.append("radialGradient")
       .attr("id", "bmRootGrad")
       .attr("cx", "35%").attr("cy", "30%").attr("r", "70%");
-    grad.append("stop").attr("offset", "0%").attr("stop-color", "#E8622A");
+    grad.append("stop").attr("offset", "0%").attr("stop-color", "#D4744A");
     grad.append("stop").attr("offset", "100%").attr("stop-color", "#C4441A");
 
     const g = svg.append("g").attr("transform", `translate(${width / 2},${height / 2})`);
@@ -204,7 +204,7 @@ export function BenefitsMindmap() {
       const bCircle = bG.append("circle")
         .attr("r", rBenefit)
         .attr("fill", "#FAF9F6")
-        .attr("stroke", "#E8622A")
+        .attr("stroke", "#D4744A")
         .attr("stroke-width", 1.5);
 
       const bt = bG.append("text")
@@ -243,7 +243,7 @@ export function BenefitsMindmap() {
           .transition().duration(200).style("opacity", "1");
 
         bCircle.transition().duration(200)
-          .attr("stroke", "#E8622A")
+          .attr("stroke", "#D4744A")
           .attr("stroke-width", 1.5);
       });
     });

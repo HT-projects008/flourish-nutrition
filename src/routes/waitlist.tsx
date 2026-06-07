@@ -48,7 +48,7 @@ function WaitlistPage() {
       {/* LEFT — gradient visual, desktop only */}
       <div
         className="hidden lg:flex relative flex-col overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #D4744A 0%, #E8622A 55%, #C4441A 100%)" }}
+        style={{ background: "linear-gradient(135deg, #D4744A 0%, #D4744A 55%, #C4441A 100%)" }}
       >
         <div
           className="absolute inset-0 pointer-events-none"
@@ -89,7 +89,7 @@ function WaitlistPage() {
         {/* Mobile gradient accent bar */}
         <div
           className="lg:hidden h-1.5 w-full flex-shrink-0"
-          style={{ background: "linear-gradient(90deg, #D4744A, #E8622A)" }}
+          style={{ background: "linear-gradient(90deg, #D4744A, #D4744A)" }}
         />
 
         <main id="main-content" className="flex-1 flex flex-col items-center justify-center px-6 sm:px-10 lg:px-16 py-12">

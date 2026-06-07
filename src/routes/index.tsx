@@ -221,27 +221,27 @@ function BotanicalBackground() {
             style={{ left: `${f.l}%`, transform: 'translateX(-50%)', width: w, height: h }}
           >
             <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ overflow: 'visible' }}>
-              <path className="bs" d={stemD} stroke="#E8622A" strokeWidth={sw} strokeLinecap="round" fill="none" />
+              <path className="bs" d={stemD} stroke="#D4744A" strokeWidth={sw} strokeLinecap="round" fill="none" />
               <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
-                <path d={`M 0,0 C ${-ls},-14 ${-ls - 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+                <path d={`M 0,0 C ${-ls},-14 ${-ls - 5},10 0,5`} fill="rgba(212,116,74,0.15)" stroke="#D4744A" strokeWidth="1" strokeLinecap="round" />
               </g>
               <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
-                <path d={`M 0,0 C ${ls},-14 ${ls + 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+                <path d={`M 0,0 C ${ls},-14 ${ls + 5},10 0,5`} fill="rgba(212,116,74,0.15)" stroke="#D4744A" strokeWidth="1" strokeLinecap="round" />
               </g>
               <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
-                <path d={`M 0,0 C ${-ls},-12 ${-ls - 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+                <path d={`M 0,0 C ${-ls},-12 ${-ls - 4},9 0,4`} fill="rgba(212,116,74,0.15)" stroke="#D4744A" strokeWidth="1" strokeLinecap="round" />
               </g>
               <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
-                <path d={`M 0,0 C ${ls},-12 ${ls + 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
+                <path d={`M 0,0 C ${ls},-12 ${ls + 4},9 0,4`} fill="rgba(212,116,74,0.15)" stroke="#D4744A" strokeWidth="1" strokeLinecap="round" />
               </g>
               <g className="bb" style={{ opacity: 0 }}>
                 {[0, 60, 120, 180, 240, 300].map(angle => (
                   <ellipse key={angle} cx={cx} cy={bcy - pr} rx={px} ry={pr}
-                    fill="rgba(232,98,42,0.2)" stroke="#E8622A" strokeWidth="1.2"
+                    fill="rgba(212,116,74,0.2)" stroke="#D4744A" strokeWidth="1.2"
                     transform={`rotate(${angle}, ${cx}, ${bcy})`}
                   />
                 ))}
-                <circle cx={cx} cy={bcy} r={cr} fill="#E8622A" opacity="0.6" />
+                <circle cx={cx} cy={bcy} r={cr} fill="#D4744A" opacity="0.6" />
               </g>
             </svg>
           </div>
@@ -292,7 +292,7 @@ function Hero() {
           left: 0,
           right: 0,
           height: "35%",
-          background: "linear-gradient(to bottom, transparent 0%, rgba(232,98,42,0.08) 50%, rgba(232,98,42,0.18) 100%)",
+          background: "linear-gradient(to bottom, transparent 0%, rgba(212,116,74,0.08) 50%, rgba(212,116,74,0.18) 100%)",
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -366,7 +366,7 @@ function Hero() {
 function Marquee() {
   const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
   return (
-    <section aria-hidden="true" className="bg-[#1a1a1a] text-white overflow-hidden py-5">
+    <section aria-hidden="true" className="bg-[#2D2D2D] text-white overflow-hidden py-5">
       <div className="flex animate-marquee whitespace-nowrap">
         {track.map((item, i) => (
           <span key={i} className="flex items-center gap-8 px-8 text-xs tracking-widest uppercase font-medium">
@@ -464,7 +464,7 @@ const SVG_PROPS = {
   height: 48,
   viewBox: "0 0 48 48",
   fill: "none",
-  stroke: "#E8622A",
+  stroke: "#D4744A",
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
   "aria-hidden": true,
@@ -474,18 +474,18 @@ function IllustrationACV() {
   return (
     <svg {...SVG_PROPS}>
       {/* Outer apple */}
-      <circle cx="24" cy="28" r="14" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <circle cx="24" cy="28" r="14" stroke="#D4744A" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Indent at top */}
       <path d="M18,16 Q24,12 30,16" strokeWidth="1.5" fill="none" />
       {/* Stem */}
       <path d="M24,14 Q26,9 24,7" strokeWidth="1.5" />
       {/* Leaf */}
-      <path d="M24,10 Q30,7 28,12" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <path d="M24,10 Q30,7 28,12" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Core line */}
       <line x1="24" y1="18" x2="24" y2="40" strokeWidth="1" strokeDasharray="2 2" />
       {/* Seeds */}
-      <ellipse cx="21" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
-      <ellipse cx="27" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <ellipse cx="21" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+      <ellipse cx="27" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
     </svg>
   );
 }
@@ -494,17 +494,17 @@ function IllustrationLemon() {
   return (
     <svg {...SVG_PROPS}>
       {/* Wedge outline */}
-      <path d="M24,40 L8,14 A18,18 0 0,1 40,14 Z" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <path d="M24,40 L8,14 A18,18 0 0,1 40,14 Z" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Segment lines */}
       <line x1="24" y1="40" x2="24" y2="14" strokeWidth="1" />
       <line x1="24" y1="40" x2="11" y2="19" strokeWidth="1" />
       <line x1="24" y1="40" x2="37" y2="19" strokeWidth="1" />
       {/* Juice cells */}
-      <circle cx="20" cy="30" r="1.2" fill="rgba(232,98,42,0.3)" stroke="none" />
-      <circle cx="28" cy="28" r="1" fill="rgba(232,98,42,0.3)" stroke="none" />
-      <circle cx="24" cy="24" r="1.2" fill="rgba(232,98,42,0.3)" stroke="none" />
-      <circle cx="17" cy="24" r="0.9" fill="rgba(232,98,42,0.3)" stroke="none" />
-      <circle cx="31" cy="24" r="0.9" fill="rgba(232,98,42,0.3)" stroke="none" />
+      <circle cx="20" cy="30" r="1.2" fill="rgba(212,116,74,0.3)" stroke="none" />
+      <circle cx="28" cy="28" r="1" fill="rgba(212,116,74,0.3)" stroke="none" />
+      <circle cx="24" cy="24" r="1.2" fill="rgba(212,116,74,0.3)" stroke="none" />
+      <circle cx="17" cy="24" r="0.9" fill="rgba(212,116,74,0.3)" stroke="none" />
+      <circle cx="31" cy="24" r="0.9" fill="rgba(212,116,74,0.3)" stroke="none" />
     </svg>
   );
 }
@@ -514,7 +514,7 @@ function IllustrationTurmeric() {
     <svg {...SVG_PROPS}>
       {/* Main root body */}
       <path d="M14,34 Q12,26 16,20 Q20,14 26,16 Q34,18 32,28 Q30,36 24,38 Q18,40 14,34 Z"
-        strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+        strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Finger extensions */}
       <path d="M30,20 Q38,16 36,10" strokeWidth="1.5" />
       <path d="M32,28 Q40,28 40,22" strokeWidth="1.5" />
@@ -524,7 +524,7 @@ function IllustrationTurmeric() {
       <path d="M20,30 Q24,28 28,30" strokeWidth="1" strokeDasharray="2 2" />
       {/* Leaf sprout */}
       <path d="M22,16 Q20,10 24,8" strokeWidth="1.5" />
-      <path d="M23,11 Q28,8 26,14" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M23,11 Q28,8 26,14" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
     </svg>
   );
 }
@@ -535,13 +535,13 @@ function IllustrationBlackPepper() {
       {/* S-curve stem */}
       <path d="M16,40 C14,32 28,28 26,20 C24,12 16,10 18,6" strokeWidth="1.5" />
       {/* Berries */}
-      <circle cx="28" cy="14" r="4" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
-      <circle cx="34" cy="22" r="3.5" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
-      <circle cx="30" cy="30" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
-      <circle cx="22" cy="26" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      <circle cx="28" cy="14" r="4" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
+      <circle cx="34" cy="22" r="3.5" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
+      <circle cx="30" cy="30" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
+      <circle cx="22" cy="26" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.12)" />
       {/* Leaves */}
-      <path d="M20,14 Q14,10 14,16" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
-      <path d="M22,22 Q16,20 17,26" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M20,14 Q14,10 14,16" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
+      <path d="M22,22 Q16,20 17,26" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
     </svg>
   );
 }
@@ -550,7 +550,7 @@ function IllustrationCinnamon() {
   return (
     <svg {...SVG_PROPS}>
       {/* Outer oval */}
-      <ellipse cx="24" cy="26" rx="13" ry="16" strokeWidth="1.5" fill="rgba(232,98,42,0.06)" />
+      <ellipse cx="24" cy="26" rx="13" ry="16" strokeWidth="1.5" fill="rgba(212,116,74,0.06)" />
       {/* Concentric spiral lines */}
       <ellipse cx="24" cy="26" rx="9" ry="12" strokeWidth="1" strokeDasharray="3 2" />
       <ellipse cx="24" cy="26" rx="5" ry="7" strokeWidth="1" strokeDasharray="2 2" />
@@ -559,7 +559,7 @@ function IllustrationCinnamon() {
       <path d="M11,18 Q9,22 11,28" strokeWidth="1.5" strokeDasharray="2 2" />
       <path d="M37,18 Q39,22 37,28" strokeWidth="1.5" strokeDasharray="2 2" />
       {/* Broken piece */}
-      <ellipse cx="38" cy="36" rx="5" ry="7" strokeWidth="1" fill="rgba(232,98,42,0.06)" transform="rotate(20,38,36)" />
+      <ellipse cx="38" cy="36" rx="5" ry="7" strokeWidth="1" fill="rgba(212,116,74,0.06)" transform="rotate(20,38,36)" />
     </svg>
   );
 }
@@ -568,7 +568,7 @@ function IllustrationPrebiotic() {
   return (
     <svg {...SVG_PROPS}>
       {/* Central point */}
-      <circle cx="24" cy="24" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.15)" />
+      <circle cx="24" cy="24" r="3" strokeWidth="1.5" fill="rgba(212,116,74,0.15)" />
       {/* Main branches */}
       <line x1="24" y1="21" x2="24" y2="8" strokeWidth="1.5" />
       <line x1="21" y1="26" x2="10" y2="34" strokeWidth="1.5" />
@@ -576,16 +576,16 @@ function IllustrationPrebiotic() {
       <line x1="22" y1="22" x2="12" y2="12" strokeWidth="1.5" />
       <line x1="26" y1="22" x2="36" y2="12" strokeWidth="1.5" />
       {/* Tips */}
-      <circle cx="24" cy="8" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
-      <circle cx="10" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
-      <circle cx="38" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
-      <circle cx="12" cy="12" r="2" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
-      <circle cx="36" cy="12" r="2" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="24" cy="8" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
+      <circle cx="10" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
+      <circle cx="38" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
+      <circle cx="12" cy="12" r="2" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
+      <circle cx="36" cy="12" r="2" strokeWidth="1.2" fill="rgba(212,116,74,0.12)" />
       {/* Secondary mini branches */}
       <line x1="24" y1="14" x2="20" y2="10" strokeWidth="1" />
       <line x1="24" y1="14" x2="28" y2="10" strokeWidth="1" />
-      <circle cx="20" cy="10" r="1.5" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
-      <circle cx="28" cy="10" r="1.5" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
+      <circle cx="20" cy="10" r="1.5" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
+      <circle cx="28" cy="10" r="1.5" strokeWidth="1" fill="rgba(212,116,74,0.1)" />
     </svg>
   );
 }
@@ -595,7 +595,7 @@ function IllustrationGinger() {
     <svg {...SVG_PROPS}>
       {/* Main knobby root */}
       <path d="M12,30 Q10,22 14,18 Q18,12 24,14 Q32,16 34,24 Q36,32 30,36 Q24,40 18,36 Q12,32 12,30 Z"
-        strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+        strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Knobby protrusions */}
       <path d="M14,22 Q8,18 10,12" strokeWidth="1.5" />
       <path d="M24,14 Q26,8 32,8" strokeWidth="1.5" />
@@ -606,7 +606,7 @@ function IllustrationGinger() {
       <path d="M16,28 Q20,26 24,28" strokeWidth="1" strokeDasharray="2 2" />
       {/* Sprout */}
       <path d="M24,14 Q22,8 24,6" strokeWidth="1.5" />
-      <path d="M23,9 Q28,7 27,12" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M23,9 Q28,7 27,12" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
     </svg>
   );
 }
@@ -615,7 +615,7 @@ function IllustrationMonkFruit() {
   return (
     <svg {...SVG_PROPS}>
       {/* Fruit body */}
-      <circle cx="24" cy="27" r="15" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      <circle cx="24" cy="27" r="15" strokeWidth="1.5" fill="rgba(212,116,74,0.08)" />
       {/* Vertical ribs */}
       {[0, 1, 2, 3, 4, 5, 6].map((n) => {
         const angle = (n * 180) / 7 - 90;
@@ -629,7 +629,7 @@ function IllustrationMonkFruit() {
             key={n}
             d={`M${sx.toFixed(1)},${sy.toFixed(1)} Q24,${27 - 6} ${ex.toFixed(1)},${ey.toFixed(1)}`}
             strokeWidth="0.8"
-            stroke="#E8622A"
+            stroke="#D4744A"
             fill="none"
           />
         );
@@ -637,7 +637,7 @@ function IllustrationMonkFruit() {
       {/* Stem */}
       <path d="M24,12 Q26,8 24,6" strokeWidth="1.5" />
       {/* Leaf */}
-      <path d="M24,9 Q30,6 28,11" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M24,9 Q30,6 28,11" strokeWidth="1" fill="rgba(212,116,74,0.08)" />
       {/* Flower details at base */}
       <path d="M19,40 Q24,44 29,40" strokeWidth="1" />
     </svg>
@@ -742,7 +742,7 @@ function Comparison() {
           <div className="overflow-x-auto relative">
             <table className="w-full min-w-[480px] border-collapse">
               <thead>
-                <tr className="bg-zinc-900 h-14">
+                <tr className="bg-[#2D2D2D] h-14">
                   <th className="pl-6 pr-4 py-4 text-left w-2/5" scope="col" />
                   <th className="bg-orange-500 py-4 text-center w-[30%]" scope="col">
                     <div className="flex flex-col items-center">
@@ -1081,18 +1081,18 @@ function Flavours() {
                 {f.id}
               </span>
 
-              <p className={`relative z-[1] text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
+              <p className={`relative z-[1] text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#2D2D2D]/60" : "text-white/70"}`}>
                 {f.label}
               </p>
-              <h3 className={`relative z-[1] font-serif text-2xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
+              <h3 className={`relative z-[1] font-serif text-2xl font-bold mb-4 ${f.dark ? "text-[#2D2D2D]" : "text-white"}`}>
                 {f.name}
               </h3>
-              <p className={`relative z-[1] text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
+              <p className={`relative z-[1] text-sm leading-relaxed mt-auto ${f.dark ? "text-[#2D2D2D]/75" : "text-white/80"}`}>
                 {f.description}
               </p>
               <a
                 href={f.ctaHref}
-                className={`relative z-[1] mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#1a1a1a]/60 hover:text-[#1a1a1a]/90" : "text-white/70 hover:text-white"}`}
+                className={`relative z-[1] mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#2D2D2D]/60 hover:text-[#2D2D2D]/90" : "text-white/70 hover:text-white"}`}
               >
                 {f.cta}
               </a>
@@ -1195,7 +1195,7 @@ function PricingTeaser() {
               </a>
             </div>
 
-            <div className="bg-zinc-900 rounded-2xl p-8 border-2 border-orange-500 relative overflow-hidden">
+            <div className="bg-[#2D2D2D] rounded-2xl p-8 border-2 border-orange-500 relative overflow-hidden">
               <span className="absolute top-4 right-4 bg-orange-500 text-white text-xs rounded-full px-3 py-1">
                 Most popular
               </span>
@@ -1284,7 +1284,7 @@ function PricingTeaser() {
 
 function FinalCTA() {
   return (
-    <section id="waitlist" className="py-28 lg:py-40 bg-[#1a1a1a] text-white">
+    <section id="waitlist" className="py-28 lg:py-40 bg-[#2D2D2D] text-white">
       <div className="mx-auto max-w-3xl px-6 lg:px-10 text-center">
         <Reveal>
           <SectionLabel>● EARLY ACCESS</SectionLabel>
