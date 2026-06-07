@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Reveal } from "../components/Reveal";
 import { WaitlistForm } from "../components/WaitlistForm";
-import { ContactForm } from "../components/ContactForm";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -25,14 +24,14 @@ const marqueeItems = [
 ];
 
 const ingredientCards = [
-  { letter: "A", name: "Apple Cider Vinegar",  benefit: "Digestion and appetite control" },
-  { letter: "L", name: "Lemon",                benefit: "Vitamin C and enzyme stimulation" },
-  { letter: "T", name: "Turmeric",             benefit: "Powerful anti-inflammatory" },
-  { letter: "B", name: "Black Pepper",         benefit: "Increases absorption of all actives" },
-  { letter: "C", name: "Ceylon Cinnamon",      benefit: "Blood sugar stability" },
-  { letter: "I", name: "Prebiotic Blend",      benefit: "Inulin and acacia fibre for gentle gut support" },
-  { letter: "G", name: "Ginger Extract",       benefit: "Clinically reduces bloating" },
-  { letter: "M", name: "Monk Fruit",           benefit: "Natural sweetness, zero sugar" },
+  { name: "Apple Cider Vinegar",  benefit: "Digestion and appetite control" },
+  { name: "Lemon",                benefit: "Vitamin C and enzyme stimulation" },
+  { name: "Turmeric",             benefit: "Powerful anti-inflammatory" },
+  { name: "Black Pepper",         benefit: "Increases absorption of all actives" },
+  { name: "Ceylon Cinnamon",      benefit: "Blood sugar stability" },
+  { name: "Prebiotic Blend",      benefit: "Inulin and acacia fibre for gentle gut support" },
+  { name: "Ginger Extract",       benefit: "Clinically reduces bloating" },
+  { name: "Monk Fruit",           benefit: "Natural sweetness, zero sugar" },
 ];
 
 const problemCards = [
@@ -411,20 +410,36 @@ function Benefits() {
 
       {/* Two-column layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto px-6 lg:px-10 mt-14">
-        {/* Left: sticky editorial column */}
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="font-serif italic text-2xl text-zinc-300 leading-relaxed">
-            "When your gut thrives, everything else follows."
-          </p>
-          <p className="text-zinc-500 text-sm leading-relaxed mt-5 max-w-xs">
-            The gut-brain axis is real. A healthier microbiome supports mood, focus, energy, skin, and immunity simultaneously. One daily ritual. Eight ingredients. Everything working together.
-          </p>
+        {/* Left: sticky section heading only */}
+        <div className="lg:sticky lg:top-28 lg:self-start" />
 
-          <div className="mt-10 space-y-3">
+        {/* Right: numbered benefits list + closing text */}
+        <div>
+          <ul>
+            {items.map((item, i) => (
+              <li
+                key={item.name}
+                data-benefit-item
+                className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
+              >
+                <span
+                  className="font-mono text-xs text-orange-400 w-7 flex-shrink-0 mt-0.5 select-none"
+                  aria-hidden="true"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="font-serif font-semibold text-base text-zinc-900">{item.name}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{item.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 pt-6 border-t border-zinc-100 space-y-2">
             <p className="font-serif italic text-xl text-zinc-400">
               This is what it means to Flourish.
             </p>
-            <p className="text-zinc-500 text-sm mt-1">
+            <p className="text-zinc-500 text-sm">
               Just some of the improvements a sachet a day does for you.
             </p>
             <div data-benefits-footer className="mt-4">
@@ -437,32 +452,208 @@ function Benefits() {
             </div>
           </div>
         </div>
-
-        {/* Right: numbered benefits list */}
-        <ul>
-          {items.map((item, i) => (
-            <li
-              key={item.name}
-              data-benefit-item
-              className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
-            >
-              <span
-                className="font-mono text-xs text-orange-400 w-7 flex-shrink-0 mt-0.5 select-none"
-                aria-hidden="true"
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <p className="font-serif font-semibold text-base text-zinc-900">{item.name}</p>
-                <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{item.desc}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
 }
+
+// ── Botanical ingredient illustrations ───────────────────────────────────────
+
+const SVG_PROPS = {
+  width: 48,
+  height: 48,
+  viewBox: "0 0 48 48",
+  fill: "none",
+  stroke: "#E8622A",
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+function IllustrationACV() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Outer apple */}
+      <circle cx="24" cy="28" r="14" stroke="#E8622A" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Indent at top */}
+      <path d="M18,16 Q24,12 30,16" strokeWidth="1.5" fill="none" />
+      {/* Stem */}
+      <path d="M24,14 Q26,9 24,7" strokeWidth="1.5" />
+      {/* Leaf */}
+      <path d="M24,10 Q30,7 28,12" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Core line */}
+      <line x1="24" y1="18" x2="24" y2="40" strokeWidth="1" strokeDasharray="2 2" />
+      {/* Seeds */}
+      <ellipse cx="21" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <ellipse cx="27" cy="28" rx="2" ry="3" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+    </svg>
+  );
+}
+
+function IllustrationLemon() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Wedge outline */}
+      <path d="M24,40 L8,14 A18,18 0 0,1 40,14 Z" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Segment lines */}
+      <line x1="24" y1="40" x2="24" y2="14" strokeWidth="1" />
+      <line x1="24" y1="40" x2="11" y2="19" strokeWidth="1" />
+      <line x1="24" y1="40" x2="37" y2="19" strokeWidth="1" />
+      {/* Juice cells */}
+      <circle cx="20" cy="30" r="1.2" fill="rgba(232,98,42,0.3)" stroke="none" />
+      <circle cx="28" cy="28" r="1" fill="rgba(232,98,42,0.3)" stroke="none" />
+      <circle cx="24" cy="24" r="1.2" fill="rgba(232,98,42,0.3)" stroke="none" />
+      <circle cx="17" cy="24" r="0.9" fill="rgba(232,98,42,0.3)" stroke="none" />
+      <circle cx="31" cy="24" r="0.9" fill="rgba(232,98,42,0.3)" stroke="none" />
+    </svg>
+  );
+}
+
+function IllustrationTurmeric() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Main root body */}
+      <path d="M14,34 Q12,26 16,20 Q20,14 26,16 Q34,18 32,28 Q30,36 24,38 Q18,40 14,34 Z"
+        strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Finger extensions */}
+      <path d="M30,20 Q38,16 36,10" strokeWidth="1.5" />
+      <path d="M32,28 Q40,28 40,22" strokeWidth="1.5" />
+      <path d="M16,28 Q8,30 8,24" strokeWidth="1.5" />
+      {/* Surface texture */}
+      <path d="M18,24 Q22,22 26,24" strokeWidth="1" strokeDasharray="2 2" />
+      <path d="M20,30 Q24,28 28,30" strokeWidth="1" strokeDasharray="2 2" />
+      {/* Leaf sprout */}
+      <path d="M22,16 Q20,10 24,8" strokeWidth="1.5" />
+      <path d="M23,11 Q28,8 26,14" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+    </svg>
+  );
+}
+
+function IllustrationBlackPepper() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* S-curve stem */}
+      <path d="M16,40 C14,32 28,28 26,20 C24,12 16,10 18,6" strokeWidth="1.5" />
+      {/* Berries */}
+      <circle cx="28" cy="14" r="4" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      <circle cx="34" cy="22" r="3.5" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      <circle cx="30" cy="30" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      <circle cx="22" cy="26" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.12)" />
+      {/* Leaves */}
+      <path d="M20,14 Q14,10 14,16" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      <path d="M22,22 Q16,20 17,26" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+    </svg>
+  );
+}
+
+function IllustrationCinnamon() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Outer oval */}
+      <ellipse cx="24" cy="26" rx="13" ry="16" strokeWidth="1.5" fill="rgba(232,98,42,0.06)" />
+      {/* Concentric spiral lines */}
+      <ellipse cx="24" cy="26" rx="9" ry="12" strokeWidth="1" strokeDasharray="3 2" />
+      <ellipse cx="24" cy="26" rx="5" ry="7" strokeWidth="1" strokeDasharray="2 2" />
+      <ellipse cx="24" cy="26" rx="2" ry="3" strokeWidth="1" />
+      {/* Edge texture */}
+      <path d="M11,18 Q9,22 11,28" strokeWidth="1.5" strokeDasharray="2 2" />
+      <path d="M37,18 Q39,22 37,28" strokeWidth="1.5" strokeDasharray="2 2" />
+      {/* Broken piece */}
+      <ellipse cx="38" cy="36" rx="5" ry="7" strokeWidth="1" fill="rgba(232,98,42,0.06)" transform="rotate(20,38,36)" />
+    </svg>
+  );
+}
+
+function IllustrationPrebiotic() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Central point */}
+      <circle cx="24" cy="24" r="3" strokeWidth="1.5" fill="rgba(232,98,42,0.15)" />
+      {/* Main branches */}
+      <line x1="24" y1="21" x2="24" y2="8" strokeWidth="1.5" />
+      <line x1="21" y1="26" x2="10" y2="34" strokeWidth="1.5" />
+      <line x1="27" y1="26" x2="38" y2="34" strokeWidth="1.5" />
+      <line x1="22" y1="22" x2="12" y2="12" strokeWidth="1.5" />
+      <line x1="26" y1="22" x2="36" y2="12" strokeWidth="1.5" />
+      {/* Tips */}
+      <circle cx="24" cy="8" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="10" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="38" cy="34" r="2.5" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="12" cy="12" r="2" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      <circle cx="36" cy="12" r="2" strokeWidth="1.2" fill="rgba(232,98,42,0.12)" />
+      {/* Secondary mini branches */}
+      <line x1="24" y1="14" x2="20" y2="10" strokeWidth="1" />
+      <line x1="24" y1="14" x2="28" y2="10" strokeWidth="1" />
+      <circle cx="20" cy="10" r="1.5" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
+      <circle cx="28" cy="10" r="1.5" strokeWidth="1" fill="rgba(232,98,42,0.1)" />
+    </svg>
+  );
+}
+
+function IllustrationGinger() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Main knobby root */}
+      <path d="M12,30 Q10,22 14,18 Q18,12 24,14 Q32,16 34,24 Q36,32 30,36 Q24,40 18,36 Q12,32 12,30 Z"
+        strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Knobby protrusions */}
+      <path d="M14,22 Q8,18 10,12" strokeWidth="1.5" />
+      <path d="M24,14 Q26,8 32,8" strokeWidth="1.5" />
+      <path d="M32,28 Q38,24 38,18" strokeWidth="1.5" />
+      <path d="M20,36 Q16,42 12,40" strokeWidth="1.5" />
+      {/* Surface texture */}
+      <path d="M18,22 Q22,20 26,22" strokeWidth="1" strokeDasharray="2 2" />
+      <path d="M16,28 Q20,26 24,28" strokeWidth="1" strokeDasharray="2 2" />
+      {/* Sprout */}
+      <path d="M24,14 Q22,8 24,6" strokeWidth="1.5" />
+      <path d="M23,9 Q28,7 27,12" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+    </svg>
+  );
+}
+
+function IllustrationMonkFruit() {
+  return (
+    <svg {...SVG_PROPS}>
+      {/* Fruit body */}
+      <circle cx="24" cy="27" r="15" strokeWidth="1.5" fill="rgba(232,98,42,0.08)" />
+      {/* Vertical ribs */}
+      {[0, 1, 2, 3, 4, 5, 6].map((n) => {
+        const angle = (n * 180) / 7 - 90;
+        const rad = (angle * Math.PI) / 180;
+        const sx = 24 + 15 * Math.cos(rad);
+        const sy = 27 + 15 * Math.sin(rad);
+        const ex = 24 + 15 * Math.cos((rad + Math.PI));
+        const ey = 27 + 15 * Math.sin((rad + Math.PI));
+        return (
+          <path
+            key={n}
+            d={`M${sx.toFixed(1)},${sy.toFixed(1)} Q24,${27 - 6} ${ex.toFixed(1)},${ey.toFixed(1)}`}
+            strokeWidth="0.8"
+            stroke="#E8622A"
+            fill="none"
+          />
+        );
+      })}
+      {/* Stem */}
+      <path d="M24,12 Q26,8 24,6" strokeWidth="1.5" />
+      {/* Leaf */}
+      <path d="M24,9 Q30,6 28,11" strokeWidth="1" fill="rgba(232,98,42,0.08)" />
+      {/* Flower details at base */}
+      <path d="M19,40 Q24,44 29,40" strokeWidth="1" />
+    </svg>
+  );
+}
+
+const INGREDIENT_ILLUSTRATIONS = [
+  IllustrationACV,
+  IllustrationLemon,
+  IllustrationTurmeric,
+  IllustrationBlackPepper,
+  IllustrationCinnamon,
+  IllustrationPrebiotic,
+  IllustrationGinger,
+  IllustrationMonkFruit,
+];
 
 // ── 4. Ingredients ───────────────────────────────────────────────────────────
 
@@ -481,23 +672,26 @@ function Ingredients() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
-          {ingredientCards.map((card) => (
-            <div
-              key={card.name}
-              data-ingredient-card
-              className="bg-orange-50 rounded-2xl p-6 text-center border border-orange-100/80 hover:bg-orange-100/60 transition-colors duration-200 cursor-default"
-            >
-              <p className="font-serif text-5xl font-bold text-orange-200 leading-none mb-3" aria-hidden="true">
-                {card.letter}
-              </p>
-              <p className="text-xs font-semibold text-zinc-900 uppercase tracking-wider">
-                {card.name}
-              </p>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-                {card.benefit}
-              </p>
-            </div>
-          ))}
+          {ingredientCards.map((card, idx) => {
+            const Illustration = INGREDIENT_ILLUSTRATIONS[idx];
+            return (
+              <div
+                key={card.name}
+                data-ingredient-card
+                className="bg-orange-50 rounded-2xl p-6 text-center border border-orange-100/80 hover:bg-orange-100/60 transition-colors duration-200 cursor-default"
+              >
+                <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                  <Illustration />
+                </div>
+                <p className="text-xs font-semibold text-zinc-900 uppercase tracking-wider">
+                  {card.name}
+                </p>
+                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                  {card.benefit}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -511,8 +705,6 @@ function Comparison() {
 
   const rows: { feature: string; conventional: CompCell }[] = [
     { feature: "Organic ingredients",                                        conventional: false },
-    { feature: "Anti-inflammatory support",                                  conventional: false },
-    { feature: "Blood sugar support",                                        conventional: false },
     { feature: "No emulsifiers or preservatives",                            conventional: false },
     { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)",  conventional: false },
     { feature: "Natural sweetener only (zero sugar)",                        conventional: "Often sugar" },
@@ -559,7 +751,7 @@ function Comparison() {
                     </div>
                   </th>
                   <th className="py-4 px-2 text-center w-[30%]" scope="col">
-                    <span className="text-zinc-400 text-xs">Conventional Drinks</span>
+                    <span className="text-zinc-400 text-xs">Most Gut Health Drinks</span>
                   </th>
                 </tr>
               </thead>
@@ -613,7 +805,7 @@ function Problems() {
   return (
     <section id="problems" className="py-20 lg:py-28 bg-white">
       <div className="max-w-5xl mx-auto px-6 lg:px-10 text-center">
-        <SectionLabel>● THE PROBLEM WITH CONVENTIONAL DRINKS</SectionLabel>
+        <SectionLabel>● THE PROBLEM WITH MOST GUT HEALTH DRINKS</SectionLabel>
         <h2 className="section-heading font-serif font-bold text-3xl lg:text-4xl text-zinc-900 text-center max-w-2xl mx-auto mt-4 leading-tight">
           Most gut health drinks do one thing. Flourish does everything.
         </h2>
@@ -640,6 +832,183 @@ function Problems() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ── Flavour card botanical decorations ───────────────────────────────────────
+
+function LemonBlossomDecoration() {
+  const flowerProps = {
+    stroke: "white",
+    strokeWidth: 1.2,
+    strokeDasharray: "5 3",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    fill: "rgba(255,255,255,0.08)",
+  };
+
+  return (
+    <svg
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        opacity: 0.5,
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+      viewBox="0 0 300 400"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      {/* Top-right cluster: large bloom */}
+      {[0, 72, 144, 216, 288].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <ellipse
+            key={`tr-${a}`}
+            cx={250 + 8 * Math.cos(rad)}
+            cy={50 + 8 * Math.sin(rad)}
+            rx={3}
+            ry={7}
+            transform={`rotate(${a}, 250, 50)`}
+            {...flowerProps}
+          />
+        );
+      })}
+      <circle cx="250" cy="50" r="2" fill="rgba(255,255,255,0.3)" stroke="none" />
+      {/* Top-right: smaller bud */}
+      {[0, 72, 144, 216, 288].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <ellipse
+            key={`trb-${a}`}
+            cx={275 + 5 * Math.cos(rad)}
+            cy={80 + 5 * Math.sin(rad)}
+            rx={2}
+            ry={5}
+            transform={`rotate(${a}, 275, 80)`}
+            {...flowerProps}
+          />
+        );
+      })}
+      <circle cx="275" cy="80" r="1.5" fill="rgba(255,255,255,0.3)" stroke="none" />
+
+      {/* Bottom-left: bloom + leaf */}
+      {[0, 72, 144, 216, 288].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <ellipse
+            key={`bl-${a}`}
+            cx={30 + 8 * Math.cos(rad)}
+            cy={350 + 8 * Math.sin(rad)}
+            rx={3}
+            ry={7}
+            transform={`rotate(${a}, 30, 350)`}
+            {...flowerProps}
+          />
+        );
+      })}
+      <circle cx="30" cy="350" r="2" fill="rgba(255,255,255,0.3)" stroke="none" />
+      <path d="M30,358 Q20,368 28,372" {...flowerProps} />
+
+      {/* Top-left: scattered petals */}
+      {[0, 72, 144, 216, 288].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <ellipse
+            key={`tl-${a}`}
+            cx={25 + 5 * Math.cos(rad)}
+            cy={60 + 5 * Math.sin(rad)}
+            rx={2}
+            ry={5}
+            transform={`rotate(${a}, 25, 60)`}
+            {...flowerProps}
+          />
+        );
+      })}
+      <circle cx="25" cy="60" r="1.5" fill="rgba(255,255,255,0.3)" stroke="none" />
+    </svg>
+  );
+}
+
+function CarnationDecoration() {
+  const carnationProps = {
+    stroke: "white",
+    strokeWidth: 1.2,
+    strokeDasharray: "5 3",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    fill: "rgba(255,255,255,0.08)",
+  };
+
+  return (
+    <svg
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        opacity: 0.5,
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+      viewBox="0 0 300 400"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      {/* Right side: full carnation with stem and leaves */}
+      {/* Stem */}
+      <path d="M260,400 C258,360 262,320 260,280" strokeWidth={1.5} stroke="white" strokeLinecap="round" fill="none" strokeDasharray="5 3" />
+      {/* Leaves */}
+      <path d="M260,340 Q270,330 265,320" {...carnationProps} />
+      <path d="M260,310 Q248,300 252,290" {...carnationProps} />
+      {/* Outer petals */}
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <path
+            key={`ro-${a}`}
+            d={`M260,280 Q${260 + 14 * Math.cos(rad)},${280 + 14 * Math.sin(rad)} ${260 + 10 * Math.cos(rad + 0.3)},${280 + 10 * Math.sin(rad + 0.3)}`}
+            {...carnationProps}
+          />
+        );
+      })}
+      {/* Inner petals */}
+      {[22, 67, 112, 157, 202, 247].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <path
+            key={`ri-${a}`}
+            d={`M260,280 Q${260 + 8 * Math.cos(rad)},${280 + 8 * Math.sin(rad)} ${260 + 6 * Math.cos(rad + 0.4)},${280 + 6 * Math.sin(rad + 0.4)}`}
+            {...carnationProps}
+          />
+        );
+      })}
+
+      {/* Bottom-left: carnation head without stem */}
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <path
+            key={`blo-${a}`}
+            d={`M40,360 Q${40 + 12 * Math.cos(rad)},${360 + 12 * Math.sin(rad)} ${40 + 9 * Math.cos(rad + 0.3)},${360 + 9 * Math.sin(rad + 0.3)}`}
+            {...carnationProps}
+          />
+        );
+      })}
+      {[22, 67, 112, 157, 202, 247].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <path
+            key={`bli-${a}`}
+            d={`M40,360 Q${40 + 7 * Math.cos(rad)},${360 + 7 * Math.sin(rad)} ${40 + 5 * Math.cos(rad + 0.4)},${360 + 5 * Math.sin(rad + 0.4)}`}
+            {...carnationProps}
+          />
+        );
+      })}
+    </svg>
   );
 }
 
@@ -693,32 +1062,37 @@ function Flavours() {
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {flavours.map((f) => (
+          {flavours.map((f, idx) => (
             <div
               key={f.id}
               data-flavour-card
               className="min-h-[400px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
+              {/* Botanical decorations — behind text */}
+              {idx === 0 && <LemonBlossomDecoration />}
+              {idx === 1 && <CarnationDecoration />}
+
               <span
                 className="absolute bottom-4 right-6 font-serif text-7xl font-bold leading-none select-none pointer-events-none text-white opacity-20"
                 aria-hidden="true"
+                style={{ zIndex: 1 }}
               >
                 {f.id}
               </span>
 
-              <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
+              <p className={`relative z-[1] text-xs font-semibold uppercase tracking-widest mb-4 ${f.dark ? "text-[#1a1a1a]/60" : "text-white/70"}`}>
                 {f.label}
               </p>
-              <h3 className={`font-serif text-2xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
+              <h3 className={`relative z-[1] font-serif text-2xl font-bold mb-4 ${f.dark ? "text-[#1a1a1a]" : "text-white"}`}>
                 {f.name}
               </h3>
-              <p className={`text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
+              <p className={`relative z-[1] text-sm leading-relaxed mt-auto ${f.dark ? "text-[#1a1a1a]/75" : "text-white/80"}`}>
                 {f.description}
               </p>
               <a
                 href={f.ctaHref}
-                className={`mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#1a1a1a]/60 hover:text-[#1a1a1a]/90" : "text-white/70 hover:text-white"}`}
+                className={`relative z-[1] mt-4 text-sm font-medium underline underline-offset-2 transition-opacity ${f.dark ? "text-[#1a1a1a]/60 hover:text-[#1a1a1a]/90" : "text-white/70 hover:text-white"}`}
               >
                 {f.cta}
               </a>
@@ -863,7 +1237,7 @@ function PricingTeaser() {
           <div data-pricing-cards className="max-w-sm mx-auto mt-10">
             <div className="bg-white rounded-2xl p-10 border-2 border-orange-500 text-center">
               <p className="text-orange-500 text-sm font-medium uppercase tracking-widest">7-Day Trial</p>
-              <p className="text-4xl font-bold text-zinc-900 mt-4">£10</p>
+              <p className="text-4xl font-bold text-zinc-900 mt-4">£9.99</p>
               <p className="text-zinc-500 text-sm mt-2">7 sachets delivered to your door.</p>
               <ul className="mt-8 text-sm text-zinc-500 space-y-3 text-left max-w-xs mx-auto">
                 {[
@@ -937,24 +1311,6 @@ function FinalCTA() {
             </div>
             <span>Join 500+ people already waiting · Unsubscribe anytime</span>
           </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-// ── 10. Contact ──────────────────────────────────────────────────────────────
-
-function Contact() {
-  return (
-    <section id="contact" className="py-20 lg:py-28 bg-white">
-      <div className="max-w-2xl mx-auto px-6 lg:px-10">
-        <Reveal>
-          <SectionLabel>● GET IN TOUCH</SectionLabel>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10 mt-4">
-            Say hello.
-          </h2>
-          <ContactForm />
         </Reveal>
       </div>
     </section>
@@ -1154,7 +1510,6 @@ function Index() {
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
-        <Contact />
       </main>
       <Footer />
     </div>
