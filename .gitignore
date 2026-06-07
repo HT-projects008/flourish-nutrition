@@ -20,6 +20,12 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Claude Code internals
+.agents/
+.claude/
+.playwright-mcp/
+skills-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
