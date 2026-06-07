@@ -155,6 +155,18 @@
   }
 }
 
+/* ─── Problems carousel ─────────────────────────────────────────────────── */
+@keyframes scroll-carousel {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50%)); }
+}
+.problems-track {
+  animation: scroll-carousel 24s linear infinite;
+}
+.problems-track:hover {
+  animation-play-state: paused;
+}
+
 /* ─── Reduced motion: all animations off ─────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
@@ -171,6 +183,9 @@
   .animate-bounce-slow {
     animation: none;
   }
+  .problems-track {
+    animation: none;
+  }
   /* Hero words are hidden by GSAP (yPercent: 110) — ensure they stay visible
      when GSAP animations are skipped due to prefers-reduced-motion. */
   .hero-word {
@@ -178,6 +193,11 @@
   }
   /* Flavour cards are hidden by gsap.set — keep them visible. */
   [data-flavour-card] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Ingredient cards are hidden by gsap.set — keep them visible. */
+  [data-ingredient-card] {
     opacity: 1 !important;
     transform: none !important;
   }

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Star, Check, X } from "lucide-react";
+import { Star, Check, X, Leaf, FlaskConical, Heart } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -22,6 +22,50 @@ const marqueeItems = [
   "No artificial additives",
   "Vegan friendly",
   "Launching soon",
+];
+
+const ingredientCards = [
+  { letter: "A", name: "Apple Cider Vinegar",  benefit: "Digestion and appetite control" },
+  { letter: "L", name: "Lemon",                benefit: "Vitamin C and enzyme stimulation" },
+  { letter: "T", name: "Turmeric",             benefit: "Powerful anti-inflammatory" },
+  { letter: "B", name: "Black Pepper",         benefit: "Increases absorption of all actives" },
+  { letter: "C", name: "Ceylon Cinnamon",      benefit: "Blood sugar stability" },
+  { letter: "I", name: "Prebiotic Blend",      benefit: "Inulin and acacia fibre for gentle gut support" },
+  { letter: "G", name: "Ginger Extract",       benefit: "Clinically reduces bloating" },
+  { letter: "M", name: "Monk Fruit",           benefit: "Natural sweetness, zero sugar" },
+];
+
+const problemCards = [
+  {
+    title: "One-trick formulas",
+    body: "Most ACV drinks just give you ACV. No prebiotic fibre, no anti-inflammatory support, no blood sugar regulation.",
+    solution: "8 ingredients working as one complete system.",
+  },
+  {
+    title: "Artificial sweeteners",
+    body: "Most gut health drinks use stevia with a bitter aftertaste, or just load up on sugar, which feeds harmful gut bacteria.",
+    solution: "Monk fruit, naturally sweet, zero sugar, zero compromise.",
+  },
+  {
+    title: "No bioavailability",
+    body: "Turmeric alone is almost useless. Your body can barely absorb curcumin without the right co-factor.",
+    solution: "Black pepper increases curcumin absorption by up to 2,000%.",
+  },
+  {
+    title: "Wrong cinnamon",
+    body: "Most brands use Cassia cinnamon, cheaper, but contains coumarin which can be harmful at daily doses.",
+    solution: "Ceylon cinnamon only, the safe, therapeutic variety chosen specifically for daily use.",
+  },
+  {
+    title: "No prebiotic fibre",
+    body: "Probiotic drinks add good bacteria but don't feed them. Without prebiotic fibre, new bacteria die quickly.",
+    solution: "Prebiotic blend feeds your existing beneficial bacteria, building lasting gut health.",
+  },
+  {
+    title: "Wrong timing",
+    body: "Most supplements are taken randomly. Gut health actives work significantly better when taken before eating.",
+    solution: "Designed as a before-first-meal ritual for maximum effect.",
+  },
 ];
 
 export const Route = createFileRoute("/")({
@@ -118,11 +162,8 @@ function BotanicalBackground() {
         const bloom = fl.querySelector<SVGGElement>('.bb');
 
         const tl = gsap.timeline();
-        // Stem draws on
         tl.fromTo(stem, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' });
-        // Leaves fade in at ~40% of stem growth
         tl.to(fl.querySelectorAll('.bl'), { opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.07 }, '-=0.72');
-        // Bloom opens after stem complete
         if (bloom) {
           tl.fromTo(bloom,
             { scale: 0.2, opacity: 0 },
@@ -181,27 +222,19 @@ function BotanicalBackground() {
             style={{ left: `${f.l}%`, transform: 'translateX(-50%)', width: w, height: h }}
           >
             <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ overflow: 'visible' }}>
-              {/* Stem */}
               <path className="bs" d={stemD} stroke="#E8622A" strokeWidth={sw} strokeLinecap="round" fill="none" />
-
-              {/* Lower left leaf */}
               <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
                 <path d={`M 0,0 C ${-ls},-14 ${-ls - 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
               </g>
-              {/* Lower right leaf */}
               <g className="bl" transform={`translate(${cx},${lyLow})`} style={{ opacity: 0 }}>
                 <path d={`M 0,0 C ${ls},-14 ${ls + 5},10 0,5`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
               </g>
-              {/* Upper left leaf */}
               <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
                 <path d={`M 0,0 C ${-ls},-12 ${-ls - 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
               </g>
-              {/* Upper right leaf */}
               <g className="bl" transform={`translate(${cx},${lyHigh})`} style={{ opacity: 0 }}>
                 <path d={`M 0,0 C ${ls},-12 ${ls + 4},9 0,4`} fill="rgba(232,98,42,0.15)" stroke="#E8622A" strokeWidth="1" strokeLinecap="round" />
               </g>
-
-              {/* Bloom — centered at (cx, bcy), no SVG transform so GSAP has clean control */}
               <g className="bb" style={{ opacity: 0 }}>
                 {[0, 60, 120, 180, 240, 300].map(angle => (
                   <ellipse key={angle} cx={cx} cy={bcy - pr} rx={px} ry={pr}
@@ -219,7 +252,7 @@ function BotanicalBackground() {
   );
 }
 
-// Overflow-hidden word mask for hero headline — inner span translates up via GSAP on load
+// Word-mask for hero headline — inner span reveals upward via GSAP on load
 function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boolean }) {
   return (
     <span
@@ -231,15 +264,28 @@ function HeroWord({ children, spaceAfter }: { children: string; spaceAfter?: boo
   );
 }
 
+// ── Section label shared style ───────────────────────────────────────────────
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex justify-center mb-6">
+      <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
+        {children}
+      </span>
+    </div>
+  );
+}
+
+// ── 1. Hero ──────────────────────────────────────────────────────────────────
+
 function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[65vh] lg:min-h-[70vh] pt-32 lg:pt-44 pb-0 overflow-hidden bg-[var(--color-cream)]"
+      className="relative pt-32 lg:pt-44 pb-16 lg:pb-24 overflow-hidden bg-[var(--color-cream)]"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(0.985_0.025_75)] via-[var(--color-cream)] to-white" />
       <BotanicalBackground />
-      {/* Warm orange gradient fade — visually connects cream hero to dark marquee below */}
+      {/* Warm orange fade connecting cream hero to dark marquee */}
       <div
         style={{
           position: "absolute",
@@ -253,45 +299,70 @@ function Hero() {
         }}
         aria-hidden="true"
       />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 min-h-[65vh] lg:min-h-[70vh]">
-        <div className="lg:col-span-7 pt-16 lg:pt-24 pl-0 lg:pl-10">
+
+      <div className="relative z-10 mx-auto max-w-5xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:items-center">
+        {/* Left: text content */}
+        <div>
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white border border-primary/20 px-3 py-1.5 text-xs font-medium text-primary mb-6">
-              <span className="size-1.5 rounded-full bg-primary" />
-              Premium gut health, daily
+            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium mb-6">
+              ● Premium gut health, daily
             </span>
 
-            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-orange-500 leading-tight tracking-[-0.02em] text-left">
-              <HeroWord spaceAfter>Feel</HeroWord>
-              <HeroWord>lighter.</HeroWord>
-              <br />
-              <HeroWord spaceAfter>Every</HeroWord>
-              <HeroWord>day.</HeroWord>
+            <h1 className="font-serif text-5xl lg:text-6xl font-bold text-orange-500 leading-tight tracking-[-0.02em] text-left mt-4">
+              <HeroWord spaceAfter>Flourish,</HeroWord>
+              <HeroWord spaceAfter>from</HeroWord>
+              <HeroWord>within.</HeroWord>
             </h1>
 
-            <div className="mt-4 text-left space-y-1">
-              <p className="text-lg lg:text-xl text-muted-foreground leading-snug">
-                8 organic ingredients, backed by science.
-              </p>
-              <p className="text-lg lg:text-xl text-muted-foreground leading-snug">
-                Helping you feel and look your best.
-              </p>
-              <p className="text-lg lg:text-xl font-medium text-zinc-700 leading-snug">
-                No big brand nasties.
-              </p>
+            <div className="mt-5 space-y-1 text-left">
+              <p className="text-lg text-zinc-500">8 organic ingredients, backed by science.</p>
+              <p className="text-lg text-zinc-500">Helping you feel and look your best.</p>
+              <p className="text-lg font-medium text-zinc-700">No big brand nasties.</p>
             </div>
+
             <div className="mt-6 max-w-md">
               <WaitlistForm source="homepage" />
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">
-              Join 500+ people already waiting · Early access gets 20% off
-            </p>
+
+            <div className="mt-5 flex flex-wrap gap-4 text-xs text-zinc-400">
+              <span className="flex items-center gap-1.5">
+                <Leaf className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                8 organic ingredients
+              </span>
+              <span className="flex items-center gap-1.5">
+                <FlaskConical className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                Science-backed formula
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                No nasties, ever
+              </span>
+            </div>
           </Reveal>
         </div>
+
+        {/* Right: ingredient typographic collage */}
+        <Reveal delay={200}>
+          <div className="bg-orange-50/60 rounded-3xl p-8 text-center border border-orange-100">
+            <div className="flex flex-col items-center gap-2 py-4">
+              <p className="font-serif text-3xl text-orange-500" style={{ opacity: 0.4 }}>Lemon</p>
+              <p className="font-serif text-sm text-orange-500" style={{ opacity: 0.3 }}>· Ginger ·</p>
+              <p className="font-serif text-2xl text-orange-500" style={{ opacity: 0.5 }}>Turmeric</p>
+              <p className="font-serif text-xl text-orange-500" style={{ opacity: 0.35 }}>ACV</p>
+              <p className="font-serif text-sm text-orange-500" style={{ opacity: 0.3 }}>· Cinnamon ·</p>
+              <p className="font-serif text-2xl text-orange-500" style={{ opacity: 0.45 }}>Inulin</p>
+              <p className="font-serif text-base text-orange-500" style={{ opacity: 0.3 }}>Black Pepper</p>
+              <p className="font-serif text-sm text-orange-500" style={{ opacity: 0.25 }}>· Monk Fruit ·</p>
+            </div>
+            <p className="text-xs text-zinc-400 text-center mt-4">Packaging image coming soon</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
+
+// ── 2. Marquee ───────────────────────────────────────────────────────────────
 
 function Marquee() {
   const track = [...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems];
@@ -309,233 +380,187 @@ function Marquee() {
   );
 }
 
+// ── 3. Benefits ──────────────────────────────────────────────────────────────
+
 function Benefits() {
   const items = [
-    { name: "Reduced bloating",                    desc: "Feel lighter after every meal" },
-    { name: "Consistent energy throughout the day", desc: "Steadier blood sugar after meals" },
-    { name: "Fat loss support",                     desc: "Appetite and metabolism control" },
-    { name: "Clearer and brighter skin",            desc: "Regulates inflammation and supports detoxification" },
-    { name: "Stronger immunity",                    desc: "Anti-tumour properties and strengthened immune system" },
-    { name: "Thriving gut microbiome",              desc: "Feeds the beneficial bacteria your gut needs most" },
-    { name: "Improved mood and mental clarity",     desc: "Increased nutrient absorption fed to your brain" },
+    { name: "Reduced bloating",           desc: "Feel lighter after every meal" },
+    { name: "Consistent energy",          desc: "Steadier blood sugar after meals" },
+    { name: "Fat loss support",           desc: "Appetite and metabolism control" },
+    { name: "Clearer and brighter skin",  desc: "Regulates inflammation and supports detoxification" },
+    { name: "Stronger immunity",          desc: "Supports cellular health and immune function" },
+    { name: "Thriving gut microbiome",    desc: "Feeds the beneficial bacteria your gut needs most" },
+    { name: "Improved mood and clarity",  desc: "Increased nutrient absorption fed to your brain" },
   ];
 
   return (
-    <section id="benefits" className="relative overflow-hidden py-16 lg:py-24 bg-[var(--color-cream)]">
-      {/* Decorative botanical silhouettes — desktop only */}
-
-      {/* 1 — Large daisy, top-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: -80, top: -60, width: 300, height: 300, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
-        <svg width="300" height="300" viewBox="0 0 300 300">
-          {[0,45,90,135,180,225,270,315].map(a => (
-            <ellipse key={a} cx="150" cy="90" rx="18" ry="50" fill="none" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="8 4" opacity="0.07" transform={`rotate(${a},150,150)`} />
-          ))}
-          <circle cx="150" cy="150" r="18" fill="none" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="6 4" opacity="0.07" />
-          <line x1="150" y1="200" x2="150" y2="290" stroke="#E8622A" strokeWidth="2.5" strokeDasharray="8 4" strokeLinecap="round" opacity="0.07" />
-        </svg>
+    <section id="benefits" className="py-20 lg:py-28 bg-[var(--color-cream)]">
+      {/* Top centred header */}
+      <div
+        data-benefits-heading
+        className="max-w-3xl mx-auto px-6 text-center"
+      >
+        <SectionLabel>● WHAT FLOURISH DOES</SectionLabel>
+        <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight mt-4">
+          Your gut controls more than you think.
+        </h2>
+        <p className="text-zinc-500 text-center max-w-2xl mx-auto mt-4 text-base leading-relaxed">
+          Your energy, your skin, your immunity, your mood, all of it traces back to what's happening in your gut. Flourish feeds the bacteria that make everything else work.
+        </p>
       </div>
 
-      {/* 2 — Botanical branch with leaves, bottom-left */}
-      <div className="hidden lg:block" style={{ position: 'absolute', left: -50, bottom: 40, width: 200, height: 300, pointerEvents: 'none', zIndex: 0, transform: 'rotate(25deg)' }} aria-hidden="true">
-        <svg width="200" height="300" viewBox="0 0 200 300">
-          <path d="M 100,300 C 90,230 110,180 95,120 C 80,60 100,20 100,0" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" strokeLinecap="round" opacity="0.06" />
-          <path d="M 98,240 C 58,225 43,255 98,248" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-          <path d="M 98,240 C 138,225 153,255 98,248" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-          <path d="M 96,175 C 56,160 41,190 96,183" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-          <path d="M 96,175 C 136,160 151,190 96,183" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-          <path d="M 97,110 C 61,95 47,125 97,118" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-          <path d="M 97,110 C 133,95 148,125 97,118" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 5" fill="none" opacity="0.06" />
-        </svg>
-      </div>
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto px-6 lg:px-10 mt-14">
+        {/* Left: sticky editorial column */}
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <p className="font-serif italic text-2xl text-zinc-300 leading-relaxed">
+            "When your gut thrives, everything else follows."
+          </p>
+          <p className="text-zinc-500 text-sm leading-relaxed mt-5 max-w-xs">
+            The gut-brain axis is real. A healthier microbiome supports mood, focus, energy, skin, and immunity simultaneously. One daily ritual. Eight ingredients. Everything working together.
+          </p>
 
-      {/* 3 — Seed pod / bud, top-left */}
-      <div className="hidden lg:block" style={{ position: 'absolute', left: 60, top: -40, width: 150, height: 200, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
-        <svg width="150" height="200" viewBox="0 0 150 200">
-          <path d="M 75,200 L 75,140" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 6" fill="none" strokeLinecap="round" opacity="0.07" />
-          <path d="M 75,30 C 110,30 120,75 120,100 C 120,130 100,140 75,140 C 50,140 30,130 30,100 C 30,75 40,30 75,30 Z" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 6" fill="rgba(232,98,42,0.02)" opacity="0.07" />
-          <path d="M 75,140 C 52,132 42,152 75,145" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="4 5" fill="none" opacity="0.07" />
-          <path d="M 75,140 C 98,132 108,152 75,145" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="4 5" fill="none" opacity="0.07" />
-        </svg>
-      </div>
-
-      {/* 4 — Tall wildflower, centre-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: 30, top: '40%', width: 100, height: 350, pointerEvents: 'none', zIndex: 0, transform: 'rotate(-10deg)' }} aria-hidden="true">
-        <svg width="100" height="350" viewBox="0 0 100 350">
-          <path d="M 50,350 C 48,280 52,210 50,0" stroke="#E8622A" strokeWidth="2" strokeDasharray="10 5" fill="none" strokeLinecap="round" opacity="0.06" />
-          <path d="M 50,200 C 18,185 12,212 50,205" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 5" fill="none" opacity="0.06" />
-          <path d="M 50,200 C 82,185 88,212 50,205" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 5" fill="none" opacity="0.06" />
-          {[0,60,120,180,240,300].map(a => (
-            <ellipse key={a} cx="50" cy="17" rx="7" ry="13" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="5 5" opacity="0.06" transform={`rotate(${a},50,30)`} />
-          ))}
-          <circle cx="50" cy="30" r="5" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="4 4" opacity="0.06" />
-        </svg>
-      </div>
-
-      {/* 5 — Circular flower mandala, bottom-right */}
-      <div className="hidden lg:block" style={{ position: 'absolute', right: -60, bottom: -80, width: 280, height: 280, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
-        <svg width="280" height="280" viewBox="0 0 280 280">
-          {[0,45,90,135,180,225,270,315].map(a => (
-            <ellipse key={a} cx="140" cy="72" rx="20" ry="55" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="8 6" opacity="0.07" transform={`rotate(${a},140,140)`} />
-          ))}
-          <circle cx="140" cy="140" r="17" fill="none" stroke="#E8622A" strokeWidth="2" strokeDasharray="6 6" opacity="0.07" />
-          {[0,45,90,135,180,225,270,315].map(a => (
-            <ellipse key={a} cx="140" cy="100" rx="8" ry="28" fill="none" stroke="#E8622A" strokeWidth="1.5" strokeDasharray="6 6" opacity="0.05" transform={`rotate(${a},140,140)`} />
-          ))}
-        </svg>
-      </div>
-      <div className="max-w-5xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-
-          {/* Left — sticky heading */}
-          <div data-benefits-heading className="lg:sticky lg:top-32 lg:self-start">
-            <div className="flex justify-center mb-6">
-              <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-                ● WHAT FLOURISH DOES
-              </span>
-            </div>
-            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight mt-4">
-              Seven reasons to make this your daily ritual.
-            </h2>
-          </div>
-
-          {/* Right — numbered benefits list + footer */}
-          <div>
-            <ul>
-              {items.map((item, i) => (
-                <li
-                  key={item.name}
-                  data-benefit-item
-                  className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
-                >
-                  <span
-                    className="font-mono text-xs text-orange-400 font-medium mr-4 mt-1 shrink-0 w-7 text-right select-none"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <p className="font-serif font-semibold text-base text-zinc-900 leading-snug">
-                      {item.name}
-                    </p>
-                    <p className="text-zinc-500 text-sm leading-relaxed mt-1">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            {/* Footer: closing quote + context line + science link */}
-            <div data-benefits-footer className="mt-8">
-              <div className="mt-12 pt-8 border-t border-zinc-100">
-                <p className="font-serif italic text-2xl text-zinc-400 leading-relaxed">
-                  This is what it means to Flourish.
-                </p>
-              </div>
-              <p className="text-zinc-500 text-sm mt-8 mb-4">
-                Just some of the improvements a sachet a day does for you.
-              </p>
+          <div className="mt-10 space-y-3">
+            <p className="font-serif italic text-xl text-zinc-400">
+              This is what it means to Flourish.
+            </p>
+            <p className="text-zinc-500 text-sm mt-1">
+              Just some of the improvements a sachet a day does for you.
+            </p>
+            <div data-benefits-footer className="mt-4">
               <Link
                 to="/journal"
-                className="inline-flex border border-zinc-300 text-zinc-600 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors cursor-pointer"
+                className="inline-flex border border-zinc-300 text-zinc-600 rounded-full px-6 py-2.5 text-sm font-medium hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
                 See the other benefits →
               </Link>
             </div>
           </div>
+        </div>
 
+        {/* Right: numbered benefits list */}
+        <ul>
+          {items.map((item, i) => (
+            <li
+              key={item.name}
+              data-benefit-item
+              className={`flex items-start py-4 ${i < items.length - 1 ? "border-b border-zinc-100" : ""}`}
+            >
+              <span
+                className="font-mono text-xs text-orange-400 w-7 flex-shrink-0 mt-0.5 select-none"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <p className="font-serif font-semibold text-base text-zinc-900">{item.name}</p>
+                <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{item.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+// ── 4. Ingredients ───────────────────────────────────────────────────────────
+
+function Ingredients() {
+  return (
+    <section id="ingredients" className="py-20 lg:py-28 bg-white">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10">
+        <div className="text-center">
+          <SectionLabel>● THE FORMULA</SectionLabel>
+          <h2 className="section-heading font-serif font-bold text-3xl lg:text-4xl text-zinc-900 text-center mt-4">
+            Eight ingredients. Every one chosen.
+          </h2>
+          <p className="text-zinc-500 text-center max-w-lg mx-auto mt-3 text-sm leading-relaxed">
+            No fillers. No unnecessary additives. Every ingredient in the Flourish formula has a specific, evidence-based role, and works harder alongside the others.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+          {ingredientCards.map((card) => (
+            <div
+              key={card.name}
+              data-ingredient-card
+              className="bg-orange-50 rounded-2xl p-6 text-center border border-orange-100/80 hover:bg-orange-100/60 transition-colors duration-200 cursor-default"
+            >
+              <p className="font-serif text-5xl font-bold text-orange-200 leading-none mb-3" aria-hidden="true">
+                {card.letter}
+              </p>
+              <p className="text-xs font-semibold text-zinc-900 uppercase tracking-wider">
+                {card.name}
+              </p>
+              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                {card.benefit}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function Comparison() {
-  type CompCell = false | true | string;
+// ── 5. Comparison ────────────────────────────────────────────────────────────
 
-  const rows: { feature: string; probiotic: CompCell; greens: CompCell; acv: CompCell }[] = [
-    { feature: "Organic ingredients",                                       probiotic: false,         greens: "Sometimes",    acv: false },
-    { feature: "Anti-inflammatory support",                                 probiotic: false,         greens: "Sometimes",    acv: false },
-    { feature: "Blood sugar support",                                       probiotic: false,         greens: false,          acv: "Partially" },
-    { feature: "No emulsifiers or preservatives",                           probiotic: "Often added", greens: "Varies",       acv: "Varies" },
-    { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)", probiotic: false,         greens: "Partially",    acv: false },
-    { feature: "8 simple recognisable ingredients",                         probiotic: false,         greens: "Often 50-75+", acv: "3-5 ingredients" },
-    { feature: "Natural sweetener only (zero sugar)",                       probiotic: "Often sugar", greens: "Varies",       acv: "Often sharp" },
-    { feature: "Affordable, from £1/day (subscription)",                    probiotic: true,          greens: "Often £2-3+",  acv: true },
+function Comparison() {
+  type CompCell = false | string;
+
+  const rows: { feature: string; conventional: CompCell }[] = [
+    { feature: "Organic ingredients",                                        conventional: false },
+    { feature: "Anti-inflammatory support",                                  conventional: false },
+    { feature: "Blood sugar support",                                        conventional: false },
+    { feature: "No emulsifiers or preservatives",                            conventional: false },
+    { feature: "Multi-benefit formula (gut, skin, fat loss, energy, mood)",  conventional: false },
+    { feature: "Natural sweetener only (zero sugar)",                        conventional: "Often sugar" },
+    { feature: "8 simple recognisable ingredients",                          conventional: "Often 20+" },
+    { feature: "From £1/day",                                                conventional: "Often more" },
   ];
 
-  const compCell = (v: CompCell) => {
-    if (v === false) return (
-      <div className="flex justify-center">
-        <X className="w-5 h-5 text-zinc-600" strokeWidth={1.5} aria-label="No" />
-      </div>
-    );
-    if (v === true) return (
-      <div className="flex justify-center">
-        <div className="w-7 h-7 bg-zinc-700 rounded-full flex items-center justify-center">
-          <Check className="w-4 h-4 text-zinc-400" strokeWidth={2.5} aria-label="Yes" />
+  const renderConvCell = (v: CompCell) => {
+    if (v === false) {
+      return (
+        <div className="flex justify-center">
+          <X className="w-4 h-4 text-zinc-300" strokeWidth={1.5} aria-label="No" />
         </div>
-      </div>
+      );
+    }
+    return (
+      <span className="block text-zinc-400 text-xs text-center italic">{v}</span>
     );
-    return <span className="text-zinc-500 text-xs italic">{v}</span>;
   };
 
   return (
-    <section id="comparison" className="comparison-section relative overflow-hidden py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0', backgroundImage: 'none' }}>
-      {/* Decorative bacteria silhouettes — desktop only */}
-      <div className="hidden lg:block" style={{ position: 'absolute', left: -60, top: 60, width: 250, height: 250, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
-        <svg width="250" height="250" viewBox="0 0 250 250" style={{ opacity: 0.04 }}>
-          <circle cx="125" cy="125" r="125" fill="#E8622A" stroke="#E8622A" strokeWidth="6" />
-          <circle cx="125" cy="125" r="114" fill="none" stroke="#E8622A" strokeWidth="2" opacity="0.5" />
-        </svg>
-      </div>
-      <div className="hidden lg:block" style={{ position: 'absolute', right: -80, top: '50%', width: 400, height: 120, pointerEvents: 'none', zIndex: 0, transform: 'translateY(-50%) rotate(-20deg)' }} aria-hidden="true">
-        <svg width="400" height="120" viewBox="0 0 400 120" style={{ opacity: 0.04 }}>
-          <rect x="0" y="0" width="400" height="120" rx="60" ry="60" fill="#E8622A" />
-        </svg>
-      </div>
+    <section id="comparison" className="py-20 lg:py-28" style={{ backgroundColor: '#FFF3E0' }}>
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
-
-        {/* Top copy */}
         <div data-comparison-copy className="text-center">
-          <div className="mb-6 flex justify-center">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● WHY FLOURISH IS BETTER
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight">
-            Simple ingredients,<br />backed by science.
+          <SectionLabel>● WHY FLOURISH IS BETTER</SectionLabel>
+          <h2 className="section-heading font-serif text-3xl lg:text-4xl font-bold text-zinc-900 text-center mt-4">
+            Simple ingredients, backed by science.
           </h2>
-          <p className="text-zinc-600 mt-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-zinc-500 text-center max-w-lg mx-auto mt-3 text-sm leading-relaxed">
             Most gut health drinks do one thing well. Flourish was built to do everything, simply, organically, and affordably.
           </p>
         </div>
 
-        {/* Table */}
-        <div className="mt-16 rounded-2xl overflow-hidden border border-orange-200 relative">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse">
+        <div className="mt-12 max-w-3xl mx-auto rounded-2xl overflow-hidden border border-orange-200">
+          <div className="overflow-x-auto relative">
+            <table className="w-full min-w-[480px] border-collapse">
               <thead>
-                <tr className="bg-zinc-900">
-                  <th className="pl-6 pr-4 py-4 text-left w-[30%]" scope="col" />
-
-                  {/* Flourish column — orange header */}
-                  <th className="bg-orange-500 py-4 text-center w-[17.5%]" scope="col">
+                <tr className="bg-zinc-900 h-14">
+                  <th className="pl-6 pr-4 py-4 text-left w-2/5" scope="col" />
+                  <th className="bg-orange-500 py-4 text-center w-[30%]" scope="col">
                     <div className="flex flex-col items-center">
                       <span className="w-1.5 h-1.5 rounded-full bg-white mb-1" aria-hidden="true" />
-                      <span className="font-serif font-bold text-white text-base">Flourish</span>
+                      <span className="font-serif font-bold text-white text-sm">Flourish</span>
                     </div>
                   </th>
-
-                  {/* Competitor columns */}
-                  {[
-                    { label: "Probiotic Drinks", sub: "e.g. Yakult, Actimel" },
-                    { label: "Greens Powders",   sub: "e.g. AG1, Bloom, Huel" },
-                    { label: "ACV Shots",         sub: "e.g. Bragg, H&B" },
-                  ].map((col) => (
-                    <th key={col.label} className="py-4 px-2 text-center w-[17.5%]" scope="col">
-                      <p className="text-zinc-500 text-sm font-medium">{col.label}</p>
-                      <p className="text-zinc-600 text-xs mt-0.5 font-normal">{col.sub}</p>
-                    </th>
-                  ))}
+                  <th className="py-4 px-2 text-center w-[30%]" scope="col">
+                    <span className="text-zinc-400 text-xs">Conventional Drinks</span>
+                  </th>
                 </tr>
               </thead>
 
@@ -544,47 +569,81 @@ function Comparison() {
                   <tr
                     key={row.feature}
                     data-comparison-row
-                    className={`border-b border-orange-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/60"}`}
+                    className={`border-b border-orange-100 last:border-b-0 ${i % 2 === 0 ? "bg-white" : "bg-orange-50/40"}`}
                   >
-                    <td className="pl-5 pr-4 py-3 text-zinc-700 text-sm font-medium align-middle">
+                    <td className="pl-5 pr-4 py-4 text-zinc-700 text-sm font-medium align-middle">
                       {row.feature}
                     </td>
-
-                    {/* Flourish — always ✓, orange, prominent */}
-                    <td className="bg-orange-500/10 py-4 text-center align-middle">
+                    <td className="bg-orange-50/50 py-4 text-center align-middle border-l border-orange-200">
                       <div className="flex items-center justify-center">
-                        <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
-                          <Check className="w-4 h-4 text-white" strokeWidth={2.5} aria-label="Yes" />
+                        <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center mx-auto">
+                          <Check className="w-3.5 h-3.5 text-white" strokeWidth={2.5} aria-label="Yes" />
                         </div>
                       </div>
                     </td>
-
-                    {/* Competitors */}
-                    <td className="py-4 text-center align-middle">{compCell(row.probiotic)}</td>
-                    <td className="py-4 text-center align-middle">{compCell(row.greens)}</td>
-                    <td className="py-4 text-center align-middle">{compCell(row.acv)}</td>
+                    <td className="py-4 px-4 text-center align-middle">
+                      {renderConvCell(row.conventional)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
 
-          {/* Mobile scroll fade — dark bg */}
-          <div
-            className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-orange-50 to-transparent pointer-events-none lg:hidden"
-            aria-hidden="true"
-          />
+            {/* Mobile right-fade hint */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-orange-50 to-transparent pointer-events-none lg:hidden"
+              aria-hidden="true"
+            />
+          </div>
         </div>
 
-        {/* Legal disclaimer */}
-        <p className="text-zinc-500 text-xs mt-4 text-center italic">
-          Comparison based on commonly available products in each category. Category characteristics are generalised, individual products may vary. Brand names referenced are category examples only.
+        <p className="text-zinc-400 text-xs mt-4 text-center italic max-w-xl mx-auto">
+          Comparison based on commonly available gut health products. Category characteristics are generalised, individual products may vary.
         </p>
-
       </div>
     </section>
   );
 }
+
+// ── 6. Problems ──────────────────────────────────────────────────────────────
+
+function Problems() {
+  const track = [...problemCards, ...problemCards];
+
+  return (
+    <section id="problems" className="py-20 lg:py-28 bg-white">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10 text-center">
+        <SectionLabel>● THE PROBLEM WITH CONVENTIONAL DRINKS</SectionLabel>
+        <h2 className="section-heading font-serif font-bold text-3xl lg:text-4xl text-zinc-900 text-center max-w-2xl mx-auto mt-4 leading-tight">
+          Most gut health drinks do one thing. Flourish does everything.
+        </h2>
+      </div>
+
+      <div className="mt-12 overflow-hidden">
+        <div className="problems-track flex w-fit">
+          {track.map((card, i) => (
+            <div
+              key={i}
+              className="mx-3 bg-orange-50 rounded-2xl p-6 border border-orange-100 flex-shrink-0"
+              style={{ width: 280 }}
+            >
+              <p className="font-serif font-bold text-base text-zinc-900 mb-2">{card.title}</p>
+              <p className="text-sm text-zinc-500 leading-relaxed mb-4">{card.body}</p>
+              <div className="border-t border-orange-200 pt-3">
+                <p className="text-xs text-orange-500 font-medium uppercase tracking-wider mb-1">
+                  Flourish fixes this:
+                </p>
+                <p className="text-sm text-zinc-800">{card.solution}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── 7. Flavours ──────────────────────────────────────────────────────────────
 
 function Flavours() {
   const flavours = [
@@ -621,23 +680,18 @@ function Flavours() {
   ];
 
   return (
-    <section id="flavours" className="py-16 lg:py-24 bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="flavours" className="py-20 lg:py-28 bg-[var(--color-cream)]">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <Reveal className="max-w-2xl mx-auto text-center mb-16">
-          <div className="mb-6 flex justify-center">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● THE FLAVOURS
-            </span>
-          </div>
-          <h2 className="section-heading font-serif text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
-            One precise daily blend. 3 flavours.
+          <SectionLabel>● THE FLAVOURS</SectionLabel>
+          <h2 className="section-heading font-serif text-3xl lg:text-4xl font-bold text-foreground leading-tight mt-4">
+            One precise blend. Three flavours.
           </h2>
-          <p className="mt-6 text-lg text-zinc-600 leading-relaxed">
-            The same powerful formula. Three delicious flavours. Every ingredient chosen for a specific role, crafted to be taken before every meal.
+          <p className="mt-3 text-sm text-zinc-500 leading-relaxed max-w-lg mx-auto">
+            The same 8 organic ingredients in every sachet. Choose your favourite flavour, or try all three.
           </p>
         </Reveal>
 
-        {/* Cards driven by GSAP ScrollTrigger.batch — 150ms stagger */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {flavours.map((f) => (
             <div
@@ -646,7 +700,6 @@ function Flavours() {
               className="min-h-[400px] rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{ backgroundColor: f.bg }}
             >
-              {/* Number watermark — consistent across all three cards */}
               <span
                 className="absolute bottom-4 right-6 font-serif text-7xl font-bold leading-none select-none pointer-events-none text-white opacity-20"
                 aria-hidden="true"
@@ -675,7 +728,7 @@ function Flavours() {
 
         <Reveal delay={400}>
           <div className="mt-16 text-center">
-            <p className="text-zinc-600 text-sm mb-6">
+            <p className="text-zinc-500 text-sm mb-6">
               Launching soon. Join the waitlist for first access to all three flavours.
             </p>
             <a
@@ -691,28 +744,24 @@ function Flavours() {
   );
 }
 
+// ── 8. PricingTeaser ─────────────────────────────────────────────────────────
+
 function PricingTeaser() {
   const [plan, setPlan] = useState<"trial" | "monthly">("monthly");
 
   return (
-    <section id="pricing" className="pricing-section py-16 lg:py-24" style={{ backgroundColor: '#FFF3E0', backgroundImage: 'none' }}>
+    <section id="pricing" className="pricing-section py-20 lg:py-28" style={{ backgroundColor: '#FFF3E0', backgroundImage: 'none' }}>
       <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
 
-        {/* Top copy */}
         <Reveal>
-          <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● PRICING
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 mt-4 leading-tight">
+          <SectionLabel>● PRICING</SectionLabel>
+          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-zinc-900 mt-4 leading-tight">
             Start your ritual.<br />No commitment needed.
           </h2>
-          <p className="text-zinc-500 mt-4 max-w-xl mx-auto leading-relaxed">
+          <p className="text-zinc-500 mt-4 max-w-xl mx-auto text-sm leading-relaxed">
             Try Flourish for 7 days or commit to a full month. Early access members get an exclusive founding rate.
           </p>
 
-          {/* Plan toggle */}
           <div className="mt-10 flex justify-center">
             <div className="inline-flex bg-zinc-100 rounded-full p-1">
               <button
@@ -739,26 +788,21 @@ function PricingTeaser() {
           </div>
         </Reveal>
 
-        {/* ── Monthly view ──────────────────────────────────────────────────── */}
         {plan === "monthly" && (
           <div data-pricing-cards className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 text-left">
-
-            {/* One-off card */}
             <div className="bg-white rounded-2xl p-8 border border-zinc-200">
-              <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">
-                One-off
-              </p>
+              <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">One-off</p>
               <div className="flex items-baseline gap-2 mt-4">
                 <p className="text-4xl font-bold text-zinc-900">£27.99</p>
                 <p className="text-zinc-400 text-sm line-through">£34.99</p>
               </div>
               <p className="text-zinc-400 text-sm mt-1">per month</p>
               <span className="mt-3 inline-block bg-orange-100 text-orange-600 text-xs rounded-full px-3 py-1">
-                Early access rate — first 500 only
+                Early access rate, first 500 only
               </span>
               <ul className="mt-6 text-sm text-zinc-500 space-y-2">
                 {[
-                  "30 sachets — 30-day supply",
+                  "30 sachets, 30-day supply",
                   "8g per sachet",
                   "Free UK delivery",
                   "No subscription required",
@@ -773,29 +817,26 @@ function PricingTeaser() {
                 href="#waitlist"
                 className="mt-8 block w-full text-center border border-zinc-300 text-zinc-700 rounded-full py-3 font-medium text-sm hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
-                Join Waitlist — One-off
+                Join Waitlist, One-off
               </a>
             </div>
 
-            {/* Subscribe card — featured */}
             <div className="bg-zinc-900 rounded-2xl p-8 border-2 border-orange-500 relative overflow-hidden">
               <span className="absolute top-4 right-4 bg-orange-500 text-white text-xs rounded-full px-3 py-1">
                 Most popular
               </span>
-              <p className="text-zinc-400 text-sm font-medium uppercase tracking-widest">
-                Monthly subscription
-              </p>
+              <p className="text-zinc-400 text-sm font-medium uppercase tracking-widest">Monthly subscription</p>
               <div className="flex items-baseline gap-2 mt-4">
                 <p className="text-4xl font-bold text-white">£23.99</p>
                 <p className="text-zinc-500 text-sm line-through">£29.99</p>
               </div>
               <p className="text-zinc-400 text-sm mt-1">/month</p>
               <span className="mt-3 inline-block bg-orange-500/20 text-orange-400 text-xs rounded-full px-3 py-1">
-                Save 20% — founding member rate
+                Save 20%, founding member rate
               </span>
               <ul className="mt-6 text-sm text-zinc-400 space-y-2">
                 {[
-                  "30 sachets — 30-day supply",
+                  "30 sachets, 30-day supply",
                   "8g per sachet",
                   "Free UK delivery",
                   "Cancel anytime",
@@ -812,28 +853,25 @@ function PricingTeaser() {
                 href="#waitlist"
                 className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-full py-3 font-medium text-sm transition-colors"
               >
-                Join Waitlist — Subscribe
+                Join Waitlist, Subscribe
               </a>
             </div>
           </div>
         )}
 
-        {/* ── Trial view ────────────────────────────────────────────────────── */}
         {plan === "trial" && (
           <div data-pricing-cards className="max-w-sm mx-auto mt-10">
             <div className="bg-white rounded-2xl p-10 border-2 border-orange-500 text-center">
-              <p className="text-orange-500 text-sm font-medium uppercase tracking-widest">
-                7-Day Trial
-              </p>
+              <p className="text-orange-500 text-sm font-medium uppercase tracking-widest">7-Day Trial</p>
               <p className="text-4xl font-bold text-zinc-900 mt-4">£10</p>
               <p className="text-zinc-500 text-sm mt-2">7 sachets delivered to your door.</p>
               <ul className="mt-8 text-sm text-zinc-500 space-y-3 text-left max-w-xs mx-auto">
                 {[
-                  "7-day supply — one sachet daily",
+                  "7-day supply, one sachet daily",
                   "Before your first meal, every day",
                   "8g per sachet, full formula",
                   "Free UK delivery",
-                  "No subscription — try it first",
+                  "No subscription, try it first",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <span className="size-1 rounded-full bg-zinc-300 shrink-0" aria-hidden="true" />
@@ -848,17 +886,14 @@ function PricingTeaser() {
                 href="#waitlist"
                 className="mt-8 block w-full text-center bg-orange-500 hover:bg-orange-600 text-white rounded-full py-3 font-medium text-sm transition-colors"
               >
-                Join Waitlist — Trial
+                Join Waitlist, Trial
               </a>
             </div>
           </div>
         )}
 
-        {/* ── Below both states ─────────────────────────────────────────────── */}
         <div className="mt-10">
-          <p className="text-zinc-500 text-sm">
-            Early access pricing available to the first 500 members only.
-          </p>
+          <p className="text-zinc-500 text-sm">Early access pricing available to the first 500 members only.</p>
           <div className="mt-3">
             <div className="w-64 h-1.5 bg-zinc-200 rounded-full mx-auto overflow-hidden">
               <div className="w-2/5 h-full bg-orange-500 rounded-full" />
@@ -866,23 +901,20 @@ function PricingTeaser() {
             <p className="text-zinc-400 text-xs mt-2">Spots filling fast</p>
           </div>
         </div>
-
       </div>
     </section>
   );
 }
+
+// ── 9. FinalCTA ──────────────────────────────────────────────────────────────
 
 function FinalCTA() {
   return (
     <section id="waitlist" className="py-28 lg:py-40 bg-[#1a1a1a] text-white">
       <div className="mx-auto max-w-3xl px-6 lg:px-10 text-center">
         <Reveal>
-          <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● EARLY ACCESS
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[1.05] tracking-[-0.02em]">
+          <SectionLabel>● EARLY ACCESS</SectionLabel>
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[1.05] tracking-[-0.02em] mt-4">
             Join the founding 500.
           </h2>
         </Reveal>
@@ -911,17 +943,15 @@ function FinalCTA() {
   );
 }
 
+// ── 10. Contact ──────────────────────────────────────────────────────────────
+
 function Contact() {
   return (
-    <section id="contact" className="py-16 lg:py-24 bg-[var(--color-cream)]">
+    <section id="contact" className="py-20 lg:py-28 bg-white">
       <div className="max-w-2xl mx-auto px-6 lg:px-10">
         <Reveal>
-          <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-1.5 bg-orange-500/10 text-orange-500 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-medium">
-              ● GET IN TOUCH
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10">
+          <SectionLabel>● GET IN TOUCH</SectionLabel>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-zinc-900 leading-tight text-center mb-10 mt-4">
             Say hello.
           </h2>
           <ContactForm />
@@ -930,6 +960,8 @@ function Contact() {
     </section>
   );
 }
+
+// ── Root page ────────────────────────────────────────────────────────────────
 
 function Index() {
   const mainRef = useRef<HTMLElement>(null);
@@ -942,7 +974,7 @@ function Index() {
       if (!container) return;
       const q = gsap.utils.selector(container);
 
-      // ── 1. Hero headline: word-by-word reveal on load ───────────────────────
+      // 1. Hero headline: word-by-word reveal on load
       gsap.from(q(".hero-word"), {
         yPercent: 110,
         duration: 0.45,
@@ -952,7 +984,7 @@ function Index() {
         clearProps: "transform",
       });
 
-      // ── 2. Flavour cards: stagger in from below on scroll ───────────────────
+      // 2. Flavour cards: stagger in from below on scroll
       gsap.set(q("[data-flavour-card]"), { y: 64, opacity: 0 });
       ScrollTrigger.batch(q("[data-flavour-card]"), {
         onEnter: (els) => {
@@ -969,7 +1001,7 @@ function Index() {
         once: true,
       });
 
-      // ── 3. Section headings: slide in from the left on scroll ───────────────
+      // 3. Section headings: slide in from the left on scroll
       (q(".section-heading") as HTMLElement[]).forEach((el) => {
         gsap.from(el, {
           x: -50,
@@ -984,7 +1016,7 @@ function Index() {
         });
       });
 
-      // ── 4. Benefits heading: fade up on scroll ───────────────────────────────
+      // 4. Benefits top header: fade up on scroll
       const benefitsHeadingEl = (q("[data-benefits-heading]") as HTMLElement[])[0];
       if (benefitsHeadingEl) {
         gsap.fromTo(
@@ -1000,7 +1032,7 @@ function Index() {
         );
       }
 
-      // ── 5. Benefit list items: stagger in as user scrolls ────────────────────
+      // 5. Benefit list items: stagger in as user scrolls
       const benefitItemEls = q("[data-benefit-item]") as HTMLElement[];
       if (benefitItemEls.length) {
         gsap.set(benefitItemEls, { y: 20, opacity: 0 });
@@ -1020,7 +1052,7 @@ function Index() {
         });
       }
 
-      // ── 6. Benefits footer: fade in last ─────────────────────────────────────
+      // 6. Benefits footer: fade in last
       const benefitsFooterEl = (q("[data-benefits-footer]") as HTMLElement[])[0];
       if (benefitsFooterEl) {
         gsap.fromTo(
@@ -1037,7 +1069,24 @@ function Index() {
         );
       }
 
-      // ── 6. Pricing section: fade up on scroll ───────────────────────────────
+      // 7. Ingredient cards: stagger in from below on scroll
+      gsap.set(q("[data-ingredient-card]"), { y: 30, opacity: 0 });
+      ScrollTrigger.batch(q("[data-ingredient-card]"), {
+        onEnter: (els) => {
+          gsap.to(els, {
+            y: 0,
+            opacity: 1,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: EASE,
+            overwrite: true,
+          });
+        },
+        start: "top 85%",
+        once: true,
+      });
+
+      // 8. Pricing cards: fade up on scroll
       const pricingSection = (q("[data-pricing-cards]") as HTMLElement[])[0];
       if (pricingSection) {
         gsap.fromTo(
@@ -1053,7 +1102,7 @@ function Index() {
         );
       }
 
-      // ── 7. Comparison copy: fade up on scroll ────────────────────────────────
+      // 9. Comparison header copy: fade up on scroll
       const comparisonCopyEl = (q("[data-comparison-copy]") as HTMLElement[])[0];
       if (comparisonCopyEl) {
         gsap.fromTo(
@@ -1069,7 +1118,7 @@ function Index() {
         );
       }
 
-      // ── 8. Comparison rows: stagger in on scroll ──────────────────────────────
+      // 10. Comparison rows: stagger in on scroll
       const comparisonRows = q("[data-comparison-row]") as HTMLElement[];
       if (comparisonRows.length) {
         gsap.set(comparisonRows, { y: 20, opacity: 0 });
@@ -1088,7 +1137,6 @@ function Index() {
           once: true,
         });
       }
-
     },
     { scope: mainRef },
   );
@@ -1100,7 +1148,9 @@ function Index() {
         <Hero />
         <Marquee />
         <Benefits />
+        <Ingredients />
         <Comparison />
+        <Problems />
         <Flavours />
         <PricingTeaser />
         <FinalCTA />
